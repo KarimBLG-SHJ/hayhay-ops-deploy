@@ -65,6 +65,16 @@
   display: flex; align-items: center; gap: 6px;
 }
 .tile-head .live { color: var(--gold); display: inline-flex; align-items: center; gap: 6px; }
+.tile-head .tile-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: var(--mute);
+  padding-left: 18px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* ---- Live dot ---- */
 .live-dot {

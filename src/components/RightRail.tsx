@@ -14,7 +14,7 @@ function FlowBias({ morningPct }: { morningPct: number }) {
   const afternoonPct = 100 - morningPct;
   return (
     <div className="tile">
-      <TileHead title="DAY SPLIT" />
+      <TileHead title="DAY SPLIT" sub="Part du CA du jour · matin (06→14h) vs après-m (14→22h)" />
       <div className="flowbias-wrap">
         <div className="flowbias-top">
           <span className="flowbias-num up">
@@ -42,7 +42,11 @@ function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
   useEffect(() => setRows(initial), [initial]);
   return (
     <div className="tile">
-      <TileHead title="TOP VIP · JOUR" meta={`${rows.length} CLIENTS`} />
+      <TileHead
+        title="TOP VIP · JOUR"
+        sub="Top 5 clients dine-in/pickup aujourd'hui · tri par CA · visits = cumul all-time"
+        meta={`${rows.length} CLIENTS`}
+      />
       <div className="whale-list">
         {rows.map((w, i) => (
           <div
@@ -100,7 +104,7 @@ function ChannelMixTile({ mix }: { mix: ChannelMix }) {
   });
   return (
     <div className="tile">
-      <TileHead title="CHANNEL MIX" />
+      <TileHead title="CHANNEL MIX" sub="Répartition du CA du jour · POS = en boutique · Talabat/Shop/Keeta = livraison" />
       <div className="strat-wrap">
         <div className="donut">
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
@@ -180,6 +184,7 @@ function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
             <span style={{ color: "#00FF88" }}>▲</span> TOP 5 · EN CROISSANCE
           </>
         }
+        sub="Produits actifs avec le plus fort Δ ventes · 30j récents vs 30j précédents"
         meta="14j"
       />
       <div className="lc-list">
@@ -221,6 +226,7 @@ function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
             <span style={{ color: "#F59E0B" }}>▼</span> TOP 5 · EN DÉCLIN
           </>
         }
+        sub="Produits actifs en plus forte baisse · 30j récents vs 30j précédents"
         meta="30j · actifs"
       />
       <div className="lc-list">
@@ -258,7 +264,11 @@ function SectorYield({ rows: initial }: { rows: SectorYieldRow[] }) {
   useEffect(() => setRows(initial), [initial]);
   return (
     <div className="tile">
-      <TileHead title="CA PAR CATÉGORIE" meta={`${rows.length} CAT.`} />
+      <TileHead
+        title="CA PAR CATÉGORIE"
+        sub="CA du jour par catégorie Foodics · tx = nb d'items vendus"
+        meta={`${rows.length} CAT.`}
+      />
       <div className="sector-list">
         {rows.map((r, i) => (
           <div
@@ -289,7 +299,11 @@ function ContextScore({ context }: { context: ContextSnapshot }) {
   const displayPct = clamp(context.density + wobble, 0, 100);
   return (
     <div className="tile clickable" onClick={() => goto("/dashboard/context")}>
-      <TileHead title="CONTEXT SCORE" meta="CONTEXTOS" />
+      <TileHead
+        title="CONTEXT SCORE"
+        sub="Densité 0-100 des drivers externes du jour · météo, événements, ramadan, cycle paye"
+        meta="CONTEXTOS"
+      />
       <div className="gauge-wrap">
         <div className="gauge-top">
           <span className="events">DENSITÉ</span>
@@ -338,7 +352,7 @@ function CronQueue({ queue }: { queue: CronQueueItem[] }) {
   const sideClass: Record<string, string> = { CRON: "BUY", SUPER: "SELL" };
   return (
     <div className="tile">
-      <TileHead title="QUEUE · CRONS & DEADLINES" />
+      <TileHead title="QUEUE · CRONS & DEADLINES" sub="Jobs planifiés aujourd'hui · horaire UAE · source coach /cron/status" />
       <div className="expiry-list">
         {queue.map((r, i) => (
           <div

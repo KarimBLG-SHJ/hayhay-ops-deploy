@@ -75,14 +75,19 @@ interface TileHeadProps {
   title: ReactNode;
   meta?: ReactNode;
   live?: boolean;
+  /** One-line sub-title shown under the title. Plain English, explains WHAT is tracked and over WHICH period. */
+  sub?: ReactNode;
 }
 
-export function TileHead({ title, meta, live }: TileHeadProps) {
+export function TileHead({ title, meta, live, sub }: TileHeadProps) {
   return (
     <div className="tile-head">
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-        <span className="tick" />
-        <span className="title">{title}</span>
+      <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0, flex: 1 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span className="tick" />
+          <span className="title">{title}</span>
+        </div>
+        {sub && <span className="tile-sub">{sub}</span>}
       </div>
       {live ? (
         <span className="meta live">

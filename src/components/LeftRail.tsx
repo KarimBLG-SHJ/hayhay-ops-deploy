@@ -55,7 +55,7 @@ function SignalRadar({ signals }: { signals: SignalItem[] }) {
 
   return (
     <div ref={containerRef} className="tile" style={{ display: "grid", gridTemplateRows: "auto 1fr" }}>
-      <TileHead title="SIGNAL RADAR · 9 AGENTS" live />
+      <TileHead title="SIGNAL RADAR · 9 AGENTS" sub="Dernières alertes Slack · 7 derniers jours" live />
       <div className="radar-list">
         {items.map((it) => {
           const age = (now - it.ts) / 1000;
@@ -85,7 +85,7 @@ function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
 
   return (
     <div className="tile">
-      <TileHead title="PRODUITS · LIVE" />
+      <TileHead title="PRODUITS · LIVE" sub="Batch du jour · fourchette attendue → vendu Foodics" />
       <div className="tape-list">
         <div
           className="tape-row"
@@ -143,7 +143,7 @@ function SupervisorStats({ initial }: { initial: SupervisorSnapshot }) {
 
   return (
     <div className="tile clickable" onClick={() => goto("/dashboard/supervisor")}>
-      <TileHead title="SUPERVISOR" />
+      <TileHead title="SUPERVISOR" sub="Uptime session coach Railway · compteurs cumulés" />
       <div className="metrics-wrap">
         <div className="metric-hero">
           <div className="lab">UPTIME SESSION</div>
@@ -190,7 +190,7 @@ function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
       className="tile"
       style={{ display: "flex", flexDirection: "column", flex: "1 1 auto", minHeight: 0 }}
     >
-      <TileHead title="AGENT BRIEFINGS" live />
+      <TileHead title="AGENT BRIEFINGS" sub="Posts agents sur Slack · 7 derniers jours · dédupliqués" live />
       <div className="news-list" style={{ flex: "1 1 auto", minHeight: 0, overflowY: "auto" }}>
         {initial.map((it, idx) => (
           <div

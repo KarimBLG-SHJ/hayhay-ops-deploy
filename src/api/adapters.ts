@@ -473,8 +473,10 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
         waste_pct: snap.kpis.waste_pct,
         agents_live: snap.kpis.agents_live,
       } as KpiSnapshot;
-      // Target inferred: 11k AED is Karim's baseline target. Adjust up if current_ca implies higher day.
-      const target = Math.max(11000, Math.round((daily.kpis.revenue / 0.4) / 500) * 500);
+      // Daily target is 2 500 AED (Karim's baseline for HayHay). If current_ca implies a
+      // higher day (e.g. weekend/event), bump target up in 500 AED increments so the curve
+      // never looks pinned at the top; otherwise keep 2 500 strictly.
+      const target = Math.max(2500, Math.ceil((daily.kpis.revenue / 0.6) / 500) * 500);
       const now = new Date();
       const uae = new Date(now.getTime() + (now.getTimezoneOffset() + 240) * 60000);
       const nowHour = uae.getHours() + uae.getMinutes() / 60;

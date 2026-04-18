@@ -20,7 +20,14 @@ function HeroChart({ hero }: { hero: HeroSnapshot }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const [dims, setDims] = useState({ w: 800, h: 300 });
-  const [nowHour, setNowHour] = useState(hero.now_hour);
+  // NOW tracks live UAE wall-clock time. Updates once per minute so the marker inches
+  // forward smoothly without racing the 60s snapshot poll. No artificial advance.
+  const computeNowHour = () => {
+    const d = new Date();
+    const uae = new Date(d.getTime() + (d.getTimezoneOffset() + 240) * 60000);
+    return Math.min(hero.end_hour, Math.max(hero.start_hour, uae.getHours() + uae.getMinutes() / 60));
+  };
+  const [nowHour, setNowHour] = useState(computeNowHour);
   const drawnRef = useRef(false);
 
   useEffect(() => {
@@ -35,15 +42,12 @@ function HeroChart({ hero }: { hero: HeroSnapshot }) {
   }, []);
 
   useEffect(() => {
-    const i = window.setInterval(() => {
-      setNowHour((n) => {
-        const max = hero.end_hour;
-        const next = n + 5 / 60;
-        return next > max ? max : next;
-      });
-    }, 1500);
+    const tick = () => setNowHour(computeNowHour());
+    tick();
+    const i = window.setInterval(tick, 60_000);
     return () => window.clearInterval(i);
-  }, [hero.end_hour]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hero.end_hour, hero.start_hour]);
 
   const { w, h } = dims;
   const pad = { l: 48, r: 14, t: 20, b: 22 };
@@ -108,7 +112,12 @@ function HeroChart({ hero }: { hero: HeroSnapshot }) {
     }
   }, [linePath]);
 
-  const yTicks = [0, 500, 1000, 1500, 2000, 2500];
+  // Y-axis ticks scale with target so the grid always makes sense.
+  const yTickCount = 5;
+  const yStep = Math.max(100, Math.ceil(hero.target / yTickCount / 100) * 100);
+  const yTicks: number[] = [];
+  for (let v = 0; v <= hero.target; v += yStep) yTicks.push(v);
+  if (yTicks[yTicks.length - 1] !== hero.target) yTicks.push(hero.target);
   const yLabels = yTicks.map((v, i) => (
     <g key={"y" + i}>
       <line x1={pad.l} x2={w - pad.r} y1={y(v)} y2={y(v)} stroke="rgba(126,231,135,0.06)" strokeWidth="1" />
@@ -370,7 +379,7 @@ export function Hero({ snap }: { snap: Snapshot }) {
         >
           {focused ? "← EXIT · ESC" : "⛶ FOCUS"}
         </button>
-        <TileHead title="HAYHAY PULSE · LIVE SESSION · SHARJAH" live />
+        <TileHead title="HAYHAY PULSE · LIVE SESSION · SHARJAH" sub="CA cumulé du jour 06→20h · courbe verte = réel · pointillés = forecast" live />
         <div className="hero-head" style={{ padding: "16px 16px 0" }}>
           <div
             className="hero-pnl"
