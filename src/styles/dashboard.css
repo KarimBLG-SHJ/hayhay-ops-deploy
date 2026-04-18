@@ -1,7 +1,7 @@
 /* ---- App grid layout ---- */
 .app {
   display: grid;
-  grid-template-columns: 300px 1fr 320px;
+  grid-template-columns: 300px minmax(0, 1fr) 380px;
   grid-template-rows: auto 1fr auto;
   gap: 12px;
   padding: 12px;

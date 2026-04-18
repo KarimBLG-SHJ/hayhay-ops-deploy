@@ -192,20 +192,19 @@ function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
           <div
             key={i}
             className="lc-row clickable"
+            title={it.name}
             onClick={(e) => {
               e.stopPropagation();
               goto(`/dashboard/product/${encodeURIComponent(it.name)}`);
             }}
           >
             <span className="lc-name">{it.name}</span>
-            <span className="lc-delta" style={{ color: "#00FF88" }}>
-              +{it.delta}%
-            </span>
-            <span className="lc-vel">
-              <VelocityBar value={it.delta} max={maxDelta} color="#00FF88" />
-            </span>
-            <span className="lc-stage" style={{ color: "#00FF88" }}>
-              {it.stage}
+            <span className="lc-meta">
+              <span className="lc-delta" style={{ color: "#00FF88" }}>+{it.delta}%</span>
+              <span className="lc-vel">
+                <VelocityBar value={it.delta} max={maxDelta} color="#00FF88" />
+              </span>
+              <span className="lc-stage" style={{ color: "#00FF88" }}>{it.stage}</span>
             </span>
             <span className="lc-spark">
               <Sparkline values={it.spark} color="#00FF88" />
@@ -234,20 +233,17 @@ function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
           <div
             key={i}
             className="lc-row clickable"
+            title={it.name}
             onClick={(e) => {
               e.stopPropagation();
               goto(`/dashboard/product/${encodeURIComponent(it.name)}`);
             }}
           >
             <span className="lc-name">{it.name}</span>
-            <span className="lc-delta" style={{ color: "#F59E0B" }}>
-              {it.delta}%
-            </span>
-            <span className="lc-vel" style={{ color: "var(--mute)", fontSize: 10 }}>
-              {it.last_sale}
-            </span>
-            <span className="lc-stage" style={{ color: "#F59E0B" }}>
-              {it.stage}
+            <span className="lc-meta">
+              <span className="lc-delta" style={{ color: "#F59E0B" }}>{it.delta}%</span>
+              <span className="lc-extra">{it.last_sale}</span>
+              <span className="lc-stage" style={{ color: "#F59E0B" }}>{it.stage}</span>
             </span>
             <span className="lc-spark">
               <Sparkline values={it.spark} color="#F59E0B" />
