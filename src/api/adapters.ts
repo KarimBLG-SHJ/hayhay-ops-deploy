@@ -368,9 +368,23 @@ function humanRelativeFR(isoDate: string): string {
   return months === 1 ? "il y a 1 mois" : `il y a ${months} mois`;
 }
 
+function daysSince(isoDate: string): number {
+  const now = new Date();
+  const uae = new Date(now.getTime() + (now.getTimezoneOffset() + 240) * 60000);
+  const target = new Date(isoDate + "T00:00:00Z");
+  return Math.max(0, Math.floor((uae.getTime() - target.getTime()) / 86400_000));
+}
+
 function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
   return r.products
-    .filter((p) => p.is_active && p.delta_pct !== null && p.delta_pct > 0 && p.total_qty > 20)
+    .filter(
+      (p) =>
+        p.is_active &&
+        p.delta_pct !== null &&
+        p.delta_pct > 0 &&
+        p.total_qty > 20 &&
+        daysSince(p.last_sale) <= 7,
+    )
     .sort((a, b) => (b.delta_pct ?? 0) - (a.delta_pct ?? 0))
     .slice(0, 5)
     .map((p) => ({
@@ -383,7 +397,13 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
 
 function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
   return r.products
-    .filter((p) => p.is_active && p.delta_pct !== null && p.delta_pct < -10)
+    .filter(
+      (p) =>
+        p.is_active &&
+        p.delta_pct !== null &&
+        p.delta_pct < -10 &&
+        daysSince(p.last_sale) <= 7,
+    )
     .sort((a, b) => (a.delta_pct ?? 0) - (b.delta_pct ?? 0))
     .slice(0, 5)
     .map((p) => ({
