@@ -144,11 +144,23 @@ function cronQueueFromStatus(r: CronStatusResponse): CronQueueItem[] {
   const items = Object.values(r.status).filter(
     (it) => !(it.channel || "").toLowerCase().startsWith("bdouin-") && !/imak/i.test(it.label),
   );
-  return items.map((it) => ({
-    at: parseHourFromLabel(it.label),
-    label: it.label.replace(/\s*\([^)]*\)\s*$/, ""),
-    kind: "CRON" as const,
-  }));
+  const seen = new Set<string>();
+  const out: CronQueueItem[] = [];
+  for (const it of items) {
+    const label = it.label.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    const at = parseHourFromLabel(it.label);
+    const key = `${label}|${at}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ at, label, kind: "CRON" as const });
+  }
+  // Sort: real times first (ascending), placeholders --:-- at the bottom.
+  out.sort((a, b) => {
+    if (a.at === "--:--" && b.at !== "--:--") return 1;
+    if (b.at === "--:--" && a.at !== "--:--") return -1;
+    return a.at.localeCompare(b.at);
+  });
+  return out;
 }
 
 function supervisorFromStatus(r: CronStatusResponse, base: SupervisorSnapshot): SupervisorSnapshot {
@@ -502,14 +514,14 @@ function firstLine(text: string): string {
 }
 
 function signalRadarFromSlack(r: SlackRecentResponse): SignalItem[] {
-  return r.messages
-    .slice(0, 6)
+  const items = r.messages
     .map((m) => ({
       agent: m.agent,
       text: firstLine(m.text),
       sev: severityFromText(m.text),
     }))
     .filter((s) => s.text.length > 0);
+  return dedupeByText(items).slice(0, 6);
 }
 
 function dedupeByText<T extends { text: string }>(arr: T[]): T[] {
