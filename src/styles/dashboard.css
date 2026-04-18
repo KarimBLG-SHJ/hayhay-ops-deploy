@@ -247,9 +247,10 @@
   font-size: 11px;
   color: var(--text);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  animation: slideIn 0.5s var(--ease);
   background: var(--tile-2);
   position: relative;
+  opacity: 1;
+  flex-shrink: 0;
 }
 .news-item .ntag { font-weight: 700; letter-spacing: 0.08em; margin-right: 6px; }
 .news-item.NEW .ntag { color: var(--gold); }

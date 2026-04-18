@@ -208,7 +208,7 @@ function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
       className="tile"
       style={{ display: "flex", flexDirection: "column", flex: "1 1 auto", minHeight: 0 }}
     >
-      <TileHead title="AGENT BRIEFINGS" sub="Posts agents sur Slack · 7 derniers jours · dédupliqués" live />
+      <TileHead title="AGENT BRIEFINGS" sub="Derniers posts Slack · 7j · sans doublons" live />
       <div className="news-list" style={{ flex: "1 1 auto", minHeight: 0, overflowY: "auto" }}>
         {initial.map((it, idx) => (
           <div
