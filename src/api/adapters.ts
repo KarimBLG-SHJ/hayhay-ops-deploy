@@ -126,7 +126,10 @@ function parseHourFromLabel(label: string): string {
 }
 
 function cronQueueFromStatus(r: CronStatusResponse): CronQueueItem[] {
-  const items = Object.values(r.status);
+  // HayHay Ops is HayHay-only — BDouin/IMAK crons must not appear here.
+  const items = Object.values(r.status).filter(
+    (it) => !(it.channel || "").toLowerCase().startsWith("bdouin-") && !/imak/i.test(it.label),
+  );
   return items.map((it) => ({
     at: parseHourFromLabel(it.label),
     label: it.label.replace(/\s*\([^)]*\)\s*$/, ""),
@@ -135,7 +138,9 @@ function cronQueueFromStatus(r: CronStatusResponse): CronQueueItem[] {
 }
 
 function supervisorFromStatus(r: CronStatusResponse, base: SupervisorSnapshot): SupervisorSnapshot {
-  const items = Object.values(r.status);
+  const items = Object.values(r.status).filter(
+    (it) => !(it.channel || "").toLowerCase().startsWith("bdouin-") && !/imak/i.test(it.label),
+  );
   const ran = items.filter((x) => x.ran_today).length;
   return {
     uptime_session_s: base.uptime_session_s,
@@ -145,7 +150,9 @@ function supervisorFromStatus(r: CronStatusResponse, base: SupervisorSnapshot): 
 }
 
 function briefingsFromStatus(r: CronStatusResponse): AgentBriefing[] {
-  const items = Object.values(r.status);
+  const items = Object.values(r.status).filter(
+    (it) => !(it.channel || "").toLowerCase().startsWith("bdouin-") && !/imak/i.test(it.label),
+  );
   const agentOf = (ch: string) => {
     if (ch.includes("foodics")) return "FOO" as const;
     if (ch.includes("sop")) return "SOP" as const;
@@ -550,8 +557,11 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       snap.supervisor = supervisorFromStatus(cronStatus, snap.supervisor);
       const liveBriefings = briefingsFromStatus(cronStatus);
       if (liveBriefings.length > 0) snap.agent_briefings = liveBriefings;
-      const total = Object.values(cronStatus.status).length;
-      const ok = Object.values(cronStatus.status).filter((x) => x.compliant).length;
+      const hayhayCrons = Object.values(cronStatus.status).filter(
+        (x) => !(x.channel || "").toLowerCase().startsWith("bdouin-") && !/imak/i.test(x.label),
+      );
+      const total = hayhayCrons.length;
+      const ok = hayhayCrons.filter((x) => x.compliant).length;
       const pct = total > 0 ? (ok / total) * 100 : 99.4;
       snap.kpis.agents_live = {
         value: ok,
