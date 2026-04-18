@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CountNumber, LINKS, TileHead, clamp, openUrl } from "./primitives";
 import { useFocusMode } from "./Arcade";
+import { LifecycleGrowth, LifecycleDecline } from "./RightRail";
 import type { AgentBriefing, HeroSnapshot, Snapshot } from "../types";
 
 function shapeValueAt(shape: [number, number][], hour: number): number {
@@ -314,7 +315,7 @@ function FlowStrip({ pct, label }: { pct: number; label: string }) {
   );
 }
 
-function EventLog({ pool }: { pool: AgentBriefing[] }) {
+export function EventLog({ pool }: { pool: AgentBriefing[] }) {
   // Deterministic rendering of whatever briefings are in the snapshot.
   // No synthetic rows — what you see here is exactly what Slack + cron reported.
   const verbForAgent = (a: string): string => {
@@ -445,8 +446,12 @@ export function Hero({ snap }: { snap: Snapshot }) {
           </div>
         </div>
       </div>
-      <div className="tile" style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
-        <EventLog pool={snap.agent_briefings} />
+      <div
+        className="hero-lifecycle"
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, minHeight: 0 }}
+      >
+        <LifecycleGrowth items={snap.lifecycle_growth} />
+        <LifecycleDecline items={snap.lifecycle_decline} />
       </div>
     </div>
   );

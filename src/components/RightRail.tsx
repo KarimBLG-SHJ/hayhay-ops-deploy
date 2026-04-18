@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { CountNumber, LINKS, TileHead, clamp, openUrl } from "./primitives";
 import type {
   ChannelMix,
@@ -175,7 +175,7 @@ function VelocityBar({ value, max, color }: { value: number; max: number; color:
   );
 }
 
-function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
+export function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
   const maxDelta = Math.max(...items.map((it) => it.delta));
   return (
     <div className="tile clickable" title="Ouvrir la lifecycle complète (JSON)" onClick={() => openUrl(LINKS.hayhayDashboard + "/api/lifecycle")}>
@@ -217,7 +217,7 @@ function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
   );
 }
 
-function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
+export function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
   return (
     <div className="tile clickable" title="Ouvrir la lifecycle complète (JSON)" onClick={() => openUrl(LINKS.hayhayDashboard + "/api/lifecycle")}>
       <TileHead
@@ -369,15 +369,14 @@ function CronQueue({ queue }: { queue: CronQueueItem[] }) {
   );
 }
 
-export function RightRail({ snap }: { snap: Snapshot }) {
+export function RightRail({ snap, journal }: { snap: Snapshot; journal: ReactNode }) {
   const morningPct = snap.day_split_pct ?? 58;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: 0, overflow: "auto" }}>
       <FlowBias morningPct={morningPct} />
       <WhaleWatch vips={snap.top_vips} />
       <ChannelMixTile mix={snap.channel_mix} />
-      <LifecycleGrowth items={snap.lifecycle_growth} />
-      <LifecycleDecline items={snap.lifecycle_decline} />
+      {journal}
       <SectorYield rows={snap.sector_yield} />
       <ContextScore context={snap.context} />
       <CronQueue queue={snap.cron_queue} />

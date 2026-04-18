@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSnapshot } from "./api/useSnapshot";
 import { TopBar } from "./components/TopBar";
 import { LeftRail } from "./components/LeftRail";
-import { Hero } from "./components/Hero";
+import { Hero, EventLog } from "./components/Hero";
 import { RightRail } from "./components/RightRail";
 import { Ticker } from "./components/Ticker";
 import { ParticleLayer } from "./components/Arcade";
@@ -49,7 +49,14 @@ export default function App() {
         <TopBar kpis={snap.kpis} />
         <LeftRail snap={snap} />
         <Hero snap={snap} />
-        <RightRail snap={snap} />
+        <RightRail
+          snap={snap}
+          journal={
+            <div className="tile" style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
+              <EventLog pool={snap.agent_briefings} />
+            </div>
+          }
+        />
         <Ticker items={snap.ticker} />
       </div>
     </>
