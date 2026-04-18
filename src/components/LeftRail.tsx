@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CountNumber, LINKS, TileHead, openUrl } from "./primitives";
 import { useStream } from "../api/useStream";
 import type {
-  AgentBriefing,
   AgentCode,
   MarketTapeRow,
   SignalItem,
@@ -186,44 +185,7 @@ function SupervisorStats({ initial }: { initial: SupervisorSnapshot }) {
   );
 }
 
-interface BriefingRow extends AgentBriefing {
-  id: number;
-  ts: number;
-}
-
-function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
-  const kindClass: Record<AgentCode, string> = {
-    FOO: "NEW",
-    CLI: "SPREAD",
-    PRD: "VOLUME",
-    MKT: "ARBI",
-    BKR: "NEW",
-    SOP: "ARBI",
-    SUP: "VOLUME",
-    CTX: "SPREAD",
-    SVR: "NEW",
-  };
-  return (
-    <div
-      className="tile"
-      style={{ display: "flex", flexDirection: "column", flex: "1 1 auto", minHeight: 0 }}
-    >
-      <TileHead title="AGENT BRIEFINGS" sub="Derniers posts Slack · 7j · sans doublons" live />
-      <div className="news-list" style={{ flex: "1 1 auto", minHeight: 0, overflowY: "auto" }}>
-        {initial.map((it, idx) => (
-          <div
-            key={idx}
-            className={"news-item clickable " + (kindClass[it.agent] || "NEW")}
-            title={`Ouvrir #${AGENT_TO_CHANNEL[it.agent] || "coach"} dans Slack`}
-            onClick={() => openUrl(LINKS.slackChannel(AGENT_TO_CHANNEL[it.agent] || "coach"))}
-          >
-            <span className="ntag">{it.agent}:</span> {it.text}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+import { AlJadaBrief } from "./AlJadaBrief";
 
 export function LeftRail({ snap }: { snap: Snapshot }) {
   return (
@@ -231,7 +193,7 @@ export function LeftRail({ snap }: { snap: Snapshot }) {
       <SignalRadar signals={snap.signal_radar} />
       <MarketTape rows={snap.market_tape} />
       <SupervisorStats initial={snap.supervisor} />
-      <AgentBriefings items={snap.agent_briefings} />
+      <AlJadaBrief data={snap.aljada} />
     </div>
   );
 }

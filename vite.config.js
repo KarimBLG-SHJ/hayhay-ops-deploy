@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 const COACH = process.env.VITE_PROXY_COACH || "https://worker-production-c3a3.up.railway.app";
 const DASHBOARD = process.env.VITE_PROXY_DASHBOARD || "https://web-production-fbd5f.up.railway.app";
 const CONTEXTOS = process.env.VITE_PROXY_CONTEXTOS || "https://web-production-19efe.up.railway.app";
+const ALJADA = process.env.VITE_PROXY_ALJADA || "https://al-jada-watch-production.up.railway.app";
 const proxy = {
     "/api/coach": {
         target: COACH,
@@ -18,6 +19,11 @@ const proxy = {
         target: CONTEXTOS,
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/api\/contextos/, ""),
+    },
+    "/api/aljada": {
+        target: ALJADA,
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/api\/aljada/, ""),
     },
 };
 export default defineConfig({

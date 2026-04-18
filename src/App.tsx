@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { useSnapshot } from "./api/useSnapshot";
 import { TopBar } from "./components/TopBar";
 import { LeftRail } from "./components/LeftRail";
-import { Hero, EventLog } from "./components/Hero";
+import { Hero } from "./components/Hero";
 import { RightRail } from "./components/RightRail";
 import { Ticker } from "./components/Ticker";
 import { ParticleLayer } from "./components/Arcade";
+import { IaAccuracyTile } from "./components/IaAccuracy";
 
 export default function App() {
   const snap = useSnapshot(60_000);
@@ -49,14 +50,7 @@ export default function App() {
         <TopBar kpis={snap.kpis} />
         <LeftRail snap={snap} />
         <Hero snap={snap} />
-        <RightRail
-          snap={snap}
-          journal={
-            <div className="tile" style={{ display: "flex", flexDirection: "column", minHeight: 0 }}>
-              <EventLog pool={snap.agent_briefings} />
-            </div>
-          }
-        />
+        <RightRail snap={snap} journal={<IaAccuracyTile data={snap.ia_accuracy} />} />
         <Ticker items={snap.ticker} />
       </div>
     </>

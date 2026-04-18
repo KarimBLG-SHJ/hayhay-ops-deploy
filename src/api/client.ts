@@ -10,6 +10,7 @@
 export const COACH = "/api/coach";
 export const DASHBOARD = "/api/dashboard";
 export const CONTEXTOS = "/api/contextos";
+export const ALJADA = "/api/aljada";
 
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 

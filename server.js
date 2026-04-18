@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const COACH = process.env.COACH_URL || "https://worker-production-c3a3.up.railway.app";
 const DASHBOARD = process.env.DASHBOARD_URL || "https://web-production-fbd5f.up.railway.app";
 const CONTEXTOS = process.env.CONTEXTOS_URL || "https://web-production-19efe.up.railway.app";
+const ALJADA = process.env.ALJADA_URL || "https://al-jada-watch-production.up.railway.app";
 
 const app = express();
 
@@ -35,6 +36,7 @@ const mk = (target, prefix) =>
 app.use("/api/coach", mk(COACH, "/api/coach"));
 app.use("/api/dashboard", mk(DASHBOARD, "/api/dashboard"));
 app.use("/api/contextos", mk(CONTEXTOS, "/api/contextos"));
+app.use("/api/aljada", mk(ALJADA, "/api/aljada"));
 
 app.get("/healthz", (_req, res) => res.json({ ok: true, ts: Date.now() }));
 

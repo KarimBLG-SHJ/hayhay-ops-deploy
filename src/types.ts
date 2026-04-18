@@ -105,6 +105,27 @@ export interface LifecycleBreakdown {
   silent_long: number;
 }
 
+export interface AlJadaScore {
+  day_score_pct: number;
+  day_label: string;
+  brief: string;
+  traffic_pct: number;
+  social_pct: number;
+  press_pct: number;
+  competition_pct: number;
+  event_count: number;
+  temp_c?: number;
+  condition?: string;
+}
+
+export interface IaAccuracy {
+  days: number;
+  mae_total_avg: number;
+  predicted_total_avg: number;
+  actual_total_avg: number;
+  top_products: { product: string; mae: number; bias: number; n_days: number }[];
+}
+
 export interface Snapshot {
   clock_uae_offset_min: number;
   kpis: KpiSnapshot;
@@ -124,6 +145,8 @@ export interface Snapshot {
   supervisor: SupervisorSnapshot;
   ticker: TickerItem[];
   day_split_pct?: number;
+  aljada?: AlJadaScore;
+  ia_accuracy?: IaAccuracy;
 }
 
 export interface StreamEvent {

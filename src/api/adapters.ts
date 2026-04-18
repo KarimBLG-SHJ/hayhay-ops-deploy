@@ -17,7 +17,8 @@ import type {
   TopVip,
 } from "../types";
 import { SNAPSHOT_MOCK } from "../mocks/snapshot.mock";
-import { COACH, CONTEXTOS, DASHBOARD, fetchJson, todayUAE } from "./client";
+import type { AlJadaScore, IaAccuracy } from "../types";
+import { ALJADA, COACH, CONTEXTOS, DASHBOARD, fetchJson, todayUAE } from "./client";
 
 // ---- Dashboard /api/daily ----
 interface DailyResponse {
@@ -548,19 +549,112 @@ function tickerFromSlack(r: SlackRecentResponse): TickerItem[] {
   ).slice(0, 18);
 }
 
+// ---- Al-Jada Watch /api/scores + /api/events + /api/briefing ----
+interface AlJadaScoreRaw {
+  day_score: number;
+  traffic_score: number;
+  context_score: number;
+  social_score: number;
+  press_score: number;
+  competition_score: number;
+  day_label_fr: string;
+  brief_fr: string;
+}
+
+async function fetchAlJada(): Promise<AlJadaScore | null> {
+  try {
+    type BriefingPayload = { weather?: { temp_c?: number; condition_fr?: string } };
+    const [scoresRes, eventsRes, briefingRes] = await Promise.all([
+      fetchJson<{ scores: AlJadaScoreRaw[] }>(`${ALJADA}/api/scores`),
+      fetchJson<{ count: number }>(`${ALJADA}/api/events`).catch(() => ({ count: 0 })),
+      fetchJson<BriefingPayload>(`${ALJADA}/api/briefing`).catch(() => ({} as BriefingPayload)),
+    ]);
+    const s = scoresRes.scores?.[0];
+    if (!s) return null;
+    return {
+      day_score_pct: Math.round(s.day_score * 100),
+      day_label: s.day_label_fr,
+      brief: s.brief_fr,
+      traffic_pct: Math.round(s.traffic_score * 100),
+      social_pct: Math.round(s.social_score * 100),
+      press_pct: Math.round(s.press_score * 100),
+      competition_pct: Math.round(s.competition_score * 100),
+      event_count: eventsRes.count || 0,
+      temp_c: briefingRes.weather?.temp_c,
+      condition: briefingRes.weather?.condition_fr,
+    };
+  } catch (e) {
+    console.warn("[aljada] fetch failed", e);
+    return null;
+  }
+}
+
+// ---- Coach /api/learning/accuracy + /api/learning/product-accuracy ----
+interface AccuracyDay {
+  date: string;
+  predicted_total: number;
+  actual_total: number;
+  mae_total: number;
+}
+interface ProductAccuracy {
+  product: string;
+  avg_predicted: number;
+  avg_actual: number;
+  mae: number;
+  bias: number;
+  n_days: number;
+}
+
+async function fetchIaAccuracy(): Promise<IaAccuracy | null> {
+  try {
+    const [accRes, prodRes] = await Promise.all([
+      fetchJson<{ days: number; daily: AccuracyDay[] }>(`${COACH}/api/learning/accuracy`),
+      fetchJson<{ products: ProductAccuracy[] }>(`${COACH}/api/learning/product-accuracy`),
+    ]);
+    const daily = accRes.daily || [];
+    const n = daily.length || 1;
+    const mae_total_avg = Math.round(daily.reduce((s, d) => s + d.mae_total, 0) / n);
+    const predicted_total_avg = Math.round(daily.reduce((s, d) => s + d.predicted_total, 0) / n);
+    const actual_total_avg = Math.round(daily.reduce((s, d) => s + d.actual_total, 0) / n);
+    const topProducts = (prodRes.products || [])
+      .filter((p) => p.n_days >= 5)
+      .sort((a, b) => b.mae - a.mae)
+      .slice(0, 5)
+      .map((p) => ({
+        product: p.product,
+        mae: Math.round(p.mae * 10) / 10,
+        bias: Math.round(p.bias * 10) / 10,
+        n_days: p.n_days,
+      }));
+    return {
+      days: accRes.days || 30,
+      mae_total_avg,
+      predicted_total_avg,
+      actual_total_avg,
+      top_products: topProducts,
+    };
+  } catch (e) {
+    console.warn("[ia_accuracy] fetch failed", e);
+    return null;
+  }
+}
+
 // ---- Aggregator ----
 // Each adapter runs in its own try/catch so one failure never poisons the rest.
 export async function buildLiveSnapshot(): Promise<Snapshot> {
   const date = todayUAE();
-  const [daily, cronStatus, forecast, batch, lifecycle, topCustomers, slackRecent] = await Promise.all([
-    fetchDaily(date),
-    fetchCronStatus(),
-    fetchForecast(),
-    fetchBatch(date),
-    fetchLifecycle(),
-    fetchTopCustomers(date),
-    fetchSlackRecent(),
-  ]);
+  const [daily, cronStatus, forecast, batch, lifecycle, topCustomers, slackRecent, aljada, iaAccuracy] =
+    await Promise.all([
+      fetchDaily(date),
+      fetchCronStatus(),
+      fetchForecast(),
+      fetchBatch(date),
+      fetchLifecycle(),
+      fetchTopCustomers(date),
+      fetchSlackRecent(),
+      fetchAlJada(),
+      fetchIaAccuracy(),
+    ]);
 
   const snap: Snapshot = { ...SNAPSHOT_MOCK };
 
@@ -721,6 +815,9 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   } catch (e) {
     console.warn("[adapter:slack_recent]", e);
   }
+
+  if (aljada) snap.aljada = aljada;
+  if (iaAccuracy) snap.ia_accuracy = iaAccuracy;
 
   return snap;
 }
