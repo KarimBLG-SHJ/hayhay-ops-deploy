@@ -32,6 +32,9 @@ function SignalRadar({ signals }: { signals: SignalItem[] }) {
   const [items, setItems] = useState<RadarItem[]>(() =>
     signals.map((s, i) => ({ id: Date.now() - i * 60000, ts: Date.now() - i * 62000, ...s })),
   );
+  useEffect(() => {
+    setItems(signals.map((s, i) => ({ id: Date.now() - i * 60000, ts: Date.now() - i * 62000, ...s })));
+  }, [signals]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const onEvent = useCallback((evt: StreamEvent) => {
@@ -203,9 +206,12 @@ function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
     initial.map((it, i) => ({ id: Date.now() - i * 60000, ts: Date.now() - i * 12000, ...it })),
   );
   useEffect(() => {
+    setItems(initial.map((it, i) => ({ id: Date.now() - i * 60000, ts: Date.now() - i * 12000, ...it })));
+  }, [initial]);
+  useEffect(() => {
     const i = window.setInterval(() => {
-      const pool = initial;
-      const pick = pool[Math.floor(Math.random() * pool.length)];
+      if (initial.length === 0) return;
+      const pick = initial[Math.floor(Math.random() * initial.length)];
       setItems((prev) => [{ id: Date.now(), ts: Date.now(), ...pick }, ...prev].slice(0, 16));
     }, 5200);
     return () => window.clearInterval(i);
