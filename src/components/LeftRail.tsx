@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CountNumber, TileHead, goto } from "./primitives";
+import { CountNumber, LINKS, TileHead, openUrl } from "./primitives";
 import { useStream } from "../api/useStream";
 import type {
   AgentBriefing,
@@ -26,7 +26,20 @@ const AGENT_COLORS: Record<AgentCode, string> = {
 interface RadarItem extends SignalItem {
   id: number;
   ts: number;
+  channel?: string;
 }
+
+const AGENT_TO_CHANNEL: Record<AgentCode, string> = {
+  FOO: "hayhay-foodics-dashboard",
+  SOP: "hayhay-sop-hub",
+  SUP: "hayhay-supervision-evaluation",
+  CTX: "hayhay-context-dashboard",
+  BKR: "hayhay-batch-production-bot",
+  PRD: "hayhay-product-bot",
+  MKT: "hayhay-marketing-bot",
+  CLI: "hayhay-client-bot",
+  SVR: "hayhay-supervisor",
+};
 
 function SignalRadar({ signals }: { signals: SignalItem[] }) {
   const [items, setItems] = useState<RadarItem[]>(() =>
@@ -66,7 +79,8 @@ function SignalRadar({ signals }: { signals: SignalItem[] }) {
             <div
               key={it.id}
               className={"radar-item clickable" + (fresh ? " fresh" : "") + (aged ? " aged" : "")}
-              onClick={() => goto(`/dashboard/signals/${it.agent}/${it.id}`)}
+              title={`Ouvrir #${AGENT_TO_CHANNEL[it.agent]} dans Slack`}
+              onClick={() => openUrl(LINKS.slackChannel(AGENT_TO_CHANNEL[it.agent] || "coach"))}
             >
               <span className={"sig-tag " + (sevClass[it.sev] || AGENT_COLORS[it.agent] || "")}>{it.agent}</span>
               <span className="sig-msg">{it.text}</span>
@@ -104,7 +118,8 @@ function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
           <div
             key={idx}
             className="tape-row clickable"
-            onClick={() => goto(`/dashboard/product/${encodeURIComponent(r.product)}`)}
+            title={`Voir ${r.product} sur HayHay Dashboard`}
+            onClick={() => openUrl(LINKS.hayhayDashboard)}
           >
             <span className="tape-name">{r.product}</span>
             <span className="tape-range">
@@ -142,7 +157,7 @@ function SupervisorStats({ initial }: { initial: SupervisorSnapshot }) {
   const runtime = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 
   return (
-    <div className="tile clickable" onClick={() => goto("/dashboard/supervisor")}>
+    <div className="tile clickable" title="Ouvrir le status coach" onClick={() => openUrl(LINKS.coachStatus)}>
       <TileHead title="SUPERVISOR" sub="Uptime session coach Railway · compteurs cumulés" />
       <div className="metrics-wrap">
         <div className="metric-hero">
@@ -196,7 +211,8 @@ function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
           <div
             key={idx}
             className={"news-item clickable " + (kindClass[it.agent] || "NEW")}
-            onClick={() => goto(`/dashboard/agent/${it.agent}`)}
+            title={`Ouvrir #${AGENT_TO_CHANNEL[it.agent] || "coach"} dans Slack`}
+            onClick={() => openUrl(LINKS.slackChannel(AGENT_TO_CHANNEL[it.agent] || "coach"))}
           >
             <span className="ntag">{it.agent}:</span> {it.text}
           </div>

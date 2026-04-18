@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CountNumber, TileHead, clamp, goto } from "./primitives";
+import { CountNumber, LINKS, TileHead, clamp, openUrl } from "./primitives";
 import type {
   ChannelMix,
   ContextSnapshot,
@@ -52,7 +52,8 @@ function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
           <div
             key={i}
             className="whale-row clickable"
-            onClick={() => goto(`/dashboard/client/${encodeURIComponent(w.initials)}`)}
+            title={`Ouvrir les clients dans Foodics`}
+            onClick={() => openUrl(LINKS.foodicsConsole)}
           >
             <span className="whale-addr">{w.initials}</span>
             <span className="whale-amt">
@@ -177,7 +178,7 @@ function VelocityBar({ value, max, color }: { value: number; max: number; color:
 function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
   const maxDelta = Math.max(...items.map((it) => it.delta));
   return (
-    <div className="tile clickable" onClick={() => goto("/dashboard/lifecycle?stage=growth")}>
+    <div className="tile clickable" title="Ouvrir la lifecycle complète (JSON)" onClick={() => openUrl(LINKS.hayhayDashboard + "/api/lifecycle")}>
       <TileHead
         title={
           <>
@@ -195,7 +196,7 @@ function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
             title={it.name}
             onClick={(e) => {
               e.stopPropagation();
-              goto(`/dashboard/product/${encodeURIComponent(it.name)}`);
+              openUrl(LINKS.hayhayDashboard);
             }}
           >
             <span className="lc-name">{it.name}</span>
@@ -218,7 +219,7 @@ function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
 
 function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
   return (
-    <div className="tile clickable" onClick={() => goto("/dashboard/lifecycle?stage=decline")}>
+    <div className="tile clickable" title="Ouvrir la lifecycle complète (JSON)" onClick={() => openUrl(LINKS.hayhayDashboard + "/api/lifecycle")}>
       <TileHead
         title={
           <>
@@ -236,7 +237,7 @@ function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
             title={it.name}
             onClick={(e) => {
               e.stopPropagation();
-              goto(`/dashboard/product/${encodeURIComponent(it.name)}`);
+              openUrl(LINKS.hayhayDashboard);
             }}
           >
             <span className="lc-name">{it.name}</span>
@@ -270,7 +271,8 @@ function SectorYield({ rows: initial }: { rows: SectorYieldRow[] }) {
           <div
             key={i}
             className="sector-row clickable"
-            onClick={() => goto(`/dashboard/category/${encodeURIComponent(r.name)}`)}
+            title="Ouvrir HayHay Dashboard"
+            onClick={() => openUrl(LINKS.hayhayDashboard)}
           >
             <span className="sector-name">{r.name}</span>
             <span className="sector-amt">
@@ -294,7 +296,7 @@ function ContextScore({ context }: { context: ContextSnapshot }) {
   }, []);
   const displayPct = clamp(context.density + wobble, 0, 100);
   return (
-    <div className="tile clickable" onClick={() => goto("/dashboard/context")}>
+    <div className="tile clickable" title="Ouvrir ContextOS dashboard" onClick={() => openUrl(LINKS.contextOsDashboard)}>
       <TileHead
         title="CONTEXT SCORE"
         sub="Densité 0-100 des drivers externes du jour · météo, événements, ramadan, cycle paye"
@@ -354,7 +356,8 @@ function CronQueue({ queue }: { queue: CronQueueItem[] }) {
           <div
             key={i}
             className="expiry-row clickable"
-            onClick={() => goto(`/dashboard/cron/${encodeURIComponent(r.label)}`)}
+            title="Ouvrir cron status JSON"
+            onClick={() => openUrl(LINKS.coachStatus)}
           >
             <span className="expiry-name">{r.label}</span>
             <span className="expiry-time">{r.at}</span>

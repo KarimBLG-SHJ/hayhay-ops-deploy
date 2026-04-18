@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CountNumber, TileHead, clamp, goto } from "./primitives";
+import { CountNumber, LINKS, TileHead, clamp, openUrl } from "./primitives";
 import { useFocusMode } from "./Arcade";
 import type { AgentBriefing, HeroSnapshot, Snapshot } from "../types";
 
@@ -378,7 +378,8 @@ export function Hero({ snap }: { snap: Snapshot }) {
     <div style={{ display: "grid", gridTemplateRows: "auto 1fr", gap: 12, alignContent: "stretch", height: "100%" }}>
       <div
         className={"tile hero clickable" + (focused ? " focused-hero" : "")}
-        onClick={() => !focused && goto("/dashboard/pulse")}
+        title="Ouvrir HayHay Dashboard"
+        onClick={() => !focused && openUrl(LINKS.hayhayDashboard)}
       >
         <button
           className="focus-btn"

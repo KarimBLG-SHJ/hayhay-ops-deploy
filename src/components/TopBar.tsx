@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { CountNumber, LiveDot, goto } from "./primitives";
+import { CountNumber, LiveDot, LINKS, openUrl } from "./primitives";
 import type { KpiSnapshot } from "../types";
 
 function FlipDigit({ value }: { value: string }) {
@@ -94,33 +94,33 @@ export function TopBar({ kpis }: TopBarProps) {
       </div>
       <div className="kpi-row">
         <Kpi
-          onClick={() => goto("/dashboard/revenue")}
+          onClick={() => openUrl(LINKS.hayhayDashboard)}
           label="CA DU JOUR"
           value={<CountNumber value={kpis.ca_today.value} format={(v) => Math.round(v).toLocaleString("en-US")} />}
           sub={`AED · ${pct}% TARGET`}
           accent
         />
         <Kpi
-          onClick={() => goto("/dashboard/orders")}
+          onClick={() => openUrl(LINKS.hayhayDashboard)}
           label="COMMANDES"
           value={<CountNumber value={kpis.orders.value} format={(v) => Math.round(v).toString()} />}
           sub={`+${kpis.orders.delta_vs_yesterday} VS J-1`}
           accent
         />
         <Kpi
-          onClick={() => goto("/dashboard/basket")}
+          onClick={() => openUrl(LINKS.hayhayDashboard)}
           label="TICKET MOY."
           value={<CountNumber value={kpis.avg_ticket.value} format={(v) => v.toFixed(1)} />}
           sub="AED"
         />
         <Kpi
-          onClick={() => goto("/dashboard/waste")}
+          onClick={() => openUrl(LINKS.hayhayDashboard)}
           label="WASTE"
           value={<CountNumber value={kpis.waste_pct.value} format={(v) => v.toFixed(1) + "%"} />}
           sub={`CEIL ${kpis.waste_pct.ceiling}%`}
         />
         <Kpi
-          onClick={() => goto("/dashboard/supervisor")}
+          onClick={() => openUrl(LINKS.coachStatus)}
           label="AGENTS"
           value={
             <span>

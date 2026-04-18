@@ -100,10 +100,25 @@ export function TileHead({ title, meta, live, sub }: TileHeadProps) {
   );
 }
 
-export function goto(route: string): void {
-  console.log("[nav]", route);
+/**
+ * Opens a URL in a new browser tab. Used by every clickable tile/row in the dashboard
+ * to send the operator to the underlying tool (Foodics, HayHay Dashboard, Slack, ContextOS).
+ * Falls back to a toast if the URL looks like an internal route (leading "/") — those
+ * sub-routes are not implemented yet.
+ */
+export function openUrl(url: string): void {
+  if (!url) return;
+  if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("slack://")) {
+    window.open(url, "_blank", "noopener,noreferrer");
+    return;
+  }
+  // Internal placeholder route — show toast
+  toast("→ " + url);
+}
+
+function toast(text: string) {
   const el = document.createElement("div");
-  el.textContent = "→ " + route;
+  el.textContent = text;
   Object.assign(el.style, {
     position: "fixed",
     top: "64px",
@@ -133,3 +148,17 @@ export function goto(route: string): void {
     setTimeout(() => el.remove(), 200);
   }, 1100);
 }
+
+// ---- External tool URLs ----
+export const LINKS = {
+  hayhayDashboard: "https://web-production-fbd5f.up.railway.app",
+  contextOsDashboard: "https://web-production-19efe.up.railway.app/dashboard",
+  coachStatus: "https://worker-production-c3a3.up.railway.app/cron/status",
+  foodicsConsole: "https://console.foodics.com",
+  slackWorkspace: "https://app.slack.com/client/T08R2L4PC7U",
+  slackChannel: (name: string) => `https://karimos.slack.com/channels/${name.replace(/^#/, "")}`,
+  hayhayHub: "https://hayhay-hub-production.up.railway.app",
+};
+
+/** Legacy alias kept for components that still call goto(). Prefer openUrl directly. */
+export const goto = openUrl;
