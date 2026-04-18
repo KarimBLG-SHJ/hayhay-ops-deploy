@@ -255,32 +255,32 @@ function HeroChart({ hero }: { hero: HeroSnapshot }) {
   );
 }
 
-function Histogram({ shape, target }: { shape: [number, number][]; target: number }) {
+/**
+ * ORDRES / H — one bar per hour from 06→20h, height = real AED sold that hour.
+ * Only actuals (past hours). Future hours render as a tiny stub so the grid stays.
+ * No forecast extrapolation so the shape is always honest.
+ */
+function Histogram({ hourRevenue, nowHour }: { hourRevenue: Record<string, number>; nowHour: number }) {
   const bars = useMemo(() => {
-    const arr: number[] = [];
-    const N = 56;
-    for (let i = 0; i < N; i++) {
-      const hr = 6 + (i / (N - 1)) * 14;
-      const dh = 0.25;
-      const v1 = shapeValueAt(shape, hr - dh) * target;
-      const v2 = shapeValueAt(shape, hr + dh) * target;
-      const rate = Math.max(0, (v2 - v1) / (2 * dh));
-      arr.push(rate);
+    const hours: { hr: number; v: number; past: boolean }[] = [];
+    for (let h = 6; h <= 20; h++) {
+      const v = Number(hourRevenue[String(h)] || 0);
+      hours.push({ hr: h, v, past: h <= nowHour });
     }
-    const maxR = Math.max(...arr, 1);
-    return arr.map((r) => r / maxR);
-  }, [shape, target]);
+    const maxV = Math.max(...hours.map((x) => x.v), 1);
+    return hours.map((x) => ({ ...x, norm: x.v / maxV }));
+  }, [hourRevenue, nowHour]);
 
   return (
     <div className="hist-wrap" aria-hidden>
-      {bars.map((h, i) => (
+      {bars.map((b, i) => (
         <span
           key={i}
           className="hist-bar"
           style={{
-            height: `${5 + h * 95}%`,
-            animationDelay: `${(i % 8) * 0.17}s`,
-            opacity: 0.55 + h * 0.45,
+            height: b.past ? `${5 + b.norm * 95}%` : "6%",
+            opacity: b.past ? 0.4 + b.norm * 0.6 : 0.18,
+            animation: "none",
           }}
         />
       ))}
@@ -399,7 +399,14 @@ export function Hero({ snap }: { snap: Snapshot }) {
           <HeroChart hero={snap.hero} />
         </div>
         <div style={{ padding: "0 10px" }}>
-          <Histogram shape={snap.hero.shape} target={snap.hero.target} />
+          <Histogram
+            hourRevenue={snap.hero.hour_revenue || {}}
+            nowHour={(() => {
+              const d = new Date();
+              const uae = new Date(d.getTime() + (d.getTimezoneOffset() + 240) * 60000);
+              return uae.getHours() + uae.getMinutes() / 60;
+            })()}
+          />
         </div>
         <div style={{ padding: "0 10px" }}>
           <FlowStrip pct={repeat} label="CLIENTS RÉCURRENTS / TOTAL" />

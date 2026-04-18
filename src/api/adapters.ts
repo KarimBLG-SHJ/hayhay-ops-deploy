@@ -521,6 +521,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
         current_ca: Math.round(daily.kpis.revenue),
         target,
         shape: [...actuals, ...forecast],
+        hour_revenue: hourRev,
       };
 
       // Day split from morning/afternoon revenue

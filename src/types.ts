@@ -85,6 +85,8 @@ export interface HeroSnapshot {
   target: number;
   current_ca: number;
   shape: [number, number][];
+  /** Real AED sold per hour, keyed by hour string ("6"…"23"). Drives the actual-only histogram. */
+  hour_revenue?: Record<string, number>;
 }
 
 export interface KpiSnapshot {
