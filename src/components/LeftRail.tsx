@@ -81,35 +81,7 @@ function SignalRadar({ signals }: { signals: SignalItem[] }) {
 
 function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
   const [rows, setRows] = useState<MarketTapeRow[]>(initial);
-  const [flash, setFlash] = useState<Record<number, "up" | "down">>({});
   useEffect(() => setRows(initial), [initial]);
-  useEffect(() => {
-    const i = window.setInterval(() => {
-      setRows((prev) =>
-        prev.map((r, idx) => {
-          if (Math.random() < 0.35) {
-            const add = Math.round((Math.random() - 0.45) * 6);
-            const newActual = Math.max(0, r.actual + add);
-            const mid = (r.range_low + r.range_high) / 2;
-            const newDelta = Math.round(newActual - mid);
-            if ((r.delta >= 0) !== (newDelta >= 0)) {
-              setFlash((f) => ({ ...f, [idx]: newDelta >= 0 ? "up" : "down" }));
-              window.setTimeout(() => {
-                setFlash((f) => {
-                  const n = { ...f };
-                  delete n[idx];
-                  return n;
-                });
-              }, 160);
-            }
-            return { ...r, actual: newActual, delta: newDelta };
-          }
-          return r;
-        }),
-      );
-    }, 1800);
-    return () => window.clearInterval(i);
-  }, []);
 
   return (
     <div className="tile">
@@ -131,7 +103,7 @@ function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
         {rows.map((r, idx) => (
           <div
             key={idx}
-            className={"tape-row clickable" + (flash[idx] ? " flash-" + flash[idx] : "")}
+            className="tape-row clickable"
             onClick={() => goto(`/dashboard/product/${encodeURIComponent(r.product)}`)}
           >
             <span className="tape-name">{r.product}</span>

@@ -40,17 +40,6 @@ function FlowBias({ morningPct }: { morningPct: number }) {
 function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
   const [rows, setRows] = useState<TopVip[]>(initial);
   useEffect(() => setRows(initial), [initial]);
-  useEffect(() => {
-    const i = window.setInterval(() => {
-      setRows((prev) =>
-        prev.map((w) => ({
-          ...w,
-          amt: Math.max(50, w.amt + (Math.random() - 0.35) * 30),
-        })),
-      );
-    }, 3200);
-    return () => window.clearInterval(i);
-  }, []);
   return (
     <div className="tile">
       <TileHead title="TOP VIP · JOUR" meta={`${rows.length} CLIENTS`} />
@@ -267,18 +256,6 @@ function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
 function SectorYield({ rows: initial }: { rows: SectorYieldRow[] }) {
   const [rows, setRows] = useState<SectorYieldRow[]>(initial);
   useEffect(() => setRows(initial), [initial]);
-  useEffect(() => {
-    const i = window.setInterval(() => {
-      setRows((prev) =>
-        prev.map((r) => ({
-          ...r,
-          ca: Math.max(0, r.ca + Math.round((Math.random() - 0.3) * 60)),
-          tx: Math.max(0, r.tx + (Math.random() > 0.6 ? 1 : 0)),
-        })),
-      );
-    }, 3800);
-    return () => window.clearInterval(i);
-  }, []);
   return (
     <div className="tile">
       <TileHead title="CA PAR CATÉGORIE" meta={`${rows.length} CAT.`} />
