@@ -1,14 +1,26 @@
-export const API_ENDPOINTS = {
-  coach: import.meta.env.VITE_COACH_URL ?? "https://worker-production-c3a3.up.railway.app",
-  dashboard: import.meta.env.VITE_DASHBOARD_URL ?? "https://web-production-fbd5f.up.railway.app",
-  contextos: import.meta.env.VITE_CONTEXTOS_URL ?? "https://web-production-19efe.up.railway.app",
-  hub: import.meta.env.VITE_HUB_URL ?? "https://hayhay-hub-production.up.railway.app",
-};
+/**
+ * All API calls are same-origin through the proxy:
+ *   /api/coach/*     → worker-production-c3a3.up.railway.app
+ *   /api/dashboard/* → web-production-fbd5f.up.railway.app
+ *   /api/contextos/* → web-production-19efe.up.railway.app
+ *
+ * In dev, the proxy is Vite (vite.config.ts).
+ * In prod, the proxy is Express (server.js).
+ */
+export const COACH = "/api/coach";
+export const DASHBOARD = "/api/dashboard";
+export const CONTEXTOS = "/api/contextos";
 
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false";
+export const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 
 export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, init);
   if (!res.ok) throw new Error(`${url} → ${res.status}`);
   return res.json() as Promise<T>;
+}
+
+export function todayUAE(): string {
+  const now = new Date();
+  const uae = new Date(now.getTime() + (now.getTimezoneOffset() + 240) * 60000);
+  return `${uae.getFullYear()}-${String(uae.getMonth() + 1).padStart(2, "0")}-${String(uae.getDate()).padStart(2, "0")}`;
 }

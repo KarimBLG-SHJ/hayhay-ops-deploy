@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import type { Snapshot } from "../types";
 import { SNAPSHOT_MOCK } from "../mocks/snapshot.mock";
-import { API_ENDPOINTS, USE_MOCK, fetchJson } from "./client";
+import { USE_MOCK } from "./client";
+import { buildLiveSnapshot } from "./adapters";
 
 async function fetchSnapshot(): Promise<Snapshot> {
   if (USE_MOCK) return SNAPSHOT_MOCK;
-  return fetchJson<Snapshot>(`${API_ENDPOINTS.coach}/api/dashboard/snapshot`);
+  return buildLiveSnapshot();
 }
 
 export function useSnapshot(pollMs: number = 60_000): Snapshot {
