@@ -445,7 +445,7 @@
   border-radius: 6px;
   font-family: 'JetBrains Mono', monospace; font-size: 11px;
 }
-.whale-addr { color: var(--dim); letter-spacing: 0.02em; }
+.whale-addr { color: var(--text); letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 .whale-amt { color: var(--gold); font-weight: 700; }
 .whale-tag { color: var(--dim); font-size: 10px; }
 .whale-tag b { color: var(--text); font-weight: 600; }

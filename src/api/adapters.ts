@@ -358,7 +358,7 @@ function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
 // ---- Dashboard /api/top_customers ----
 interface TopCustomersResponse {
   date: string;
-  customers: { initials: string; amt: number; visits: number; tag: "VIP" | "HOT" | "NEW" }[];
+  customers: { name?: string; initials: string; amt: number; visits: number; tag: "VIP" | "HOT" | "NEW" }[];
 }
 
 async function fetchTopCustomers(date: string): Promise<TopCustomersResponse | null> {
@@ -373,6 +373,7 @@ async function fetchTopCustomers(date: string): Promise<TopCustomersResponse | n
 function topVipsFrom(r: TopCustomersResponse): TopVip[] {
   return (r.customers || []).map((c) => ({
     initials: c.initials,
+    name: c.name,
     amt: Math.round(c.amt),
     visits: c.visits,
     tag: c.tag,

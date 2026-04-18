@@ -44,7 +44,7 @@ function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
     <div className="tile">
       <TileHead
         title="TOP VIP · JOUR"
-        sub="Top 5 clients dine-in/pickup aujourd'hui · tri par CA · visits = cumul all-time"
+        sub="Top 5 clients en boutique/retrait aujourd'hui · AED = dépensé ce jour · N× = visites lifetime"
         meta={`${rows.length} CLIENTS`}
       />
       <div className="whale-list">
@@ -52,10 +52,10 @@ function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
           <div
             key={i}
             className="whale-row clickable"
-            title={`Ouvrir les clients dans Foodics`}
+            title={`${w.name || w.initials} — ouvrir dans Foodics`}
             onClick={() => openUrl(LINKS.foodicsConsole)}
           >
-            <span className="whale-addr">{w.initials}</span>
+            <span className="whale-addr">{w.name || w.initials}</span>
             <span className="whale-amt">
               <CountNumber value={w.amt} format={(v) => String(Math.round(v))} /> AED
             </span>

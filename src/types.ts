@@ -29,6 +29,7 @@ export interface MarketTapeRow {
 
 export interface TopVip {
   initials: string;
+  name?: string;
   amt: number;
   visits: number;
   tag: "VIP" | "HOT" | "NEW";
