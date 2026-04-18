@@ -99,7 +99,10 @@ function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
 
   return (
     <div className="tile">
-      <TileHead title="PRODUITS · LIVE" sub="Batch du jour · fourchette attendue → vendu Foodics" />
+      <TileHead
+        title="TOP 10 PRODUITS · LIVE"
+        sub="Les 10 + vendus aujourd'hui (Foodics) · batch planifié → vendu à la dernière refresh"
+      />
       <div className="tape-list">
         <div
           className="tape-row"
@@ -111,7 +114,7 @@ function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
           }}
         >
           <span>PRODUIT</span>
-          <span>RANGE → RÉEL</span>
+          <span>PLAN → VENDU</span>
           <span style={{ textAlign: "right" }}>Δ</span>
         </div>
         {rows.map((r, idx) => (
@@ -121,13 +124,13 @@ function MarketTape({ rows: initial }: { rows: MarketTapeRow[] }) {
             title={`Voir ${r.product} sur HayHay Dashboard`}
             onClick={() => openUrl(LINKS.hayhayDashboard)}
           >
-            <span className="tape-name">{r.product}</span>
+            <span className="tape-name" title={r.product}>{r.product}</span>
             <span className="tape-range">
-              {r.range_low}-{r.range_high} → <span style={{ color: "var(--text)" }}>{r.actual}</span>
+              {r.range_low > 0 ? `${r.range_low}-${r.range_high}` : "—"} →{" "}
+              <span style={{ color: "var(--text)" }}>{r.actual}</span>
             </span>
-            <span className={"tape-delta " + (r.delta >= 0 ? "up" : "down")}>
-              {r.delta >= 0 ? "+" : ""}
-              {r.delta}
+            <span className={"tape-delta " + (r.delta >= 0 ? "up" : "down")} style={r.range_low === 0 ? { color: "var(--mute)" } : undefined}>
+              {r.range_low === 0 ? "—" : (r.delta >= 0 ? "+" : "") + r.delta}
             </span>
           </div>
         ))}

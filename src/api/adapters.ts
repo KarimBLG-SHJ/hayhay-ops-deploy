@@ -37,6 +37,20 @@ interface DailyResponse {
     afternoon_revenue?: number;
     evening_revenue?: number;
   };
+  top_by_qty?: Array<{
+    product_id: string;
+    name: string;
+    category: string;
+    qty: number;
+    revenue: number;
+  }>;
+  top_products?: Array<{
+    product_id: string;
+    name: string;
+    category: string;
+    qty: number;
+    revenue: number;
+  }>;
 }
 
 async function fetchDaily(date: string): Promise<DailyResponse | null> {
@@ -249,30 +263,55 @@ async function fetchBatch(date: string): Promise<BatchResponse | null> {
   }
 }
 
-function marketTapeFromBatch(b: BatchResponse): MarketTapeRow[] {
-  const list = (b.products || [])
-    .map((x) => {
-      const produced = Math.round(x.batch_qty || 0);
-      const sold = Math.round(x.foodics_reconcile ?? x.sold_qty ?? 0);
-      const opening = Math.round(x.opening || 0);
-      const expected = produced + opening; // total units available today
-      return { product: x.name, produced, sold, expected };
-    })
-    // Only show products that actually had activity today (produced OR sold OR had stock)
-    .filter((r) => r.produced > 0 || r.sold > 0 || r.expected > 0)
-    // Most interesting first: highest produced
-    .sort((a, b) => b.produced - a.produced);
-  return list.slice(0, 8).map((r) => {
-    // Range = expected window around production (±15%). Delta = sold vs mid-point.
-    const low = Math.max(0, Math.round(r.expected * 0.85));
-    const high = Math.round(r.expected * 1.15);
-    const mid = Math.round((low + high) / 2);
-    const delta = r.sold - mid;
+/**
+ * TOP 10 produits vendus en live aujourd'hui (source: /api/daily top_by_qty).
+ * Pour chaque produit, on tente un matching flou sur /api/batch pour afficher
+ * ce qui avait été planifié (batch_qty). Si pas de match → range = "—".
+ *
+ * Le "sold" est le vrai live Foodics (rafraîchi à chaque poll). Le "planned"
+ * vient du batch tracker rempli par l'équipe le matin.
+ */
+function marketTapeFromLive(daily: DailyResponse, batch: BatchResponse | null): MarketTapeRow[] {
+  const topList = daily.top_by_qty || daily.top_products || [];
+  const batchProducts = batch?.products || [];
+
+  // Normalize names for fuzzy matching
+  const norm = (s: string) =>
+    (s || "")
+      .toUpperCase()
+      .replace(/[^A-Z0-9]+/g, " ")
+      .trim();
+
+  const findBatch = (foodicsName: string): BatchProduct | undefined => {
+    const target = norm(foodicsName);
+    if (!target) return undefined;
+    // Exact match first
+    let hit = batchProducts.find((b) => norm(b.name) === target);
+    if (hit) return hit;
+    // Bidirectional substring (both ways, pick longer common prefix)
+    const targetTokens = target.split(" ").filter((t) => t.length > 2);
+    hit = batchProducts.find((b) => {
+      const bn = norm(b.name);
+      if (!bn) return false;
+      return targetTokens.some((t) => bn.includes(t)) && bn.split(" ").some((bt) => target.includes(bt));
+    });
+    return hit;
+  };
+
+  return topList.slice(0, 10).map((t) => {
+    const match = findBatch(t.name);
+    const planned = match ? Math.round((match.batch_qty || 0) + (match.opening || 0)) : 0;
+    const sold = Math.round(t.qty);
+    // Range: if planned > 0, show planned ± 15%. If no planned, show "—".
+    const low = planned > 0 ? Math.max(0, Math.round(planned * 0.85)) : 0;
+    const high = planned > 0 ? Math.round(planned * 1.15) : 0;
+    const mid = planned > 0 ? Math.round((low + high) / 2) : sold;
+    const delta = planned > 0 ? sold - mid : 0;
     return {
-      product: r.product,
+      product: t.name,
       range_low: low,
       range_high: high,
-      actual: r.sold,
+      actual: sold,
       delta,
     };
   });
@@ -604,12 +643,12 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   }
 
   try {
-    if (batch) {
-      const live = marketTapeFromBatch(batch);
+    if (daily) {
+      const live = marketTapeFromLive(daily, batch);
       if (live.length > 0) snap.market_tape = live;
     }
   } catch (e) {
-    console.warn("[adapter:batch]", e);
+    console.warn("[adapter:market_tape]", e);
   }
 
   try {
