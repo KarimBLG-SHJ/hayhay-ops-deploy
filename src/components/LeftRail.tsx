@@ -174,21 +174,6 @@ interface BriefingRow extends AgentBriefing {
 }
 
 function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
-  const [items, setItems] = useState<BriefingRow[]>(() =>
-    initial.map((it, i) => ({ id: Date.now() - i * 60000, ts: Date.now() - i * 12000, ...it })),
-  );
-  useEffect(() => {
-    setItems(initial.map((it, i) => ({ id: Date.now() - i * 60000, ts: Date.now() - i * 12000, ...it })));
-  }, [initial]);
-  useEffect(() => {
-    const i = window.setInterval(() => {
-      if (initial.length === 0) return;
-      const pick = initial[Math.floor(Math.random() * initial.length)];
-      setItems((prev) => [{ id: Date.now(), ts: Date.now(), ...pick }, ...prev].slice(0, 16));
-    }, 5200);
-    return () => window.clearInterval(i);
-  }, [initial]);
-
   const kindClass: Record<AgentCode, string> = {
     FOO: "NEW",
     CLI: "SPREAD",
@@ -200,26 +185,22 @@ function AgentBriefings({ items: initial }: { items: AgentBriefing[] }) {
     CTX: "SPREAD",
     SVR: "NEW",
   };
-  const now = Date.now();
   return (
     <div
       className="tile"
       style={{ display: "flex", flexDirection: "column", flex: "1 1 auto", minHeight: 0 }}
     >
       <TileHead title="AGENT BRIEFINGS" live />
-      <div className="news-list" style={{ flex: "1 1 auto", minHeight: 0, maxHeight: "none" }}>
-        {items.map((it) => {
-          const aged = (now - it.ts) / 1000 > 600;
-          return (
-            <div
-              key={it.id}
-              className={"news-item clickable " + (kindClass[it.agent] || "NEW") + (aged ? " aged" : "")}
-              onClick={() => goto(`/dashboard/agent/${it.agent}`)}
-            >
-              <span className="ntag">{it.agent}:</span> {it.text}
-            </div>
-          );
-        })}
+      <div className="news-list" style={{ flex: "1 1 auto", minHeight: 0, overflowY: "auto" }}>
+        {initial.map((it, idx) => (
+          <div
+            key={idx}
+            className={"news-item clickable " + (kindClass[it.agent] || "NEW")}
+            onClick={() => goto(`/dashboard/agent/${it.agent}`)}
+          >
+            <span className="ntag">{it.agent}:</span> {it.text}
+          </div>
+        ))}
       </div>
     </div>
   );
