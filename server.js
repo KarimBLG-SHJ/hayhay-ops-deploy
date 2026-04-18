@@ -11,6 +11,19 @@ const CONTEXTOS = process.env.CONTEXTOS_URL || "https://web-production-19efe.up.
 
 const app = express();
 
+// Internal ops dashboard — NEVER to be indexed. Header on every response.
+app.use((_req, res, next) => {
+  res.setHeader(
+    "X-Robots-Tag",
+    "noindex, nofollow, noarchive, nosnippet, noimageindex"
+  );
+  next();
+});
+
+app.get("/robots.txt", (_req, res) => {
+  res.type("text/plain").send("User-agent: *\nDisallow: /\n");
+});
+
 const mk = (target, prefix) =>
   createProxyMiddleware({
     target,
