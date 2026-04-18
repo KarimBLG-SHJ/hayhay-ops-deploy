@@ -194,29 +194,34 @@ export function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
         meta="14j"
       />
       <div className="lc-list">
-        {items.map((it, i) => (
-          <div
-            key={i}
-            className="lc-row clickable"
-            title={it.name}
-            onClick={(e) => {
-              e.stopPropagation();
-              openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
-            }}
-          >
-            <span className="lc-name">{it.name}</span>
-            <span className="lc-meta">
-              <span className="lc-delta" style={{ color: "#00FF88" }}>+{it.delta}%</span>
-              <span className="lc-vel">
-                <VelocityBar value={it.delta} max={maxDelta} color="#00FF88" />
+        {items.map((it, i) => {
+          const sum = it.spark.reduce((a, b) => a + b, 0);
+          const peak = Math.max(...it.spark);
+          return (
+            <div
+              key={i}
+              className="lc-row clickable"
+              title={it.name}
+              onClick={(e) => {
+                e.stopPropagation();
+                openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
+              }}
+            >
+              <span className="lc-name">{it.name}</span>
+              <span className="lc-meta">
+                <span className="lc-delta" style={{ color: "#00FF88" }}>+{it.delta}%</span>
+                <span className="lc-vel">
+                  <VelocityBar value={it.delta} max={maxDelta} color="#00FF88" />
+                </span>
+                <span className="lc-extra">Σ {sum}u · pic {peak}</span>
+                <span className="lc-stage" style={{ color: "#00FF88" }}>{it.stage}</span>
               </span>
-              <span className="lc-stage" style={{ color: "#00FF88" }}>{it.stage}</span>
-            </span>
-            <span className="lc-spark">
-              <Sparkline values={it.spark} color="#00FF88" />
-            </span>
-          </div>
-        ))}
+              <span className="lc-spark">
+                <Sparkline values={it.spark} color="#00FF88" />
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -239,27 +244,39 @@ export function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
         meta="30j · actifs"
       />
       <div className="lc-list">
-        {items.map((it, i) => (
-          <div
-            key={i}
-            className="lc-row clickable"
-            title={it.name}
-            onClick={(e) => {
-              e.stopPropagation();
-              openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
-            }}
-          >
-            <span className="lc-name">{it.name}</span>
-            <span className="lc-meta">
-              <span className="lc-delta" style={{ color: "#F59E0B" }}>{it.delta}%</span>
-              <span className="lc-extra">{it.last_sale}</span>
-              <span className="lc-stage" style={{ color: "#F59E0B" }}>{it.stage}</span>
-            </span>
-            <span className="lc-spark">
-              <Sparkline values={it.spark} color="#F59E0B" />
-            </span>
-          </div>
-        ))}
+        {items.map((it, i) => {
+          const sum = it.spark.reduce((a, b) => a + b, 0);
+          const silentTail = (() => {
+            let c = 0;
+            for (let j = it.spark.length - 1; j >= 0; j--) {
+              if (it.spark[j] === 0) c++;
+              else break;
+            }
+            return c;
+          })();
+          return (
+            <div
+              key={i}
+              className="lc-row clickable"
+              title={it.name}
+              onClick={(e) => {
+                e.stopPropagation();
+                openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
+              }}
+            >
+              <span className="lc-name">{it.name}</span>
+              <span className="lc-meta">
+                <span className="lc-delta" style={{ color: "#F59E0B" }}>{it.delta}%</span>
+                <span className="lc-extra">{it.last_sale}</span>
+                <span className="lc-extra">Σ {sum}u · silence {silentTail}j</span>
+                <span className="lc-stage" style={{ color: "#F59E0B" }}>{it.stage}</span>
+              </span>
+              <span className="lc-spark">
+                <Sparkline values={it.spark} color="#F59E0B" />
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
