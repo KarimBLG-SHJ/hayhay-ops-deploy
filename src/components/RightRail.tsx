@@ -4,6 +4,7 @@ import type {
   ChannelMix,
   ContextSnapshot,
   CronQueueItem,
+  LifecycleBreakdown,
   LifecycleItem,
   SectorYieldRow,
   Snapshot,
@@ -346,6 +347,51 @@ function ContextScore({ context }: { context: ContextSnapshot }) {
   );
 }
 
+export function LifecycleCatalog({ breakdown }: { breakdown: LifecycleBreakdown | undefined }) {
+  if (!breakdown) return null;
+  const order = ["active", "new_launch", "declining", "zombie", "one_shot", "discontinued"];
+  const entries = order
+    .filter((k) => (breakdown.by_status[k] || 0) > 0)
+    .map((k) => ({ k, n: breakdown.by_status[k] }));
+  const lifecycleUrl = "https://worker-production-c3a3.up.railway.app/analytics/lifecycle";
+  return (
+    <div
+      className="tile clickable"
+      title="Ouvrir le tableau complet du cycle de vie (224 produits)"
+      onClick={() => window.open(lifecycleUrl, "_blank", "noopener,noreferrer")}
+    >
+      <TileHead
+        title="CYCLE DE VIE CATALOGUE"
+        sub="Breakdown des produits par status · clique pour le tableau complet"
+        meta={`${breakdown.total} prod.`}
+      />
+      <div className="catalog-wrap">
+        <div className="catalog-top">
+          <span className="catalog-total">
+            {breakdown.total}
+            <span className="lab">PRODUITS</span>
+          </span>
+          {breakdown.zombie_count > 0 && (
+            <span style={{ color: "#ff8a8a", fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>
+              ⚠ {breakdown.zombie_count} zombies
+            </span>
+          )}
+        </div>
+        <div className="catalog-chips">
+          {entries.map((e) => (
+            <span key={e.k} className={"catalog-chip " + e.k}>
+              {e.k.replace("_", " ")} · {e.n}
+            </span>
+          ))}
+        </div>
+        <div className="catalog-hint">
+          {breakdown.silent_long} produits sans vente &gt; 30j · fenêtre 30j récents vs 30j précédents
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CronQueue({ queue }: { queue: CronQueueItem[] }) {
   const sideClass: Record<string, string> = { CRON: "BUY", SUPER: "SELL" };
   return (
@@ -377,6 +423,7 @@ export function RightRail({ snap, journal }: { snap: Snapshot; journal: ReactNod
       <WhaleWatch vips={snap.top_vips} />
       <ChannelMixTile mix={snap.channel_mix} />
       {journal}
+      <LifecycleCatalog breakdown={snap.lifecycle_breakdown} />
       <SectorYield rows={snap.sector_yield} />
       <ContextScore context={snap.context} />
       <CronQueue queue={snap.cron_queue} />

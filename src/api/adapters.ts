@@ -291,6 +291,7 @@ interface LifecycleProduct {
   total_qty: number;
   avg_recent_30d: number | null;
   avg_prior_30d: number | null;
+  days_silent?: number;
   daily: [string, number][];
 }
 
@@ -547,6 +548,22 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       const d = lifecycleDeclineFrom(lifecycle);
       if (g.length > 0) snap.lifecycle_growth = g;
       if (d.length > 0) snap.lifecycle_decline = d;
+      // Catalogue breakdown by status
+      const byStatus: Record<string, number> = {};
+      let zombies = 0;
+      let silentLong = 0;
+      for (const p of lifecycle.products) {
+        const s = (p.status || "unknown").toLowerCase();
+        byStatus[s] = (byStatus[s] || 0) + 1;
+        if (s === "zombie") zombies++;
+        if ((p.days_silent ?? 0) > 30) silentLong++;
+      }
+      snap.lifecycle_breakdown = {
+        total: lifecycle.products.length,
+        by_status: byStatus,
+        zombie_count: zombies,
+        silent_long: silentLong,
+      };
     }
   } catch (e) {
     console.warn("[adapter:lifecycle]", e);

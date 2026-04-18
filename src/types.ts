@@ -98,9 +98,17 @@ export interface KpiSnapshot {
   agents_live: { value: number; total: number; uptime_pct: number };
 }
 
+export interface LifecycleBreakdown {
+  total: number;
+  by_status: Record<string, number>;
+  zombie_count: number;
+  silent_long: number;
+}
+
 export interface Snapshot {
   clock_uae_offset_min: number;
   kpis: KpiSnapshot;
+  lifecycle_breakdown?: LifecycleBreakdown;
   hero: HeroSnapshot;
   signal_radar: SignalItem[];
   signal_pool: SignalItem[];

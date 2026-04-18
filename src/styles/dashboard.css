@@ -632,3 +632,37 @@ body.focus-active .focused-hero .hero-chart-wrap { flex: 1 !important; height: a
   .app { grid-template-columns: 260px 1fr 280px; }
   .hero-pnl { font-size: 44px; }
 }
+
+/* ---- Lifecycle Catalogue (status breakdown) ---- */
+.catalog-wrap { padding: 12px 10px 10px; }
+.catalog-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;
+}
+.catalog-total { color: var(--text); font-weight: 700; font-size: 20px; }
+.catalog-total .lab { font-size: 9px; color: var(--dim); letter-spacing: 0.2em; margin-left: 6px; }
+.catalog-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.catalog-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #0a0d0f;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+.catalog-chip.active     { background: #d4a574; }
+.catalog-chip.new_launch { background: #6bcf7f; }
+.catalog-chip.declining  { background: #ffb347; }
+.catalog-chip.zombie     { background: #ff8a8a; }
+.catalog-chip.one_shot   { background: #7cb8ff; }
+.catalog-chip.discontinued { background: #888888; }
+.catalog-chip.unknown    { background: #555; color: #d4dae0; }
+.catalog-hint {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--mute);
+  letter-spacing: 0.04em;
+}
