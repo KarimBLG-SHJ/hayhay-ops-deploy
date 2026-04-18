@@ -272,18 +272,28 @@ function Histogram({ hourRevenue, nowHour }: { hourRevenue: Record<string, numbe
   }, [hourRevenue, nowHour]);
 
   return (
-    <div className="hist-wrap" aria-hidden>
-      {bars.map((b, i) => (
-        <span
-          key={i}
-          className="hist-bar"
-          style={{
-            height: b.past ? `${5 + b.norm * 95}%` : "6%",
-            opacity: b.past ? 0.4 + b.norm * 0.6 : 0.18,
-            animation: "none",
-          }}
-        />
-      ))}
+    <div className="hist-block">
+      <div className="hist-wrap" aria-hidden>
+        {bars.map((b, i) => (
+          <span
+            key={i}
+            className="hist-bar"
+            style={{
+              height: b.past ? `${5 + b.norm * 95}%` : "6%",
+              opacity: b.past ? 0.4 + b.norm * 0.6 : 0.18,
+              animation: "none",
+            }}
+            title={`${String(b.hr).padStart(2, "0")}:00 — ${Math.round(b.v)} AED`}
+          />
+        ))}
+      </div>
+      <div className="hist-axis" aria-hidden>
+        {bars.map((b, i) => (
+          <span key={i} className="hist-tick">
+            {b.hr % 2 === 0 ? String(b.hr).padStart(2, "0") : ""}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
