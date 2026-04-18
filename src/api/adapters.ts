@@ -386,7 +386,7 @@ interface SlackRecentResponse {
 
 async function fetchSlackRecent(): Promise<SlackRecentResponse | null> {
   try {
-    return await fetchJson<SlackRecentResponse>(`${COACH}/slack/recent?limit=40&hours=72`);
+    return await fetchJson<SlackRecentResponse>(`${COACH}/slack/recent?limit=40&hours=168`);
   } catch (e) {
     console.warn("[slack_recent] fetch failed", e);
     return null;
@@ -402,12 +402,15 @@ function severityFromText(text: string): Severity {
 
 function firstLine(text: string): string {
   const trimmed = (text || "").split("\n")[0].trim();
-  // Strip Slack mrkdwn formatting
   return trimmed
     .replace(/<[@#][A-Z0-9]+\|?([^>]*)>/g, "$1")
     .replace(/\*([^*]+)\*/g, "$1")
     .replace(/`([^`]+)`/g, "$1")
-    .slice(0, 80);
+    .replace(/:[a-z_+-]+:/g, "")
+    .replace(/[_~]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 90);
 }
 
 function signalRadarFromSlack(r: SlackRecentResponse): SignalItem[] {
