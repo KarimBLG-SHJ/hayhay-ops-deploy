@@ -363,22 +363,15 @@ async function fetchLifecycle(): Promise<LifecycleResponse | null> {
 }
 
 /**
- * Build a sparkline of the last N CALENDAR days (not the last N sale events).
- * Days with no sale are filled with 0, so the shape reflects the true lifecycle:
- * a product with 14 scattered sales over 6 months will show 14 near-zero points
- * with occasional spikes — not a fake dense trend.
+ * Build a sparkline of the last N CALENDAR days ending at `endIso` (typically
+ * `lifecycle.db_end`, i.e. the last day the daily matrix was refreshed).
+ * Days with no sale are filled with 0 — so a product that hasn't been sold
+ * for 5 days will show 5 trailing zero bars, making the silence visible.
  */
-function sparkFromDaily(daily: [string, number][], n: number = 14): number[] {
+function sparkFromDaily(daily: [string, number][], endIso: string, n: number = 14): number[] {
   const map = new Map<string, number>();
   for (const [date, qty] of daily) map.set(date, Number(qty) || 0);
-  // End point = latest date in the series (not "today" — the report is from db_end).
-  let endDate: Date;
-  if (daily.length > 0) {
-    const last = daily[daily.length - 1][0];
-    endDate = new Date(last + "T00:00:00Z");
-  } else {
-    endDate = new Date();
-  }
+  const endDate = endIso ? new Date(endIso + "T00:00:00Z") : new Date();
   const out: number[] = [];
   for (let i = n - 1; i >= 0; i--) {
     const d = new Date(endDate.getTime() - i * 86400_000);
@@ -409,6 +402,7 @@ function daysSince(isoDate: string): number {
 }
 
 function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
+  const end = r.db_end;
   return r.products
     .filter(
       (p) =>
@@ -424,11 +418,12 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
       name: p.primary,
       delta: Math.round(p.delta_pct ?? 0),
       stage: p.status === "new" ? ("launch" as const) : ("growth" as const),
-      spark: sparkFromDaily(p.daily, 14),
+      spark: sparkFromDaily(p.daily, end, 14),
     }));
 }
 
 function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
+  const end = r.db_end;
   return r.products
     .filter(
       (p) =>
@@ -444,7 +439,7 @@ function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
       delta: Math.round(p.delta_pct ?? 0),
       stage: "decline" as const,
       last_sale: humanRelativeFR(p.last_sale),
-      spark: sparkFromDaily(p.daily, 14),
+      spark: sparkFromDaily(p.daily, end, 14),
     }));
 }
 
