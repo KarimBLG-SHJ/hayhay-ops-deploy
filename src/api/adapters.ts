@@ -5,7 +5,9 @@ import type {
   ContextTag,
   CronQueueItem,
   KpiSnapshot,
+  LifecycleItem,
   MarketTapeRow,
+  SectorYieldRow,
   Snapshot,
   SupervisorSnapshot,
 } from "../types";
@@ -23,6 +25,12 @@ interface DailyResponse {
     channel_revenue: Record<string, number>;
     platform_revenue?: Record<string, number>;
     platform_orders?: Record<string, number>;
+    category_sales?: Record<string, { qty: number; revenue: number }>;
+    hour_revenue?: Record<string, number>;
+    hour_orders?: Record<string, number>;
+    morning_revenue?: number;
+    afternoon_revenue?: number;
+    evening_revenue?: number;
   };
 }
 
@@ -49,6 +57,16 @@ function kpisFromDaily(d: DailyResponse): Partial<KpiSnapshot> {
     orders: { value: d.kpis.orders, delta_vs_yesterday: 0 },
     avg_ticket: { value: Math.round(d.kpis.aov * 10) / 10, currency: "AED" },
   };
+}
+
+function sectorsFromDaily(d: DailyResponse): SectorYieldRow[] {
+  const cats = d.kpis.category_sales || {};
+  const rows = Object.entries(cats)
+    .map(([name, v]) => ({ name: name.toUpperCase(), ca: Math.round(v.revenue), tx: v.qty }))
+    .filter((r) => r.ca > 0)
+    .sort((a, b) => b.ca - a.ca)
+    .slice(0, 5);
+  return rows;
 }
 
 function channelMixFromDaily(d: DailyResponse): ChannelMix {
@@ -248,15 +266,93 @@ function marketTapeFromBatch(b: BatchResponse): MarketTapeRow[] {
   });
 }
 
+// ---- Dashboard /api/lifecycle ----
+interface LifecycleProduct {
+  primary: string;
+  category?: string;
+  is_active: boolean;
+  status: string;
+  trend: string;
+  trend_detail: string;
+  delta_pct: number | null;
+  last_sale: string;
+  total_qty: number;
+  avg_recent_30d: number | null;
+  avg_prior_30d: number | null;
+  daily: [string, number][];
+}
+
+interface LifecycleResponse {
+  generated_at: string;
+  db_end: string;
+  products: LifecycleProduct[];
+}
+
+async function fetchLifecycle(): Promise<LifecycleResponse | null> {
+  try {
+    return await fetchJson<LifecycleResponse>(`${DASHBOARD}/api/lifecycle`);
+  } catch (e) {
+    console.warn("[lifecycle] fetch failed", e);
+    return null;
+  }
+}
+
+function sparkFromDaily(daily: [string, number][], n: number = 14): number[] {
+  const last = daily.slice(-n).map(([, v]) => v);
+  if (last.length >= n) return last;
+  return [...new Array(n - last.length).fill(0), ...last];
+}
+
+function humanRelativeFR(isoDate: string): string {
+  const today = new Date();
+  const uae = new Date(today.getTime() + (today.getTimezoneOffset() + 240) * 60000);
+  const dayMs = 86400_000;
+  const target = new Date(isoDate + "T00:00:00Z");
+  const days = Math.floor((uae.getTime() - target.getTime()) / dayMs);
+  if (days <= 0) return "aujourd'hui";
+  if (days === 1) return "il y a 1j";
+  if (days < 30) return `il y a ${days}j`;
+  const months = Math.floor(days / 30);
+  return months === 1 ? "il y a 1 mois" : `il y a ${months} mois`;
+}
+
+function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
+  return r.products
+    .filter((p) => p.is_active && p.delta_pct !== null && p.delta_pct > 0 && p.total_qty > 20)
+    .sort((a, b) => (b.delta_pct ?? 0) - (a.delta_pct ?? 0))
+    .slice(0, 5)
+    .map((p) => ({
+      name: p.primary,
+      delta: Math.round(p.delta_pct ?? 0),
+      stage: p.status === "new" ? ("launch" as const) : ("growth" as const),
+      spark: sparkFromDaily(p.daily, 14),
+    }));
+}
+
+function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
+  return r.products
+    .filter((p) => p.is_active && p.delta_pct !== null && p.delta_pct < -10)
+    .sort((a, b) => (a.delta_pct ?? 0) - (b.delta_pct ?? 0))
+    .slice(0, 5)
+    .map((p) => ({
+      name: p.primary,
+      delta: Math.round(p.delta_pct ?? 0),
+      stage: "decline" as const,
+      last_sale: humanRelativeFR(p.last_sale),
+      spark: sparkFromDaily(p.daily, 14),
+    }));
+}
+
 // ---- Aggregator ----
 // Each adapter runs in its own try/catch so one failure never poisons the rest.
 export async function buildLiveSnapshot(): Promise<Snapshot> {
   const date = todayUAE();
-  const [daily, cronStatus, forecast, batch] = await Promise.all([
+  const [daily, cronStatus, forecast, batch, lifecycle] = await Promise.all([
     fetchDaily(date),
     fetchCronStatus(),
     fetchForecast(),
     fetchBatch(date),
+    fetchLifecycle(),
   ]);
 
   const snap: Snapshot = { ...SNAPSHOT_MOCK };
@@ -270,28 +366,72 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
         waste_pct: snap.kpis.waste_pct,
         agents_live: snap.kpis.agents_live,
       } as KpiSnapshot;
-      // Target inferred: 11k AED is Karim's baseline target (per design). Adjust if current_ca implies a higher day.
+      // Target inferred: 11k AED is Karim's baseline target. Adjust up if current_ca implies higher day.
       const target = Math.max(11000, Math.round((daily.kpis.revenue / 0.4) / 500) * 500);
       const now = new Date();
       const uae = new Date(now.getTime() + (now.getTimezoneOffset() + 240) * 60000);
       const nowHour = uae.getHours() + uae.getMinutes() / 60;
-      // Rescale the mock shape so the value AT now_hour equals current_ca.
-      // This keeps the "bakery rush" curve shape but lands the dot at the real revenue.
-      const baseShape = SNAPSHOT_MOCK.hero.shape;
-      const raw = baseShape.find((p) => p[0] >= nowHour)?.[1] ?? baseShape[0][1];
-      const factor = daily.kpis.revenue > 0 && raw > 0 ? daily.kpis.revenue / target / raw : 1;
-      const scaledShape = baseShape.map(([h, v]) => [h, Math.min(1, v * factor)] as [number, number]);
+
+      // Build hero shape from REAL hourly revenue + mock shape as forecast beyond now.
+      const startHour = 6;
+      const endHour = 20;
+      const hourRev = daily.kpis.hour_revenue || {};
+      let cumul = 0;
+      const actuals: [number, number][] = [[startHour, 0]];
+      for (let h = startHour; h <= Math.ceil(nowHour); h++) {
+        cumul += Number(hourRev[String(h)] || 0);
+        actuals.push([h, Math.min(1, cumul / target)]);
+      }
+      // Ensure we land the last actual point at current_ca / target
+      const actualFracNow = daily.kpis.revenue / target;
+      actuals.push([nowHour, Math.min(1, actualFracNow)]);
+
+      // Forecast: scale mock shape after nowHour so it extends from current point toward 1.0 by endHour
+      const mockShape = SNAPSHOT_MOCK.hero.shape;
+      const mockAtNow = mockShape.find((p) => p[0] >= nowHour)?.[1] ?? actualFracNow;
+      const remainingFrac = 1 - actualFracNow;
+      const mockRemaining = 1 - mockAtNow;
+      const forecastScale = mockRemaining > 0 ? remainingFrac / mockRemaining : 1;
+      const forecast: [number, number][] = mockShape
+        .filter((p) => p[0] > nowHour)
+        .map(([h, v]) => [h, Math.min(1, actualFracNow + (v - mockAtNow) * forecastScale)]);
+      if (!forecast.some((p) => p[0] === endHour)) forecast.push([endHour, 1]);
+
       snap.hero = {
         ...snap.hero,
         now_hour: nowHour,
+        start_hour: startHour,
+        end_hour: endHour,
         current_ca: Math.round(daily.kpis.revenue),
         target,
-        shape: scaledShape,
+        shape: [...actuals, ...forecast],
       };
+
+      // Day split from morning/afternoon revenue
+      const morning = daily.kpis.morning_revenue ?? 0;
+      const afternoon = daily.kpis.afternoon_revenue ?? 0;
+      const evening = daily.kpis.evening_revenue ?? 0;
+      const dayTotal = morning + afternoon + evening;
+      if (dayTotal > 0) {
+        snap.day_split_pct = Math.round((morning / dayTotal) * 100);
+      }
       snap.channel_mix = channelMixFromDaily(daily);
+      const liveSectors = sectorsFromDaily(daily);
+      if (liveSectors.length > 0) snap.sector_yield = liveSectors;
     }
   } catch (e) {
     console.warn("[adapter:daily]", e);
+  }
+
+  try {
+    if (lifecycle) {
+      const g = lifecycleGrowthFrom(lifecycle);
+      const d = lifecycleDeclineFrom(lifecycle);
+      if (g.length > 0) snap.lifecycle_growth = g;
+      if (d.length > 0) snap.lifecycle_decline = d;
+    }
+  } catch (e) {
+    console.warn("[adapter:lifecycle]", e);
   }
 
   try {

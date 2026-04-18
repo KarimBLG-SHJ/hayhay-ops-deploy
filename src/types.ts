@@ -112,6 +112,7 @@ export interface Snapshot {
   cron_queue: CronQueueItem[];
   supervisor: SupervisorSnapshot;
   ticker: TickerItem[];
+  day_split_pct?: number;
 }
 
 export interface StreamEvent {

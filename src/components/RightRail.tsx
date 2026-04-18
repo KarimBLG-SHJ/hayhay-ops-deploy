@@ -39,6 +39,7 @@ function FlowBias({ morningPct }: { morningPct: number }) {
 
 function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
   const [rows, setRows] = useState<TopVip[]>(initial);
+  useEffect(() => setRows(initial), [initial]);
   useEffect(() => {
     const i = window.setInterval(() => {
       setRows((prev) =>
@@ -265,6 +266,7 @@ function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
 
 function SectorYield({ rows: initial }: { rows: SectorYieldRow[] }) {
   const [rows, setRows] = useState<SectorYieldRow[]>(initial);
+  useEffect(() => setRows(initial), [initial]);
   useEffect(() => {
     const i = window.setInterval(() => {
       setRows((prev) =>
@@ -378,7 +380,7 @@ function CronQueue({ queue }: { queue: CronQueueItem[] }) {
 }
 
 export function RightRail({ snap }: { snap: Snapshot }) {
-  const morningPct = 58;
+  const morningPct = snap.day_split_pct ?? 58;
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: 0, overflow: "auto" }}>
       <FlowBias morningPct={morningPct} />
