@@ -22,28 +22,30 @@ VITE_CONTEXTOS_URL=https://web-production-19efe.up.railway.app
 VITE_HUB_URL=https://hayhay-hub-production.up.railway.app
 ```
 
-## Backend endpoints needed (not yet implemented)
+## Backend endpoints consumed (all live)
 
-The dashboard is currently served by mock data. To make it live, these endpoints must be added to `coach-telegram-bot` (aggregator) and `hayhay-dashboard-deploy` (fine-grained data):
+Every tile on the dashboard is wired to a real Railway endpoint via `src/api/adapters.ts`. Each adapter is independently try/catch'd — one source failing never poisons the snapshot.
 
-| Endpoint | Owner | Purpose |
+| Tile | Endpoint | Owner |
 |---|---|---|
-| `GET /api/dashboard/snapshot` | coach | One-shot aggregator returning full `Snapshot` type |
-| `GET /api/stream` (SSE) | coach | Real-time push for Signal Radar + Ticker |
-| `GET /api/hourly?date=YYYY-MM-DD` | dashboard-deploy | Cumulative AED per hour 06→20h for hero curve |
-| `GET /slack/recent?channels=...&limit=50` | coach | Slack `conversations.history` wrapper for radar/briefings/ticker |
-| `GET /api/top_customers?date=YYYY-MM-DD` | dashboard-deploy | Day's top VIPs (initials, amt, visits, tag) |
-| `GET /api/sectors?date=YYYY-MM-DD` | dashboard-deploy | CA aggregated by category |
-| `GET /api/lifecycle?stage=growth|decline&limit=5` | dashboard-deploy | Product momentum (delta %, last_sale, spark) |
+| KPIs (CA, orders, AOV) | `GET /api/daily?date=…` | dashboard-deploy |
+| Hero cumulative curve (06→20h) | `GET /api/daily` → `kpis.hour_revenue` | dashboard-deploy |
+| Day Split (morning / afternoon) | `GET /api/daily` → `kpis.{morning,afternoon,evening}_revenue` | dashboard-deploy |
+| Channel Mix (POS/Talabat/Shop/Keeta) | `GET /api/daily` → `kpis.channel_revenue` + `platform_revenue` | dashboard-deploy |
+| Sector Yield (CA par catégorie) | `GET /api/daily` → `kpis.category_sales` | dashboard-deploy |
+| Market Tape (Produits Live) | `GET /api/batch?date=…` | dashboard-deploy |
+| Top VIP · Jour | `GET /api/top_customers?date=…&limit=5` | dashboard-deploy |
+| Lifecycle Growth / Decline (Top 5) | `GET /api/lifecycle` | dashboard-deploy |
+| Cron Queue + Agents live | `GET /cron/status` | coach |
+| Context Score | `GET /forecast/daily?horizon_days=1` | contextos |
+| Signal Radar + Agent Briefings + Ticker | `GET /slack/recent?limit=40&hours=168` | coach |
 
-Existing endpoints that are already live and can be adapted directly:
+Channel remap: `/api/daily` returns `In-Shop / Delivery` with sub-platforms `Talabat / Noon / Keeta`. Adapter maps `In-Shop → POS`, `Talabat → Talabat`, `Noon → Shop`, `Keeta → Keeta`.
 
-- `GET /cron/status` (coach) → Cron Queue
-- `GET /slack/channels` (coach) → Supervisor uptime
-- `GET /api/daily?date=...` (dashboard-deploy) → KPIs + Channel Mix (needs channel remap: In-Shop/Delivery → POS/Talabat/Shop/Keeta)
-- `GET /api/batch?date=...` (dashboard-deploy) → Market Tape
-- `GET /forecast/daily?horizon_days=1` (contextos) → Context Score (multiply `context_score_avg × 100`)
-- `GET /events?limit=10` (contextos) → Queue
+## Still to come (Phase D, optional)
+
+- `GET /api/dashboard/snapshot` on coach — one-shot aggregator to replace the per-source fan-out (reduces round-trips from 7 to 1).
+- SSE `GET /api/stream` on coach — push new signals in real-time instead of 60s polling. `src/api/useStream.ts` is a no-op in live mode today; the 60s snapshot poll refreshes the radar.
 
 ## Scripts
 
