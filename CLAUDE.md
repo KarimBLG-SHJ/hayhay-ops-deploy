@@ -56,7 +56,20 @@ npm start         # serve -s dist → production static (used by Railway)
 
 ## Railway
 
-Deployed via `Dockerfile` (multi-stage: node-alpine build then `serve` runtime). `railway.json` pins the Dockerfile builder. Prod URL: **TBD** (to add once deployed).
+- **Prod URL:** https://hayhay-ops-production.up.railway.app
+- **Project:** `hayhay-ops` on workspace `kemilall's Projects`
+- **Health:** `GET /healthz` → `{ok: true, ts: <epoch>}`
+- **GitHub:** https://github.com/KarimBLG-SHJ/hayhay-ops-deploy
+
+Deployed via `Dockerfile` (multi-stage: node-alpine build then Express runtime). `railway.json` pins the Dockerfile builder. `server.js` serves `dist/` as static + proxies `/api/coach/*`, `/api/dashboard/*`, `/api/contextos/*` to their Railway services — single-origin = zero CORS.
+
+Env vars available to override the proxy targets:
+- `COACH_URL` (default `https://worker-production-c3a3.up.railway.app`)
+- `DASHBOARD_URL` (default `https://web-production-fbd5f.up.railway.app`)
+- `CONTEXTOS_URL` (default `https://web-production-19efe.up.railway.app`)
+- `PORT` (set by Railway)
+
+To redeploy after code changes: `git push` from this repo (Railway auto-deploys via GitHub) or `railway up --detach` from this folder.
 
 ## Routes (planned, not yet wired)
 
