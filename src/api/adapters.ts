@@ -424,18 +424,28 @@ function signalRadarFromSlack(r: SlackRecentResponse): SignalItem[] {
     .filter((s) => s.text.length > 0);
 }
 
+function dedupeByText<T extends { text: string }>(arr: T[]): T[] {
+  const seen = new Set<string>();
+  const out: T[] = [];
+  for (const x of arr) {
+    const k = x.text.toLowerCase().trim();
+    if (k.length === 0 || seen.has(k)) continue;
+    seen.add(k);
+    out.push(x);
+  }
+  return out;
+}
+
 function agentBriefingsFromSlack(r: SlackRecentResponse): AgentBriefing[] {
-  return r.messages
-    .slice(0, 14)
-    .map((m) => ({ agent: m.agent, text: firstLine(m.text) }))
-    .filter((b) => b.text.length > 0);
+  return dedupeByText(
+    r.messages.map((m) => ({ agent: m.agent, text: firstLine(m.text) })).filter((b) => b.text.length > 0),
+  ).slice(0, 14);
 }
 
 function tickerFromSlack(r: SlackRecentResponse): TickerItem[] {
-  return r.messages
-    .slice(0, 18)
-    .map((m) => ({ agent: m.agent, text: firstLine(m.text) }))
-    .filter((t) => t.text.length > 0);
+  return dedupeByText(
+    r.messages.map((m) => ({ agent: m.agent, text: firstLine(m.text) })).filter((t) => t.text.length > 0),
+  ).slice(0, 18);
 }
 
 // ---- Aggregator ----

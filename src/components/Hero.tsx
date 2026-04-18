@@ -296,49 +296,43 @@ function FlowStrip({ pct, label }: { pct: number; label: string }) {
 }
 
 function EventLog({ pool }: { pool: AgentBriefing[] }) {
-  const mkRow = (): string[] => {
-    const p = pool[Math.floor(Math.random() * pool.length)];
-    const verbs = ["EXEC", "SWAP", "XFER"];
-    const verb = verbs[Math.floor(Math.random() * verbs.length)];
-    const tid = Math.floor(Math.random() * 9999)
-      .toString()
-      .padStart(4, "0");
-    return ["ENTRY", `${p.agent} · ${p.text.slice(0, 28)}…`, "EXEC", `#${tid}`, verb, "→ Slack"];
+  // Deterministic rendering of whatever briefings are in the snapshot.
+  // No synthetic rows — what you see here is exactly what Slack + cron reported.
+  const verbForAgent = (a: string): string => {
+    if (a === "FOO" || a === "BKR") return "EXEC";
+    if (a === "CLI" || a === "CTX") return "SWAP";
+    if (a === "SUP" || a === "PRD") return "XFER";
+    return "EXEC";
   };
-  const [rows, setRows] = useState<{ id: number; cells: string[] }[]>(() =>
-    Array.from({ length: 12 }, (_, i) => ({ id: i, cells: mkRow() })),
-  );
-  useEffect(() => {
-    const i = window.setInterval(() => {
-      setRows((prev) => [{ id: Date.now(), cells: mkRow() }, ...prev].slice(0, 14));
-    }, 3400);
-    return () => window.clearInterval(i);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <div className="exec-wrap" style={{ flex: "1 1 auto", minHeight: 0, display: "flex", flexDirection: "column" }}>
       <div className="exec-head">
         <span className="exec-title">JOURNAL D'ÉVÉNEMENTS</span>
         <span className="exec-title" style={{ color: "var(--gold)" }}>
-          · {rows.length} récents
+          · {pool.length} récents
         </span>
       </div>
-      <div className="exec-body" style={{ flex: "1 1 auto", overflow: "hidden" }}>
-        {rows.map((r) => (
-          <div key={r.id} className="exec-row">
-            {r.cells.map((c, i) =>
-              i % 2 === 0 ? (
-                <span key={i} className={"exec-tag " + c}>
-                  {c}
-                </span>
-              ) : (
-                <span key={i} className="exec-val">
-                  {c}
-                </span>
-              ),
-            )}
-          </div>
-        ))}
+      <div className="exec-body" style={{ flex: "1 1 auto", overflowY: "auto" }}>
+        {pool.map((it, idx) => {
+          const tid = String(idx + 1).padStart(4, "0");
+          const verb = verbForAgent(it.agent);
+          const cells = ["ENTRY", `${it.agent} · ${it.text.slice(0, 48)}`, "EXEC", `#${tid}`, verb, "→ Slack"];
+          return (
+            <div key={idx} className="exec-row">
+              {cells.map((c, i) =>
+                i % 2 === 0 ? (
+                  <span key={i} className={"exec-tag " + c}>
+                    {c}
+                  </span>
+                ) : (
+                  <span key={i} className="exec-val">
+                    {c}
+                  </span>
+                ),
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
