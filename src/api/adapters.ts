@@ -223,22 +223,21 @@ function contextFromForecast(f: ForecastRow, nSignals: number): ContextSnapshot 
 }
 
 // ---- Dashboard /api/batch ----
+interface BatchProduct {
+  name: string;
+  batch_qty?: number;
+  opening?: number;
+  evening_balance?: number;
+  sold_qty?: number;
+  foodics_reconcile?: number;
+  waste_qty?: number;
+  sell_through_pct?: number;
+}
+
 interface BatchResponse {
   date: string;
-  batches?: Array<{
-    product: string;
-    produced: number;
-    opening_stock?: number;
-    evening_stock?: number;
-    foodics_sold?: number;
-  }>;
-  products?: Array<{
-    name: string;
-    produced?: number;
-    foodics?: number;
-    opening?: number;
-    evening?: number;
-  }>;
+  available?: boolean;
+  products?: BatchProduct[];
 }
 
 async function fetchBatch(date: string): Promise<BatchResponse | null> {
@@ -251,23 +250,24 @@ async function fetchBatch(date: string): Promise<BatchResponse | null> {
 }
 
 function marketTapeFromBatch(b: BatchResponse): MarketTapeRow[] {
-  // Try both shapes (batches or products)
-  const list =
-    b.batches?.map((x) => ({
-      product: x.product,
-      produced: x.produced,
-      sold: x.foodics_sold ?? 0,
-    })) ||
-    b.products?.map((x) => ({
-      product: x.name,
-      produced: x.produced ?? 0,
-      sold: x.foodics ?? 0,
-    })) ||
-    [];
+  const list = (b.products || [])
+    .map((x) => {
+      const produced = Math.round(x.batch_qty || 0);
+      const sold = Math.round(x.foodics_reconcile ?? x.sold_qty ?? 0);
+      const opening = Math.round(x.opening || 0);
+      const expected = produced + opening; // total units available today
+      return { product: x.name, produced, sold, expected };
+    })
+    // Only show products that actually had activity today (produced OR sold OR had stock)
+    .filter((r) => r.produced > 0 || r.sold > 0 || r.expected > 0)
+    // Most interesting first: highest produced
+    .sort((a, b) => b.produced - a.produced);
   return list.slice(0, 8).map((r) => {
-    const low = Math.max(0, Math.round(r.produced * 0.85));
-    const high = Math.round(r.produced * 1.15);
-    const delta = r.sold - Math.round((low + high) / 2);
+    // Range = expected window around production (±15%). Delta = sold vs mid-point.
+    const low = Math.max(0, Math.round(r.expected * 0.85));
+    const high = Math.round(r.expected * 1.15);
+    const mid = Math.round((low + high) / 2);
+    const delta = r.sold - mid;
     return {
       product: r.product,
       range_low: low,
