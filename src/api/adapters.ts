@@ -1,5 +1,6 @@
 import type {
   AgentBriefing,
+  AgentCode,
   ChannelMix,
   ContextSnapshot,
   ContextTag,
@@ -8,8 +9,12 @@ import type {
   LifecycleItem,
   MarketTapeRow,
   SectorYieldRow,
+  Severity,
+  SignalItem,
   Snapshot,
   SupervisorSnapshot,
+  TickerItem,
+  TopVip,
 } from "../types";
 import { SNAPSHOT_MOCK } from "../mocks/snapshot.mock";
 import { COACH, CONTEXTOS, DASHBOARD, fetchJson, todayUAE } from "./client";
@@ -343,16 +348,105 @@ function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
     }));
 }
 
+// ---- Dashboard /api/top_customers ----
+interface TopCustomersResponse {
+  date: string;
+  customers: { initials: string; amt: number; visits: number; tag: "VIP" | "HOT" | "NEW" }[];
+}
+
+async function fetchTopCustomers(date: string): Promise<TopCustomersResponse | null> {
+  try {
+    return await fetchJson<TopCustomersResponse>(`${DASHBOARD}/api/top_customers?date=${date}&limit=5`);
+  } catch (e) {
+    console.warn("[top_customers] fetch failed", e);
+    return null;
+  }
+}
+
+function topVipsFrom(r: TopCustomersResponse): TopVip[] {
+  return (r.customers || []).map((c) => ({
+    initials: c.initials,
+    amt: Math.round(c.amt),
+    visits: c.visits,
+    tag: c.tag,
+  }));
+}
+
+// ---- Coach /slack/recent ----
+interface SlackMessage {
+  agent: AgentCode;
+  channel: string;
+  text: string;
+  ts: string;
+}
+
+interface SlackRecentResponse {
+  messages: SlackMessage[];
+}
+
+async function fetchSlackRecent(): Promise<SlackRecentResponse | null> {
+  try {
+    return await fetchJson<SlackRecentResponse>(`${COACH}/slack/recent?limit=40&hours=72`);
+  } catch (e) {
+    console.warn("[slack_recent] fetch failed", e);
+    return null;
+  }
+}
+
+function severityFromText(text: string): Severity {
+  const lower = text.toLowerCase();
+  if (/alerte|warning|error|⚠|fail|ko|down|risk|churn/.test(lower)) return "warn";
+  if (/ok|ready|done|deploy|publié|✅|success/.test(lower)) return "good";
+  return "info";
+}
+
+function firstLine(text: string): string {
+  const trimmed = (text || "").split("\n")[0].trim();
+  // Strip Slack mrkdwn formatting
+  return trimmed
+    .replace(/<[@#][A-Z0-9]+\|?([^>]*)>/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .slice(0, 80);
+}
+
+function signalRadarFromSlack(r: SlackRecentResponse): SignalItem[] {
+  return r.messages
+    .slice(0, 6)
+    .map((m) => ({
+      agent: m.agent,
+      text: firstLine(m.text),
+      sev: severityFromText(m.text),
+    }))
+    .filter((s) => s.text.length > 0);
+}
+
+function agentBriefingsFromSlack(r: SlackRecentResponse): AgentBriefing[] {
+  return r.messages
+    .slice(0, 14)
+    .map((m) => ({ agent: m.agent, text: firstLine(m.text) }))
+    .filter((b) => b.text.length > 0);
+}
+
+function tickerFromSlack(r: SlackRecentResponse): TickerItem[] {
+  return r.messages
+    .slice(0, 18)
+    .map((m) => ({ agent: m.agent, text: firstLine(m.text) }))
+    .filter((t) => t.text.length > 0);
+}
+
 // ---- Aggregator ----
 // Each adapter runs in its own try/catch so one failure never poisons the rest.
 export async function buildLiveSnapshot(): Promise<Snapshot> {
   const date = todayUAE();
-  const [daily, cronStatus, forecast, batch, lifecycle] = await Promise.all([
+  const [daily, cronStatus, forecast, batch, lifecycle, topCustomers, slackRecent] = await Promise.all([
     fetchDaily(date),
     fetchCronStatus(),
     fetchForecast(),
     fetchBatch(date),
     fetchLifecycle(),
+    fetchTopCustomers(date),
+    fetchSlackRecent(),
   ]);
 
   const snap: Snapshot = { ...SNAPSHOT_MOCK };
@@ -472,6 +566,27 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
     }
   } catch (e) {
     console.warn("[adapter:batch]", e);
+  }
+
+  try {
+    if (topCustomers && topCustomers.customers?.length > 0) {
+      snap.top_vips = topVipsFrom(topCustomers);
+    }
+  } catch (e) {
+    console.warn("[adapter:top_customers]", e);
+  }
+
+  try {
+    if (slackRecent && slackRecent.messages?.length > 0) {
+      const sig = signalRadarFromSlack(slackRecent);
+      if (sig.length > 0) snap.signal_radar = sig;
+      const brf = agentBriefingsFromSlack(slackRecent);
+      if (brf.length > 0) snap.agent_briefings = brf;
+      const tk = tickerFromSlack(slackRecent);
+      if (tk.length > 0) snap.ticker = tk;
+    }
+  } catch (e) {
+    console.warn("[adapter:slack_recent]", e);
   }
 
   return snap;
