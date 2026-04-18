@@ -383,7 +383,7 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
         p.delta_pct !== null &&
         p.delta_pct > 0 &&
         p.total_qty > 20 &&
-        daysSince(p.last_sale) <= 7,
+        daysSince(p.last_sale) < 7,
     )
     .sort((a, b) => (b.delta_pct ?? 0) - (a.delta_pct ?? 0))
     .slice(0, 5)
@@ -402,7 +402,7 @@ function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
         p.is_active &&
         p.delta_pct !== null &&
         p.delta_pct < -10 &&
-        daysSince(p.last_sale) <= 7,
+        daysSince(p.last_sale) < 7,
     )
     .sort((a, b) => (a.delta_pct ?? 0) - (b.delta_pct ?? 0))
     .slice(0, 5)
