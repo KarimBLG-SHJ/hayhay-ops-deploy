@@ -349,10 +349,30 @@ async function fetchLifecycle(): Promise<LifecycleResponse | null> {
   }
 }
 
+/**
+ * Build a sparkline of the last N CALENDAR days (not the last N sale events).
+ * Days with no sale are filled with 0, so the shape reflects the true lifecycle:
+ * a product with 14 scattered sales over 6 months will show 14 near-zero points
+ * with occasional spikes — not a fake dense trend.
+ */
 function sparkFromDaily(daily: [string, number][], n: number = 14): number[] {
-  const last = daily.slice(-n).map(([, v]) => v);
-  if (last.length >= n) return last;
-  return [...new Array(n - last.length).fill(0), ...last];
+  const map = new Map<string, number>();
+  for (const [date, qty] of daily) map.set(date, Number(qty) || 0);
+  // End point = latest date in the series (not "today" — the report is from db_end).
+  let endDate: Date;
+  if (daily.length > 0) {
+    const last = daily[daily.length - 1][0];
+    endDate = new Date(last + "T00:00:00Z");
+  } else {
+    endDate = new Date();
+  }
+  const out: number[] = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const d = new Date(endDate.getTime() - i * 86400_000);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+    out.push(map.get(key) || 0);
+  }
+  return out;
 }
 
 function humanRelativeFR(isoDate: string): string {

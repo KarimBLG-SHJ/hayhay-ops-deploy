@@ -179,7 +179,11 @@ function VelocityBar({ value, max, color }: { value: number; max: number; color:
 export function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
   const maxDelta = Math.max(...items.map((it) => it.delta));
   return (
-    <div className="tile clickable" title="Ouvrir la lifecycle complète (JSON)" onClick={() => openUrl(LINKS.hayhayDashboard + "/api/lifecycle")}>
+    <div
+      className="tile clickable"
+      title="Ouvrir le tableau complet du cycle de vie (224 produits)"
+      onClick={() => openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle")}
+    >
       <TileHead
         title={
           <>
@@ -197,7 +201,7 @@ export function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
             title={it.name}
             onClick={(e) => {
               e.stopPropagation();
-              openUrl(LINKS.hayhayDashboard);
+              openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
             }}
           >
             <span className="lc-name">{it.name}</span>
@@ -220,7 +224,11 @@ export function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
 
 export function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
   return (
-    <div className="tile clickable" title="Ouvrir la lifecycle complète (JSON)" onClick={() => openUrl(LINKS.hayhayDashboard + "/api/lifecycle")}>
+    <div
+      className="tile clickable"
+      title="Ouvrir le tableau complet du cycle de vie (224 produits)"
+      onClick={() => openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle")}
+    >
       <TileHead
         title={
           <>
@@ -238,7 +246,7 @@ export function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
             title={it.name}
             onClick={(e) => {
               e.stopPropagation();
-              openUrl(LINKS.hayhayDashboard);
+              openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
             }}
           >
             <span className="lc-name">{it.name}</span>

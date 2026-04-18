@@ -154,6 +154,7 @@ export const LINKS = {
   hayhayDashboard: "https://web-production-fbd5f.up.railway.app",
   contextOsDashboard: "https://web-production-19efe.up.railway.app/dashboard",
   coachStatus: "https://worker-production-c3a3.up.railway.app/cron/status",
+  lifecycleReport: "https://worker-production-c3a3.up.railway.app/analytics/lifecycle",
   foodicsConsole: "https://console.foodics.com",
   slackWorkspace: "https://app.slack.com/client/T08R2L4PC7U",
   slackChannel: (name: string) => `https://karimos.slack.com/channels/${name.replace(/^#/, "")}`,
