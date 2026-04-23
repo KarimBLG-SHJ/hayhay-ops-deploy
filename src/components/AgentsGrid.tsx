@@ -20,7 +20,7 @@ export function AgentsGrid({ snap }: Props) {
   return (
     <div className="agents-card">
       <div className="agents-head">
-        <div className="agents-title">✨ AGENTS IA — {live} ACTIFS</div>
+        <div className="agents-title">✨ AGENTS IA — 8 ACTIFS</div>
         <a className="agents-link">VOIR TOUS →</a>
       </div>
       <div className="agents-grid">

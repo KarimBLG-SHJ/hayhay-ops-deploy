@@ -628,7 +628,7 @@
   border-radius: 14px;
   object-fit: cover;
   background-color: var(--bg-2);
-  position: relative;
+  display: block;
 }
 .star-name {
   font-family: 'Nunito', sans-serif;

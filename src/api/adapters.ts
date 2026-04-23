@@ -335,14 +335,15 @@ interface LifecycleProduct {
   primary: string;
   category?: string;
   is_active: boolean;
-  status: string;
-  trend: string;
-  trend_detail: string;
+  status?: string;
+  phase?: string;
+  trend: string;          // '++' | '+' | '=' | '-' | '--' | '·'
+  trend_detail: string;   // e.g. "+116% (1.4 → 3.0 u/j)"
   delta_pct: number | null;
   last_sale: string;
   total_qty: number;
-  avg_recent_30d: number | null;
-  avg_prior_30d: number | null;
+  avg_recent_30d?: number | null;
+  avg_prior_30d?: number | null;
   days_silent?: number;
   daily: [string, number][];
 }
@@ -401,42 +402,51 @@ function daysSince(isoDate: string): number {
   return Math.max(0, Math.floor((uae.getTime() - target.getTime()) / 86400_000));
 }
 
+/** Parse "+116% (1.4 → 3.0 u/j)" → 116. Returns null if not parseable. */
+function parseTrendDelta(detail: string): number | null {
+  const m = detail.match(/([+-]?\d+(?:\.\d+)?)%/);
+  return m ? Math.round(parseFloat(m[1])) : null;
+}
+
 function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
   const end = r.db_end;
+  const DEAD = new Set(["discontinued", "zombie"]);
   return r.products
     .filter(
       (p) =>
         p.is_active &&
-        p.delta_pct !== null &&
-        p.delta_pct > 0 &&
-        p.total_qty > 20 &&
-        daysSince(p.last_sale) < 7,
+        (p.trend === "++" || p.trend === "+") &&
+        (p.days_silent ?? 999) < 7 &&
+        !DEAD.has(p.phase ?? p.status ?? ""),
     )
-    .sort((a, b) => (b.delta_pct ?? 0) - (a.delta_pct ?? 0))
+    .map((p) => ({ p, delta: parseTrendDelta(p.trend_detail) ?? 0 }))
+    .sort((a, b) => b.delta - a.delta)
     .slice(0, 5)
-    .map((p) => ({
+    .map(({ p, delta }) => ({
       name: p.primary,
-      delta: Math.round(p.delta_pct ?? 0),
-      stage: p.status === "new" ? ("launch" as const) : ("growth" as const),
+      delta,
+      stage: (p.phase === "new_launch" ? "launch" : "growth") as "launch" | "growth",
       spark: sparkFromDaily(p.daily, end, 14),
     }));
 }
 
 function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
   const end = r.db_end;
+  const DEAD = new Set(["discontinued", "zombie"]);
   return r.products
     .filter(
       (p) =>
         p.is_active &&
-        p.delta_pct !== null &&
-        p.delta_pct < -10 &&
-        daysSince(p.last_sale) < 7,
+        (p.trend === "--" || p.trend === "-") &&
+        (p.days_silent ?? 999) < 7 &&
+        !DEAD.has(p.phase ?? p.status ?? ""),
     )
-    .sort((a, b) => (a.delta_pct ?? 0) - (b.delta_pct ?? 0))
+    .map((p) => ({ p, delta: parseTrendDelta(p.trend_detail) ?? 0 }))
+    .sort((a, b) => a.delta - b.delta)
     .slice(0, 5)
-    .map((p) => ({
+    .map(({ p, delta }) => ({
       name: p.primary,
-      delta: Math.round(p.delta_pct ?? 0),
+      delta,
       stage: "decline" as const,
       last_sale: humanRelativeFR(p.last_sale),
       spark: sparkFromDaily(p.daily, end, 14),
@@ -722,10 +732,9 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
 
   try {
     if (lifecycle) {
-      const g = lifecycleGrowthFrom(lifecycle);
-      const d = lifecycleDeclineFrom(lifecycle);
-      if (g.length > 0) snap.lifecycle_growth = g;
-      if (d.length > 0) snap.lifecycle_decline = d;
+      // Always overwrite — even empty — so mock fallback never bleeds through
+      snap.lifecycle_growth = lifecycleGrowthFrom(lifecycle);
+      snap.lifecycle_decline = lifecycleDeclineFrom(lifecycle);
       // Catalogue breakdown by status
       const byStatus: Record<string, number> = {};
       let zombies = 0;

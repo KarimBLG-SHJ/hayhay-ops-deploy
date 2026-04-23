@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { LifecycleItem, Snapshot } from "../types";
 
 const IMG_BASE = "https://web-production-d97f8.up.railway.app/images/";
@@ -66,37 +67,69 @@ function productImgUrl(name: string): string | null {
   return null;
 }
 
-function ProductThumbWithFallback({ name, size = 56, idx = 0, className = "product-thumb" }: {
-  name: string; size?: number; idx?: number; className?: string;
+function ProductThumbWithFallback({ name, size = 56, idx = 0 }: {
+  name: string; size?: number; idx?: number;
 }) {
+  const [failed, setFailed] = useState(false);
   const url = productImgUrl(name);
-  const fallbackBg = THUMB_COLORS[idx % THUMB_COLORS.length];
+  const bg = THUMB_COLORS[idx % THUMB_COLORS.length];
+  const initial = name.charAt(0).toUpperCase();
+  const radius = size <= 36 ? 10 : 14;
+
+  if (url && !failed) {
+    return (
+      <img
+        src={url}
+        alt={name}
+        style={{ width: size, height: size, borderRadius: radius, objectFit: 'cover', flexShrink: 0 }}
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+  return (
+    <div style={{
+      width: size, height: size, borderRadius: radius, flexShrink: 0,
+      background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: 'Nunito', fontWeight: 800, fontSize: Math.round(size * 0.36),
+      color: 'var(--text-2)',
+    }}>
+      {initial}
+    </div>
+  );
+}
+
+function StarPhoto({ name }: { name: string }) {
+  const [failed, setFailed] = useState(false);
+  const url = productImgUrl(name);
   const initial = name.charAt(0).toUpperCase();
 
   return (
-    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      {url ? (
-        <img
-          className={className}
-          src={url}
-          alt={name}
-          style={{ width: size, height: size, position: 'absolute', inset: 0 }}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).style.display = "none";
-          }}
-        />
-      ) : null}
-      <div
-        style={{
-          width: size, height: size, borderRadius: 14,
-          background: fallbackBg,
+    <div style={{ position: 'relative' }}>
+      {url && !failed ? (
+        <img className="star-photo" src={url} alt={name} onError={() => setFailed(true)} />
+      ) : (
+        <div className="star-photo" style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: 'Nunito', fontWeight: 800, fontSize: size * 0.36,
-          color: 'var(--text-2)',
-        }}
-      >
-        {initial}
-      </div>
+          background: THUMB_COLORS[0], fontFamily: 'Nunito', fontWeight: 800,
+          fontSize: 48, color: 'var(--text-2)',
+        }}>
+          {initial}
+        </div>
+      )}
+      <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} viewBox="0 0 200 180">
+        <g fill="#FFD66B">
+          <path d="M 30 40 l 2 -6 l 2 6 l 6 2 l -6 2 l -2 6 l -2 -6 l -6 -2 z"/>
+          <path d="M 170 30 l 2 -6 l 2 6 l 6 2 l -6 2 l -2 6 l -2 -6 l -6 -2 z"/>
+        </g>
+        <g fill="#F9A8B4">
+          <path d="M 160 130 l 2 -5 l 2 5 l 5 2 l -5 2 l -2 5 l -2 -5 l -5 -2 z"/>
+          <path d="M 25 110 l 2 -5 l 2 5 l 5 2 l -5 2 l -2 5 l -2 -5 l -5 -2 z"/>
+        </g>
+        <g fill="#7DD3A8">
+          <circle cx="50" cy="150" r="2"/>
+          <circle cx="150" cy="60" r="2"/>
+        </g>
+      </svg>
     </div>
   );
 }
@@ -144,13 +177,14 @@ function ProductList({
 }
 
 function StarCard({ item, items }: { item: LifecycleItem; items: LifecycleItem[] }) {
+  const units = item.spark.reduce((s, v) => s + v, 0);
   return (
     <div className="star-card">
       <div className="star-pills">
         <span className="star-pill dark">★ BEST SELLER</span>
         <span className="star-pill rose">🔥 +{item.delta}%</span>
       </div>
-      <ProductThumbWithFallback name={item.name} size={200} idx={0} className="star-photo" />
+      <StarPhoto name={item.name} />
       <div>
         <div className="star-name">{item.name}</div>
         <div className="star-delta">
@@ -160,7 +194,7 @@ function StarCard({ item, items }: { item: LifecycleItem; items: LifecycleItem[]
       </div>
       <div className="star-stats">
         <div className="star-stat">
-          <div className="v">{item.spark.reduce((s, v) => s + v, 0)}</div>
+          <div className="v">{Math.round(units)}</div>
           <div className="k">Unités</div>
         </div>
         <div className="star-stat">
@@ -174,13 +208,13 @@ function StarCard({ item, items }: { item: LifecycleItem; items: LifecycleItem[]
       </div>
       {items.length > 1 && (
         <div className="star-podium">
-          <div className="podium-head">Podium du jour</div>
+          <div className="podium-head">PODIUM DU JOUR</div>
           {items.slice(1, 3).map((p, i) => (
             <div className="podium-row" key={p.name}>
               <div className={`podium-rank ${i === 0 ? "silver" : "bronze"}`}>
                 {i === 0 ? "2e" : "3e"}
               </div>
-              <ProductThumbWithFallback name={p.name} size={32} idx={i + 1} className="podium-thumb" />
+              <ProductThumbWithFallback name={p.name} size={32} idx={i + 1} />
               <div className="podium-name">{p.name}</div>
               <div className="podium-delta">+{p.delta}%</div>
             </div>
