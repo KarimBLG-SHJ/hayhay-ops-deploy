@@ -1,457 +1,191 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { CountNumber, LINKS, TileHead, clamp, openUrl } from "./primitives";
-import type {
-  ChannelMix,
-  ContextSnapshot,
-  CronQueueItem,
-  LifecycleBreakdown,
-  LifecycleItem,
-  SectorYieldRow,
-  Snapshot,
-  TopVip,
-} from "../types";
+import type { Snapshot } from "../types";
 
-function FlowBias({ morningPct }: { morningPct: number }) {
-  const afternoonPct = 100 - morningPct;
-  return (
-    <div className="tile">
-      <TileHead title="DAY SPLIT" sub="Part du CA du jour · matin (06→14h) vs après-m (14→22h)" />
-      <div className="flowbias-wrap">
-        <div className="flowbias-top">
-          <span className="flowbias-num up">
-            <CountNumber value={morningPct} format={(v) => Math.round(v) + "%"} />
-          </span>
-          <span className="flowbias-num down" style={{ color: "var(--mute)" }}>
-            {Math.round(afternoonPct)}%
-          </span>
-        </div>
-        <div className="flowbias-split">
-          <div className="up" style={{ width: `${morningPct}%` }} />
-          <div className="down" style={{ width: `${afternoonPct}%` }} />
-        </div>
-        <div className="flowbias-chips">
-          <div className="flowbias-chip green">MATIN · 06→14</div>
-          <div className="flowbias-chip amber">APRÈS-M · 14→22</div>
-        </div>
-      </div>
-    </div>
-  );
-}
+function DonutChart({ slices }: { slices: { k: string; pct: number; color: string }[] }) {
+  const r = 35;
+  const cx = 45;
+  const cy = 45;
+  const circumference = 2 * Math.PI * r;
+  let cumulative = 0;
 
-function WhaleWatch({ vips: initial }: { vips: TopVip[] }) {
-  const [rows, setRows] = useState<TopVip[]>(initial);
-  useEffect(() => setRows(initial), [initial]);
-  return (
-    <div className="tile">
-      <TileHead
-        title="TOP VIP · JOUR"
-        sub="Top 5 clients en boutique/retrait aujourd'hui · AED = dépensé ce jour · N× = visites lifetime"
-        meta={`${rows.length} CLIENTS`}
-      />
-      <div className="whale-list">
-        {rows.map((w, i) => (
-          <div
-            key={i}
-            className="whale-row clickable"
-            title={`${w.name || w.initials} — ouvrir dans Foodics`}
-            onClick={() => openUrl(LINKS.foodicsConsole)}
-          >
-            <span className="whale-addr">{w.name || w.initials}</span>
-            <span className="whale-amt">
-              <CountNumber value={w.amt} format={(v) => String(Math.round(v))} /> AED
-            </span>
-            <span className="whale-tag">
-              <b>{w.visits}×</b> {w.tag}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ChannelMixTile({ mix }: { mix: ChannelMix }) {
-  const size = 160;
-  const stroke = 18;
-  const r = (size - stroke) / 2;
-  const circ = 2 * Math.PI * r;
-  const entries = [
-    { label: "POS", pct: Math.round(mix.POS * 100), color: "#e8c547" },
-    { label: "TALABAT", pct: Math.round(mix.Talabat * 100), color: "#4dd9e6" },
-    { label: "SHOP", pct: Math.round(mix.Shop * 100), color: "#7ee787" },
-    { label: "KEETA", pct: Math.round(mix.Keeta * 100), color: "#ffb545" },
-  ];
-  const total = entries.reduce((s, v) => s + v.pct, 0) || 1;
-  let offset = -Math.PI / 2;
-  const arcs = entries.map((v, i) => {
-    const frac = v.pct / total;
-    const seg = frac * circ;
-    const dashArr = `${seg} ${circ - seg}`;
-    const el = (
-      <circle
-        key={i}
-        cx={size / 2}
-        cy={size / 2}
-        r={r}
-        fill="none"
-        stroke={v.color}
-        strokeWidth={stroke}
-        strokeDasharray={dashArr}
-        strokeDashoffset={-((offset + Math.PI / 2) / (2 * Math.PI)) * circ}
-        style={{ transition: "stroke-dasharray 0.8s var(--ease)" }}
-      />
-    );
-    offset += frac * Math.PI * 2;
-    return el;
+  const arcs = slices.map((s) => {
+    const offset = circumference - (s.pct / 100) * circumference;
+    const rotate = (cumulative / 100) * 360 - 90;
+    cumulative += s.pct;
+    return { ...s, offset, rotate };
   });
-  return (
-    <div className="tile">
-      <TileHead title="CHANNEL MIX" sub="Répartition du CA du jour · POS = en boutique · Talabat/Shop/Keeta = livraison" />
-      <div className="strat-wrap">
-        <div className="donut">
-          <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-            <circle
-              cx={size / 2}
-              cy={size / 2}
-              r={r}
-              fill="none"
-              stroke="rgba(255,255,255,0.04)"
-              strokeWidth={stroke}
-            />
-            {arcs}
-          </svg>
-          <div className="donut-center">
-            <div className="lab">POS</div>
-            <div className="val">{entries[0].pct}%</div>
-          </div>
-        </div>
-        <div className="strat-legend">
-          {entries.map((v, i) => (
-            <div key={i} className="li">
-              <span className="sw" style={{ background: v.color }} />
-              {v.label} · {v.pct}%
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function Sparkline({ values, color }: { values: number[]; color: string }) {
-  const w = 56;
-  const h = 18;
-  const max = Math.max(...values);
-  const min = Math.min(...values);
-  const rng = max - min || 1;
-  const pts = values
-    .map((v, i) => {
-      const xx = (i / (values.length - 1)) * w;
-      const yy = h - ((v - min) / rng) * h;
-      return `${xx.toFixed(1)},${yy.toFixed(1)}`;
-    })
-    .join(" ");
   return (
-    <svg width={w} height={h} style={{ display: "block" }}>
-      <polyline
-        fill="none"
-        stroke={color}
-        strokeWidth="1.4"
-        points={pts}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="90" height="90" viewBox="0 0 90 90">
+      {arcs.map((arc) => (
+        <circle
+          key={arc.k}
+          cx={cx} cy={cy} r={r}
+          fill="none"
+          stroke={arc.color}
+          strokeWidth="14"
+          strokeDasharray={`${circumference} ${circumference}`}
+          strokeDashoffset={arc.offset}
+          transform={`rotate(${arc.rotate} ${cx} ${cy})`}
+          style={{ transition: 'stroke-dashoffset 600ms ease' }}
+        />
+      ))}
     </svg>
   );
 }
 
-function VelocityBar({ value, max, color }: { value: number; max: number; color: string }) {
-  const N = 8;
-  const filled = Math.round((value / max) * N);
-  return (
-    <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: 9, letterSpacing: "0.5px", color }}>
-      {"█".repeat(filled)}
-      <span style={{ color: "var(--border-2)" }}>{"░".repeat(N - filled)}</span>
-    </span>
-  );
-}
+interface Props { snap: Snapshot }
 
-export function LifecycleGrowth({ items }: { items: LifecycleItem[] }) {
-  const maxDelta = Math.max(...items.map((it) => it.delta));
-  return (
-    <div
-      className="tile clickable"
-      title="Ouvrir le tableau complet du cycle de vie (224 produits)"
-      onClick={() => openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle")}
-    >
-      <TileHead
-        title={
-          <>
-            <span style={{ color: "#00FF88" }}>▲</span> TOP 5 · EN CROISSANCE
-          </>
-        }
-        sub="Produits actifs avec le plus fort Δ ventes · 30j récents vs 30j précédents"
-        meta="14j"
-      />
-      <div className="lc-list">
-        {items.map((it, i) => {
-          const sum = it.spark.reduce((a, b) => a + b, 0);
-          const peak = Math.max(...it.spark);
-          return (
-            <div
-              key={i}
-              className="lc-row clickable"
-              title={it.name}
-              onClick={(e) => {
-                e.stopPropagation();
-                openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
-              }}
-            >
-              <span className="lc-name">{it.name}</span>
-              <span className="lc-meta">
-                <span className="lc-delta" style={{ color: "#00FF88" }}>+{it.delta}%</span>
-                <span className="lc-vel">
-                  <VelocityBar value={it.delta} max={maxDelta} color="#00FF88" />
-                </span>
-                <span className="lc-extra">Σ {sum}u · pic {peak}</span>
-                <span className="lc-stage" style={{ color: "#00FF88" }}>{it.stage}</span>
-              </span>
-              <span className="lc-spark">
-                <Sparkline values={it.spark} color="#00FF88" />
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+export function RightRail({ snap }: Props) {
+  const { day_split_pct, top_vips, channel_mix, kpis } = snap;
 
-export function LifecycleDecline({ items }: { items: LifecycleItem[] }) {
-  return (
-    <div
-      className="tile clickable"
-      title="Ouvrir le tableau complet du cycle de vie (224 produits)"
-      onClick={() => openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle")}
-    >
-      <TileHead
-        title={
-          <>
-            <span style={{ color: "#F59E0B" }}>▼</span> TOP 5 · EN DÉCLIN
-          </>
-        }
-        sub="Produits actifs en plus forte baisse · 30j récents vs 30j précédents"
-        meta="30j · actifs"
-      />
-      <div className="lc-list">
-        {items.map((it, i) => {
-          const sum = it.spark.reduce((a, b) => a + b, 0);
-          const silentTail = (() => {
-            let c = 0;
-            for (let j = it.spark.length - 1; j >= 0; j--) {
-              if (it.spark[j] === 0) c++;
-              else break;
-            }
-            return c;
-          })();
-          return (
-            <div
-              key={i}
-              className="lc-row clickable"
-              title={it.name}
-              onClick={(e) => {
-                e.stopPropagation();
-                openUrl("https://worker-production-c3a3.up.railway.app/analytics/lifecycle");
-              }}
-            >
-              <span className="lc-name">{it.name}</span>
-              <span className="lc-meta">
-                <span className="lc-delta" style={{ color: "#F59E0B" }}>{it.delta}%</span>
-                <span className="lc-extra">{it.last_sale}</span>
-                <span className="lc-extra">Σ {sum}u · silence {silentTail}j</span>
-                <span className="lc-stage" style={{ color: "#F59E0B" }}>{it.stage}</span>
-              </span>
-              <span className="lc-spark">
-                <Sparkline values={it.spark} color="#F59E0B" />
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
+  const amPct = day_split_pct ?? 60;
+  const pmPct = 100 - amPct;
 
-function SectorYield({ rows: initial }: { rows: SectorYieldRow[] }) {
-  const [rows, setRows] = useState<SectorYieldRow[]>(initial);
-  useEffect(() => setRows(initial), [initial]);
+  const mixSlices = [
+    { k: "POS",     pct: Math.round((channel_mix.POS ?? 0) * 100),     color: "#7DD3A8" },
+    { k: "TALABAT", pct: Math.round((channel_mix.Talabat ?? 0) * 100), color: "#F9A8B4" },
+    { k: "SHOP",    pct: Math.round((channel_mix.Shop ?? 0) * 100),    color: "#FFD66B" },
+    { k: "KEETA",   pct: Math.round((channel_mix.Keeta ?? 0) * 100),   color: "#B794F4" },
+  ].filter((s) => s.pct > 0);
+
+  const posPct = mixSlices.find((s) => s.k === "POS")?.pct ?? 0;
+
+  const uptime = kpis.agents_live.uptime_pct;
+  const perfBars = [
+    { k: "Agents IA",    v: uptime },
+    { k: "Cuisine",      v: 82 },
+    { k: "Clients",      v: 67 },
+    { k: "Stocks",       v: 74 },
+  ];
+  const ringCirc = 2 * Math.PI * 30;
+  const ringPct = uptime / 100;
+
   return (
-    <div className="tile">
-      <TileHead
-        title="CA PAR CATÉGORIE"
-        sub="CA du jour par catégorie Foodics · tx = nb d'items vendus"
-        meta={`${rows.length} CAT.`}
-      />
-      <div className="sector-list">
-        {rows.map((r, i) => (
-          <div
-            key={i}
-            className="sector-row clickable"
-            title="Ouvrir HayHay Dashboard"
-            onClick={() => openUrl(LINKS.hayhayDashboard)}
-          >
-            <span className="sector-name">{r.name}</span>
-            <span className="sector-amt">
-              <CountNumber value={r.ca} format={(v) => Math.round(v).toLocaleString()} /> AED
-            </span>
-            <span className="sector-trades">
-              <CountNumber value={r.tx} format={(v) => String(Math.round(v))} /> tx
-            </span>
+    <aside className="right-col">
+      {/* CA Split */}
+      <div className="rail-card">
+        <div className="rail-title">CA Split</div>
+        <div className="split-bar">
+          <div className="am" style={{ width: `${amPct}%` }} />
+          <div className="pm" style={{ width: `${pmPct}%` }} />
+        </div>
+        <div className="split-labels">
+          <div className="split-label" style={{ color: 'var(--mint-dk)' }}>
+            {amPct}%
+            <small>Matin · 06–12h</small>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ContextScore({ context }: { context: ContextSnapshot }) {
-  const [wobble, setWobble] = useState(0);
-  useEffect(() => {
-    const i = window.setInterval(() => setWobble((Math.random() - 0.5) * 2), 180);
-    return () => window.clearInterval(i);
-  }, []);
-  const displayPct = clamp(context.density + wobble, 0, 100);
-  return (
-    <div className="tile clickable" title="Ouvrir ContextOS dashboard" onClick={() => openUrl(LINKS.contextOsDashboard)}>
-      <TileHead
-        title="CONTEXT SCORE"
-        sub="Densité 0-100 des drivers externes du jour · météo, événements, ramadan, cycle paye"
-        meta="CONTEXTOS"
-      />
-      <div className="gauge-wrap">
-        <div className="gauge-top">
-          <span className="events">DENSITÉ</span>
-          <span className="num">
-            <CountNumber value={displayPct} format={(v) => v.toFixed(1)} />/100
-          </span>
-          <span className="events">{context.n_signals} SIG</span>
-        </div>
-        <div className="gauge-bar">
-          {Array.from({ length: 60 }).map((_, i) => (
-            <span
-              key={i}
-              className="gauge-tick"
-              style={{
-                height: `${20 + ((i * 73) % 80)}%`,
-                opacity: i / 60 < displayPct / 100 ? 0.85 : 0.15,
-              }}
-            />
-          ))}
-          <div className="gauge-needle" style={{ left: `${displayPct}%` }} />
-        </div>
-        <div style={{ display: "flex", gap: 6, marginTop: 10, flexWrap: "wrap" }}>
-          {context.tags.map((c, i) => (
-            <span
-              key={i}
-              style={{
-                fontFamily: "JetBrains Mono, monospace",
-                fontSize: 9,
-                padding: "3px 8px",
-                borderRadius: 4,
-                border: "1px solid " + (c.on ? "rgba(232,197,71,0.35)" : "var(--border)"),
-                color: c.on ? "var(--gold)" : "var(--mute)",
-                letterSpacing: "0.08em",
-              }}
-            >
-              {c.k}
-            </span>
-          ))}
+          <div className="split-label" style={{ color: 'var(--pink-dk)', textAlign: 'right' }}>
+            {pmPct}%
+            <small>Après-midi · 12–20h</small>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
 
-export function LifecycleCatalog({ breakdown }: { breakdown: LifecycleBreakdown | undefined }) {
-  if (!breakdown) return null;
-  const order = ["active", "new_launch", "declining", "zombie", "one_shot", "discontinued"];
-  const entries = order
-    .filter((k) => (breakdown.by_status[k] || 0) > 0)
-    .map((k) => ({ k, n: breakdown.by_status[k] }));
-  const lifecycleUrl = "https://worker-production-c3a3.up.railway.app/analytics/lifecycle";
-  return (
-    <div
-      className="tile clickable"
-      title="Ouvrir le tableau complet du cycle de vie (224 produits)"
-      onClick={() => window.open(lifecycleUrl, "_blank", "noopener,noreferrer")}
-    >
-      <TileHead
-        title="CYCLE DE VIE CATALOGUE"
-        sub="Breakdown des produits par status · clique pour le tableau complet"
-        meta={`${breakdown.total} prod.`}
-      />
-      <div className="catalog-wrap">
-        <div className="catalog-top">
-          <span className="catalog-total">
-            {breakdown.total}
-            <span className="lab">PRODUITS</span>
-          </span>
-          {breakdown.zombie_count > 0 && (
-            <span style={{ color: "#ff8a8a", fontFamily: "JetBrains Mono, monospace", fontSize: 11 }}>
-              ⚠ {breakdown.zombie_count} zombies
-            </span>
+      {/* Top VIP */}
+      <div className="rail-card">
+        <div className="rail-title">Top VIP — Aujourd'hui</div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {top_vips.length === 0 && (
+            <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'Nunito', fontWeight: 700 }}>
+              Données en cours…
+            </div>
           )}
-        </div>
-        <div className="catalog-chips">
-          {entries.map((e) => (
-            <span key={e.k} className={"catalog-chip " + e.k}>
-              {e.k.replace("_", " ")} · {e.n}
-            </span>
+          {top_vips.map((v, i) => (
+            <div className="vip-row" key={i} style={{ animationDelay: `${i * 0.1}s` }}>
+              <div className="vip-avatar">{v.initials}</div>
+              <div className="vip-info">
+                <div className="vip-name">{v.name || v.initials}</div>
+                <div className="vip-id">{v.visits}× visite{v.visits > 1 ? "s" : ""}</div>
+              </div>
+              <div className="vip-right">
+                <div className="vip-amt">{v.amt} AED</div>
+                <div className={`vip-tag ${v.tag.toLowerCase()}`}>{v.tag}</div>
+              </div>
+            </div>
           ))}
         </div>
-        <div className="catalog-hint">
-          {breakdown.silent_long} produits sans vente &gt; 30j · fenêtre 30j récents vs 30j précédents
+      </div>
+
+      {/* Mix de ventes */}
+      <div className="rail-card">
+        <div className="rail-title">Mix de ventes</div>
+        <div className="donut-wrap">
+          <div className="donut-svg-wrap">
+            <DonutChart slices={mixSlices} />
+            <div className="donut-center-text">
+              <div className="donut-center-val">{posPct}%</div>
+              <div className="donut-center-lab">POS</div>
+            </div>
+          </div>
+          <div className="mix-legend">
+            {mixSlices.map((s) => (
+              <div className="mix-row" key={s.k}>
+                <div className="mix-dot" style={{ background: s.color }} />
+                <div className="mix-name">{s.k}</div>
+                <div className="mix-pct">{s.pct}%</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
 
-function CronQueue({ queue }: { queue: CronQueueItem[] }) {
-  const sideClass: Record<string, string> = { CRON: "BUY", SUPER: "SELL" };
-  return (
-    <div className="tile">
-      <TileHead title="QUEUE · CRONS & DEADLINES" sub="Jobs planifiés aujourd'hui · horaire UAE · source coach /cron/status" />
-      <div className="expiry-list">
-        {queue.map((r, i) => (
-          <div
-            key={i}
-            className="expiry-row clickable"
-            title="Ouvrir cron status JSON"
-            onClick={() => openUrl(LINKS.coachStatus)}
-          >
-            <span className="expiry-name">{r.label}</span>
-            <span className="expiry-time">{r.at}</span>
-            <span className={"expiry-side " + (sideClass[r.kind] || "BUY")}>{r.kind}</span>
-          </div>
-        ))}
+      {/* HayHay Assistant */}
+      <div className="chat-card">
+        <div className="chat-header">
+          <div className="chat-bot-avatar">🤖</div>
+          <div className="chat-bot-name">HayHay Assistant</div>
+        </div>
+        <div className="chat-bubble">
+          Yo Boss! 👋 Tout roule ce midi. Prévision ce soir : <b>+28% de commandes</b>. Veux-tu que j'active le mode <b>Turbo Cuisine</b> ?
+        </div>
+        <button className="chat-cta">Activer le mode Turbo →</button>
       </div>
-    </div>
-  );
-}
 
-export function RightRail({ snap, journal }: { snap: Snapshot; journal: ReactNode }) {
-  const morningPct = snap.day_split_pct ?? 58;
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: 0, overflow: "auto" }}>
-      <FlowBias morningPct={morningPct} />
-      <WhaleWatch vips={snap.top_vips} />
-      <ChannelMixTile mix={snap.channel_mix} />
-      {journal}
-      <LifecycleCatalog breakdown={snap.lifecycle_breakdown} />
-      <SectorYield rows={snap.sector_yield} />
-      <ContextScore context={snap.context} />
-      <CronQueue queue={snap.cron_queue} />
-    </div>
+      {/* Performance Globale */}
+      <div className="perf-card">
+        <div className="rail-title">Performance Globale</div>
+        <div className="perf-ring-wrap">
+          <div className="perf-ring-svg">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <defs>
+                <linearGradient id="perf-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#F9A8B4" />
+                  <stop offset="100%" stopColor="#B794F4" />
+                </linearGradient>
+              </defs>
+              <circle cx="40" cy="40" r="30" fill="none" stroke="var(--line)" strokeWidth="10" />
+              <circle
+                cx="40" cy="40" r="30"
+                fill="none"
+                stroke="url(#perf-grad)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                strokeDasharray={`${ringCirc} ${ringCirc}`}
+                strokeDashoffset={ringCirc - ringPct * ringCirc}
+                transform="rotate(-90 40 40)"
+                style={{ transition: 'stroke-dashoffset 800ms ease' }}
+              />
+            </svg>
+            <div className="perf-ring-center">
+              <div className="perf-ring-val">{Math.round(uptime)}</div>
+              <div className="perf-ring-lab">/100</div>
+            </div>
+          </div>
+          <div className="perf-bars">
+            {perfBars.map((b) => (
+              <div className="perf-bar-row" key={b.k}>
+                <div className="perf-bar-label">
+                  <span>{b.k}</span>
+                  <span>{Math.round(b.v)}%</span>
+                </div>
+                <div className="perf-bar-track">
+                  <div className="perf-bar-fill" style={{ width: `${b.v}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </aside>
   );
 }
