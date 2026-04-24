@@ -34,7 +34,7 @@ export function KpisRow({ snap }: Props) {
   const ca = snap.kpis.ca_today;
   const orders = snap.kpis.orders;
   const ticket = snap.kpis.avg_ticket;
-  const agents = snap.kpis.agents_live;
+  const caWeek = snap.kpis.ca_week;
 
   const caTarget = 2500;
   const caPct = Math.round((ca.value / caTarget) * 100);
@@ -67,15 +67,17 @@ export function KpisRow({ snap }: Props) {
         <div className="kpi-sub">Cible 30 AED</div>
       </div>
 
-      {/* Agents actifs */}
+      {/* CA Semaine */}
       <div className="kpi-card">
-        <div className="kpi-label">Agents actifs</div>
+        <div className="kpi-label">CA Semaine</div>
         <div className="kpi-value">
-          {agents.value}
-          <span style={{ fontSize: 14, color: 'var(--muted)' }}> /{agents.total}</span>
+          {caWeek ? Math.round(caWeek.total).toLocaleString() : "—"}
+          <span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span>
         </div>
-        <Spark data={makeSpark(19, 18, 0).map((v) => Math.max(30, v * 0.9))} color="var(--text-2)" />
-        <div className="kpi-sub">{agents.uptime_pct}% uptime</div>
+        <Spark data={caWeek ? caWeek.days.map((d) => d.ca) : makeSpark(19, 7, 0)} color="var(--gold)" />
+        <div className="kpi-sub">
+          Moy. {caWeek ? Math.round(caWeek.avg_daily).toLocaleString() : "—"} AED/j
+        </div>
       </div>
 
       {/* Promo card */}

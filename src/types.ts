@@ -106,6 +106,7 @@ export interface KpiSnapshot {
   avg_ticket: { value: number; currency: "AED" };
   waste_pct: { value: number; ceiling: number };
   agents_live: { value: number; total: number; uptime_pct: number };
+  ca_week?: { total: number; avg_daily: number; days: { date: string; ca: number }[] };
 }
 
 export interface LifecycleBreakdown {

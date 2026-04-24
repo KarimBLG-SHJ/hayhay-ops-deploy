@@ -287,7 +287,8 @@ function ProductList({
 }
 
 function StarCard({ item, items }: { item: LifecycleItem; items: LifecycleItem[] }) {
-  const units = item.spark.reduce((s, v) => s + v, 0);
+  const units14d = item.spark.reduce((s, v) => s + v, 0);
+  const avgPerDay = units14d / 14;
   return (
     <div className="star-card">
       <div className="star-pills">
@@ -304,8 +305,8 @@ function StarCard({ item, items }: { item: LifecycleItem; items: LifecycleItem[]
       </div>
       <div className="star-stats">
         <div className="star-stat">
-          <div className="v">{Math.round(units)}</div>
-          <div className="k">Unités</div>
+          <div className="v">{avgPerDay.toFixed(1)}</div>
+          <div className="k">Moy./jour 14j</div>
         </div>
         <div className="star-stat">
           <div className="v">—</div>

@@ -503,6 +503,22 @@ async function fetchTopCustomers(date: string): Promise<TopCustomersResponse | n
   }
 }
 
+// ---- Dashboard /api/week_summary ----
+interface WeekSummaryResponse {
+  total_ca: number;
+  avg_daily_ca: number;
+  days: { date: string; ca: number }[];
+}
+
+async function fetchWeekSummary(): Promise<WeekSummaryResponse | null> {
+  try {
+    return await fetchJson<WeekSummaryResponse>(`${DASHBOARD}/api/week_summary`);
+  } catch (e) {
+    console.warn("[week_summary] fetch failed", e);
+    return null;
+  }
+}
+
 // ---- Dashboard /api/vips_at_risk ----
 interface VipsAtRiskResponse {
   customers: {
@@ -720,7 +736,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   const ydayDate = new Date(new Date(date + "T00:00:00Z").getTime() - 86400_000)
     .toISOString()
     .slice(0, 8);
-  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, vipsAtRisk, slackRecent, aljada, iaAccuracy] =
+  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, vipsAtRisk, weekSummary, slackRecent, aljada, iaAccuracy] =
     await Promise.all([
       fetchDaily(date),
       fetchCronStatus(),
@@ -731,6 +747,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       fetchTopCustomers(date),
       fetchTopCustomers(ydayDate),
       fetchVipsAtRisk(),
+      fetchWeekSummary(),
       fetchSlackRecent(),
       fetchAlJada(),
       fetchIaAccuracy(),
@@ -891,6 +908,18 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
     }
   } catch (e) {
     console.warn("[adapter:cron]", e);
+  }
+
+  try {
+    if (weekSummary) {
+      snap.kpis.ca_week = {
+        total: weekSummary.total_ca,
+        avg_daily: weekSummary.avg_daily_ca,
+        days: weekSummary.days,
+      };
+    }
+  } catch (e) {
+    console.warn("[adapter:week_summary]", e);
   }
 
   try {
