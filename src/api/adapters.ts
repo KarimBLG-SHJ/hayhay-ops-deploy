@@ -503,10 +503,21 @@ async function fetchTopCustomers(date: string): Promise<TopCustomersResponse | n
   }
 }
 
+function cleanVipName(raw?: string): string | undefined {
+  if (!raw) return undefined;
+  // Strip trailing " - 123456" phone suffix and capitalize first letter of each word
+  const stripped = raw.replace(/\s*-\s*\d{3,}\s*$/, "").trim();
+  if (!stripped) return undefined;
+  return stripped
+    .split(/\s+/)
+    .map((w) => (w.length > 0 ? w[0].toUpperCase() + w.slice(1).toLowerCase() : w))
+    .join(" ");
+}
+
 function topVipsFrom(r: TopCustomersResponse): TopVip[] {
   return (r.customers || []).map((c) => ({
     initials: c.initials,
-    name: c.name,
+    name: cleanVipName(c.name),
     amt: Math.round(c.amt),
     visits: c.visits,
     tag: c.tag,
@@ -686,7 +697,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   const ydayDate = new Date(new Date(date + "T00:00:00Z").getTime() - 86400_000)
     .toISOString()
     .slice(0, 10);
-  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, slackRecent, aljada, iaAccuracy] =
+  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, slackRecent, aljada, iaAccuracy] =
     await Promise.all([
       fetchDaily(date),
       fetchCronStatus(),
@@ -695,6 +706,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       fetchBatch(ydayDate),
       fetchLifecycle(),
       fetchTopCustomers(date),
+      fetchTopCustomers(ydayDate),
       fetchSlackRecent(),
       fetchAlJada(),
       fetchIaAccuracy(),
@@ -880,6 +892,11 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   try {
     if (topCustomers && topCustomers.customers?.length > 0) {
       snap.top_vips = topVipsFrom(topCustomers);
+    } else if (topCustomersYday && topCustomersYday.customers?.length > 0) {
+      // Fallback J-1 : évite les initiales mock en début de journée
+      snap.top_vips = topVipsFrom(topCustomersYday);
+    } else {
+      snap.top_vips = [];
     }
   } catch (e) {
     console.warn("[adapter:top_customers]", e);
