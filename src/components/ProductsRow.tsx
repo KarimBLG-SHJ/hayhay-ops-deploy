@@ -233,7 +233,9 @@ interface Props { snap: Snapshot }
 export function ProductsRow({ snap }: Props) {
   const growth = snap.lifecycle_growth;
   const decline = snap.lifecycle_decline;
-  const star = growth[0];
+  // Star = first growth product that has a matching catalog image.
+  // If none, fall back to #1 growth (with pastel placeholder).
+  const star = growth.find((p) => productImgUrl(p.name)) ?? growth[0];
 
   return (
     <div className="products-row">

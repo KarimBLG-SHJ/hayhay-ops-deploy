@@ -1,5 +1,50 @@
 import type { Snapshot } from "../types";
 
+// Little VIP silhouette — 6 color variants, rotates by row index.
+function VipAvatar({ variant = 0 }: { variant?: number }) {
+  const palettes = [
+    { skin: "#FFD6B8", hair: "#3A2718", shirt: "#F9A8B4", acc: "#FFD66B" },
+    { skin: "#F5C79A", hair: "#5B2E1A", shirt: "#7DD3A8", acc: "#FFFFFF" },
+    { skin: "#E8B88F", hair: "#1F1F1A", shirt: "#B794F4", acc: "#F9A8B4" },
+    { skin: "#FFDEC0", hair: "#8B4513", shirt: "#FFD66B", acc: "#F9A8B4" },
+    { skin: "#F0C4A0", hair: "#2A1810", shirt: "#FF9B5A", acc: "#7DD3A8" },
+    { skin: "#FFD6B8", hair: "#4A2E1F", shirt: "#8BD3E6", acc: "#FFD66B" },
+  ];
+  const p = palettes[variant % palettes.length];
+  const isHijab = variant === 2;
+  const isBeanie = variant === 4;
+  return (
+    <div className="vip-avatar" style={{ background: 'transparent', padding: 0 }}>
+      <svg viewBox="0 0 40 40" width="34" height="34">
+        <ellipse cx="20" cy="37" rx="10" ry="1.5" fill="rgba(0,0,0,0.08)" />
+        <path d="M 6 40 Q 6 28 20 26 Q 34 28 34 40 Z" fill={p.shirt} />
+        <path d="M 14 30 Q 20 33 26 30" stroke={p.acc} strokeWidth="1.2" fill="none" opacity="0.5" />
+        {isHijab ? (
+          <path d="M 7 22 Q 7 8 20 7 Q 33 8 33 22 L 33 30 Q 33 32 30 32 L 10 32 Q 7 32 7 30 Z" fill={p.hair} />
+        ) : (
+          <path d="M 9 20 Q 8 9 20 8 Q 32 9 31 20 L 31 24 L 9 24 Z" fill={p.hair} />
+        )}
+        <circle cx="20" cy="20" r="10" fill={p.skin} />
+        {!isHijab && (
+          <path d="M 10 17 Q 13 10 20 10 Q 27 10 30 17 Q 28 14 24 14 Q 22 17 20 15 Q 18 17 16 14 Q 12 14 10 17 Z" fill={p.hair} />
+        )}
+        {isBeanie && (
+          <g>
+            <path d="M 9 16 Q 9 7 20 7 Q 31 7 31 16 Z" fill={p.acc} />
+            <rect x="9" y="15" width="22" height="3" rx="1" fill={p.hair} opacity="0.25" />
+            <circle cx="20" cy="5" r="2" fill={p.hair} />
+          </g>
+        )}
+        <path d="M 15 21 q 1.5 1.5 3 0" stroke="#2A1810" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+        <path d="M 22 21 q 1.5 1.5 3 0" stroke="#2A1810" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+        <circle cx="14" cy="23" r="1.2" fill="#F9A8B4" opacity="0.6" />
+        <circle cx="26" cy="23" r="1.2" fill="#F9A8B4" opacity="0.6" />
+        <path d="M 18 25 q 2 1.5 4 0" stroke="#2A1810" strokeWidth="1" fill="none" strokeLinecap="round" />
+      </svg>
+    </div>
+  );
+}
+
 function DonutChart({ slices }: { slices: { k: string; pct: number; color: string }[] }) {
   const r = 35;
   const cx = 45;
@@ -92,9 +137,9 @@ export function RightRail({ snap }: Props) {
           )}
           {top_vips.map((v, i) => (
             <div className="vip-row" key={i} style={{ animationDelay: `${i * 0.1}s` }}>
-              <div className="vip-avatar">{v.initials}</div>
+              <VipAvatar variant={i} />
               <div className="vip-info">
-                <div className="vip-name">{v.name || v.initials}</div>
+                <div className="vip-name" title={v.name || v.initials}>{v.name || v.initials}</div>
                 <div className="vip-id">{v.visits}× visite{v.visits > 1 ? "s" : ""}</div>
               </div>
               <div className="vip-right">

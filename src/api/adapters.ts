@@ -402,24 +402,51 @@ function daysSince(isoDate: string): number {
   return Math.max(0, Math.floor((uae.getTime() - target.getTime()) / 86400_000));
 }
 
-/** Parse "+116% (1.4 → 3.0 u/j)" → 116. Returns null if not parseable. */
-function parseTrendDelta(detail: string): number | null {
-  const m = detail.match(/([+-]?\d+(?:\.\d+)?)%/);
-  return m ? Math.round(parseFloat(m[1])) : null;
+/**
+ * 7-day sliding window delta.
+ * Compares avg(last 7 days) vs avg(previous 7 days).
+ * Noise filter: max(last7, prev7) must be >= MIN_VOLUME u/j.
+ * Returns { delta_pct, last7, prev7 } or null if below noise floor.
+ */
+const MIN_VOLUME = 2.0; // u/j — below this, % swings are noise
+function compute7dSliding(
+  daily: [string, number][],
+  dbEndIso: string,
+): { delta: number; last7: number; prev7: number } | null {
+  if (!daily || daily.length === 0) return null;
+  const map = new Map(daily);
+  const end = new Date(dbEndIso + "T00:00:00Z");
+  let sumLast = 0;
+  let sumPrev = 0;
+  for (let i = 1; i <= 7; i++) {
+    const d = new Date(end.getTime() - i * 86400_000).toISOString().slice(0, 10);
+    sumLast += map.get(d) ?? 0;
+  }
+  for (let i = 8; i <= 14; i++) {
+    const d = new Date(end.getTime() - i * 86400_000).toISOString().slice(0, 10);
+    sumPrev += map.get(d) ?? 0;
+  }
+  const last7 = sumLast / 7;
+  const prev7 = sumPrev / 7;
+  if (Math.max(last7, prev7) < MIN_VOLUME) return null; // noise
+  let delta: number;
+  if (prev7 === 0) delta = last7 > 0 ? 500 : 0; // cap new launches at +500%
+  else delta = Math.round(((last7 - prev7) / prev7) * 100);
+  return { delta, last7, prev7 };
 }
 
 function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
   const end = r.db_end;
   const DEAD = new Set(["discontinued", "zombie"]);
-  return r.products
-    .filter(
-      (p) =>
-        p.is_active &&
-        (p.trend === "++" || p.trend === "+") &&
-        (p.days_silent ?? 999) < 7 &&
-        !DEAD.has(p.phase ?? p.status ?? ""),
-    )
-    .map((p) => ({ p, delta: parseTrendDelta(p.trend_detail) ?? 0 }))
+  const scored: { p: LifecycleProduct; delta: number }[] = [];
+  for (const p of r.products) {
+    if (!p.is_active) continue;
+    if (DEAD.has(p.phase ?? p.status ?? "")) continue;
+    const s = compute7dSliding(p.daily, end);
+    if (!s || s.delta <= 0) continue;
+    scored.push({ p, delta: s.delta });
+  }
+  return scored
     .sort((a, b) => b.delta - a.delta)
     .slice(0, 5)
     .map(({ p, delta }) => ({
@@ -433,17 +460,15 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
 function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
   const end = r.db_end;
   const DEAD = new Set(["discontinued", "zombie"]);
-  // API uses Unicode minus "−" (U+2212), not ASCII "-" — accept both.
-  const DECLINE = new Set(["--", "-", "−−", "−"]);
-  return r.products
-    .filter(
-      (p) =>
-        p.is_active &&
-        DECLINE.has(p.trend) &&
-        (p.days_silent ?? 999) < 7 &&
-        !DEAD.has(p.phase ?? p.status ?? ""),
-    )
-    .map((p) => ({ p, delta: parseTrendDelta(p.trend_detail) ?? 0 }))
+  const scored: { p: LifecycleProduct; delta: number }[] = [];
+  for (const p of r.products) {
+    if (!p.is_active) continue;
+    if (DEAD.has(p.phase ?? p.status ?? "")) continue;
+    const s = compute7dSliding(p.daily, end);
+    if (!s || s.delta >= 0) continue;
+    scored.push({ p, delta: s.delta });
+  }
+  return scored
     .sort((a, b) => a.delta - b.delta)
     .slice(0, 5)
     .map(({ p, delta }) => ({
