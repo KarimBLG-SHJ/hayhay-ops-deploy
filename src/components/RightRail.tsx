@@ -81,7 +81,7 @@ function DonutChart({ slices }: { slices: { k: string; pct: number; color: strin
 interface Props { snap: Snapshot }
 
 export function RightRail({ snap }: Props) {
-  const { day_split_pct, top_vips, channel_mix, kpis, perf_scores } = snap;
+  const { day_split_pct, top_vips, vips_at_risk, channel_mix, kpis, perf_scores } = snap;
 
   const amPct = day_split_pct ?? 60;
   const pmPct = 100 - amPct;
@@ -155,6 +155,31 @@ export function RightRail({ snap }: Props) {
           ))}
         </div>
       </div>
+
+      {/* VIP à risque — clients fidèles silencieux */}
+      {vips_at_risk && vips_at_risk.length > 0 && (
+        <div className="rail-card">
+          <div className="rail-title" style={{ color: 'var(--pink-dk)' }}>⚠️ VIP qu'on perd</div>
+          <div style={{ fontSize: 10, fontFamily: 'Nunito', fontWeight: 700, color: 'var(--muted)', marginBottom: 8 }}>
+            Clients fidèles silencieux depuis {'>'}10j
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {vips_at_risk.slice(0, 5).map((v, i) => (
+              <div className="vip-row" key={i} style={{ animationDelay: `${i * 0.1}s` }}>
+                <VipAvatar variant={(i + 3) % 6} />
+                <div className="vip-info">
+                  <div className="vip-name" title={v.name}>{v.name}</div>
+                  <div className="vip-id">{v.lifetime} cmd · silence {v.days_silent}j</div>
+                </div>
+                <div className="vip-right">
+                  <div className="vip-amt">{v.amt_45d} AED</div>
+                  <div className="vip-tag" style={{ background: '#FFE4EA', color: 'var(--pink-dk)' }}>RISQUE</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Mix de ventes */}
       <div className="rail-card">

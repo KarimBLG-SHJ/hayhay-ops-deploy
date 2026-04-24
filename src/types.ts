@@ -35,6 +35,16 @@ export interface TopVip {
   tag: "VIP" | "HOT" | "NEW";
 }
 
+export interface VipAtRisk {
+  initials: string;
+  name: string;
+  lifetime: number;
+  visits_45d: number;
+  amt_45d: number;
+  last_visit: string; // ISO date
+  days_silent: number;
+}
+
 export interface ChannelMix {
   POS: number;
   Talabat: number;
@@ -136,6 +146,7 @@ export interface Snapshot {
   agent_briefings: AgentBriefing[];
   market_tape: MarketTapeRow[];
   top_vips: TopVip[];
+  vips_at_risk?: VipAtRisk[];
   channel_mix: ChannelMix;
   sector_yield: SectorYieldRow[];
   lifecycle_growth: LifecycleItem[];

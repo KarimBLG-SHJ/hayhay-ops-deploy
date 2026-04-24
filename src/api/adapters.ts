@@ -85,7 +85,7 @@ function sectorsFromDaily(d: DailyResponse): SectorYieldRow[] {
     .map(([name, v]) => ({ name: name.toUpperCase(), ca: Math.round(v.revenue), tx: v.qty }))
     .filter((r) => r.ca > 0)
     .sort((a, b) => b.ca - a.ca)
-    .slice(0, 5);
+    .slice(0, 10);
   return rows;
 }
 
@@ -456,7 +456,7 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
   }
   return scored
     .sort((a, b) => b.delta - a.delta)
-    .slice(0, 5)
+    .slice(0, 10)
     .map(({ p, delta }) => ({
       name: p.primary,
       delta,
@@ -478,7 +478,7 @@ function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
   }
   return scored
     .sort((a, b) => a.delta - b.delta)
-    .slice(0, 5)
+    .slice(0, 10)
     .map(({ p, delta }) => ({
       name: p.primary,
       delta,
@@ -499,6 +499,29 @@ async function fetchTopCustomers(date: string): Promise<TopCustomersResponse | n
     return await fetchJson<TopCustomersResponse>(`${DASHBOARD}/api/top_customers?date=${date}&limit=5`);
   } catch (e) {
     console.warn("[top_customers] fetch failed", e);
+    return null;
+  }
+}
+
+// ---- Dashboard /api/vips_at_risk ----
+interface VipsAtRiskResponse {
+  customers: {
+    initials: string;
+    name: string;
+    lifetime: number;
+    visits_45d: number;
+    amt_45d: number;
+    last_visit: string;
+    days_silent: number;
+  }[];
+  period_days: number;
+}
+
+async function fetchVipsAtRisk(): Promise<VipsAtRiskResponse | null> {
+  try {
+    return await fetchJson<VipsAtRiskResponse>(`${DASHBOARD}/api/vips_at_risk`);
+  } catch (e) {
+    console.warn("[vips_at_risk] fetch failed", e);
     return null;
   }
 }
@@ -670,7 +693,7 @@ async function fetchIaAccuracy(): Promise<IaAccuracy | null> {
     const topProducts = (prodRes.products || [])
       .filter((p) => p.n_days >= 5)
       .sort((a, b) => b.mae - a.mae)
-      .slice(0, 5)
+      .slice(0, 10)
       .map((p) => ({
         product: p.product,
         mae: Math.round(p.mae * 10) / 10,
@@ -697,7 +720,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   const ydayDate = new Date(new Date(date + "T00:00:00Z").getTime() - 86400_000)
     .toISOString()
     .slice(0, 10);
-  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, slackRecent, aljada, iaAccuracy] =
+  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, vipsAtRisk, slackRecent, aljada, iaAccuracy] =
     await Promise.all([
       fetchDaily(date),
       fetchCronStatus(),
@@ -707,6 +730,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       fetchLifecycle(),
       fetchTopCustomers(date),
       fetchTopCustomers(ydayDate),
+      fetchVipsAtRisk(),
       fetchSlackRecent(),
       fetchAlJada(),
       fetchIaAccuracy(),
@@ -900,6 +924,24 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
     }
   } catch (e) {
     console.warn("[adapter:top_customers]", e);
+  }
+
+  try {
+    if (vipsAtRisk && vipsAtRisk.customers) {
+      snap.vips_at_risk = vipsAtRisk.customers.map((c) => ({
+        initials: c.initials,
+        name: cleanVipName(c.name) || c.name,
+        lifetime: c.lifetime,
+        visits_45d: c.visits_45d,
+        amt_45d: Math.round(c.amt_45d),
+        last_visit: c.last_visit,
+        days_silent: c.days_silent,
+      }));
+    } else {
+      snap.vips_at_risk = [];
+    }
+  } catch (e) {
+    console.warn("[adapter:vips_at_risk]", e);
   }
 
   try {
