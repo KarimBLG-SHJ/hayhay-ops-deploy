@@ -5,7 +5,6 @@ import { HeroCurve } from "./components/HeroCurve";
 import { AgentsGrid } from "./components/AgentsGrid";
 import { ProductsRow } from "./components/ProductsRow";
 import { RightRail } from "./components/RightRail";
-import { BottomRow } from "./components/BottomRow";
 
 export default function App() {
   const snap = useSnapshot(60_000);
@@ -18,7 +17,6 @@ export default function App() {
         <HeroCurve hero={snap.hero} />
         <AgentsGrid snap={snap} />
         <ProductsRow snap={snap} />
-        <BottomRow snap={snap} />
       </main>
       <RightRail snap={snap} />
     </div>

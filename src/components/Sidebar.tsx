@@ -33,6 +33,13 @@ function formatDate(d: Date) {
   return `${day} ${d.getDate()} ${MONTHS_FR[d.getMonth()]}`;
 }
 
+function fmtDuration(s: number): string {
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  if (h > 0) return `${h}h${String(m).padStart(2, "0")}m`;
+  return `${m}m`;
+}
+
 interface Props {
   snap: Snapshot;
 }
@@ -44,9 +51,20 @@ export function Sidebar({ snap }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
+  const { supervisor, lifecycle_breakdown, sector_yield } = snap;
+  const [sessionS, setSessionS] = useState(supervisor.uptime_session_s);
+  useEffect(() => {
+    setSessionS(supervisor.uptime_session_s);
+    const id = window.setInterval(() => setSessionS((s) => s + 15), 15000);
+    return () => window.clearInterval(id);
+  }, [supervisor.uptime_session_s]);
+
   const tempTag = snap.context.tags.find((t) => /°C/.test(t.k));
   const tempStr = tempTag ? tempTag.k : "34°C";
   const weatherStr = `☀️ ${tempStr} SHARJAH`;
+
+  const topCats = sector_yield.slice(0, 3);
+  const lc = lifecycle_breakdown;
 
   return (
     <aside className="sidebar">
@@ -103,6 +121,57 @@ export function Sidebar({ snap }: Props) {
           </div>
         </div>
         <div className="clock-date">{formatDate(now)}</div>
+      </div>
+
+      {/* Compact stats (ex-BottomRow) */}
+      <div className="sidebar-stats">
+        <div className="sb-stat">
+          <div className="sb-stat-label">Session</div>
+          <div className="sb-stat-value">{fmtDuration(sessionS)}</div>
+          <div className="sb-stat-sub"><span className="live-dot-green" />Agent actif</div>
+        </div>
+
+        <div className="sb-stat-grid">
+          <div className="sb-stat-mini">
+            <div className="sb-stat-label">Appels API</div>
+            <div className="sb-stat-value">{supervisor.api_calls.toLocaleString()}</div>
+          </div>
+          <div className="sb-stat-mini">
+            <div className="sb-stat-label">Slack</div>
+            <div className="sb-stat-value">{supervisor.slack_posts}</div>
+          </div>
+        </div>
+
+        <div className="sb-stat">
+          <div className="sb-stat-label">Catalogue</div>
+          <div className="sb-stat-value">{lc?.total ?? "—"}</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 4 }}>
+            {lc?.zombie_count ? (
+              <span className="sb-chip sb-chip-pink">{lc.zombie_count} zombies</span>
+            ) : null}
+            {lc?.by_status?.new_launch ? (
+              <span className="sb-chip sb-chip-mint">{lc.by_status.new_launch} new</span>
+            ) : null}
+          </div>
+        </div>
+
+        {topCats.length > 0 && (
+          <div className="sb-stat">
+            <div className="sb-stat-label">Top Catégories</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 4 }}>
+              {topCats.map((c) => (
+                <div key={c.name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontFamily: 'Nunito', fontSize: 10, fontWeight: 700, color: 'var(--text-2)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                    {c.name}
+                  </span>
+                  <span style={{ fontFamily: 'JetBrains Mono', fontSize: 10, fontWeight: 700, color: 'var(--text)', flexShrink: 0 }}>
+                    {c.ca} AED
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

@@ -222,6 +222,66 @@
   border: 1px solid var(--line);
   border-radius: 14px;
 }
+
+/* Sidebar compact stats (ex-BottomRow) */
+.sidebar-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+.sb-stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.sb-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.sb-stat-mini {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+.sb-stat-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.sb-stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.sb-stat-sub {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.sb-chip {
+  font-size: 9px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+.sb-chip-pink { background: #FFE4EA; color: var(--pink-dk); }
+.sb-chip-mint { background: #D9F4E6; color: var(--mint-dk); }
 .clock-time {
   font-family: 'JetBrains Mono', monospace;
   font-size: 20px;
