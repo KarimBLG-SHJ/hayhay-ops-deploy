@@ -85,7 +85,7 @@ function sectorsFromDaily(d: DailyResponse): SectorYieldRow[] {
     .map(([name, v]) => ({ name: name.toUpperCase(), ca: Math.round(v.revenue), tx: v.qty }))
     .filter((r) => r.ca > 0)
     .sort((a, b) => b.ca - a.ca)
-    .slice(0, 10);
+    .slice(0, 8);
   return rows;
 }
 
@@ -456,7 +456,7 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
   }
   return scored
     .sort((a, b) => b.delta - a.delta)
-    .slice(0, 10)
+    .slice(0, 8)
     .map(({ p, delta }) => ({
       name: p.primary,
       delta,
@@ -478,7 +478,7 @@ function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
   }
   return scored
     .sort((a, b) => a.delta - b.delta)
-    .slice(0, 10)
+    .slice(0, 8)
     .map(({ p, delta }) => ({
       name: p.primary,
       delta,
@@ -693,7 +693,7 @@ async function fetchIaAccuracy(): Promise<IaAccuracy | null> {
     const topProducts = (prodRes.products || [])
       .filter((p) => p.n_days >= 5)
       .sort((a, b) => b.mae - a.mae)
-      .slice(0, 10)
+      .slice(0, 8)
       .map((p) => ({
         product: p.product,
         mae: Math.round(p.mae * 10) / 10,
@@ -719,7 +719,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   const date = todayUAE();
   const ydayDate = new Date(new Date(date + "T00:00:00Z").getTime() - 86400_000)
     .toISOString()
-    .slice(0, 10);
+    .slice(0, 8);
   const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, vipsAtRisk, slackRecent, aljada, iaAccuracy] =
     await Promise.all([
       fetchDaily(date),
