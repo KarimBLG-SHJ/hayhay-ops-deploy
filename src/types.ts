@@ -147,6 +147,11 @@ export interface Snapshot {
   day_split_pct?: number;
   aljada?: AlJadaScore;
   ia_accuracy?: IaAccuracy;
+  perf_scores?: {
+    cuisine: number;   // avg sell_through_pct du batch (0-100)
+    clients: number;   // CA today / target (0-100, capped)
+    stocks: number;    // 100 - waste_rate (0-100)
+  };
 }
 
 export interface StreamEvent {

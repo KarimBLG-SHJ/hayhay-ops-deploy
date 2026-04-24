@@ -261,10 +261,18 @@ interface BatchProduct {
   sell_through_pct?: number;
 }
 
+interface BatchSummary {
+  total_batch_qty?: number;
+  total_waste_qty?: number;
+  total_waste_aed?: number;
+  waste_rate_pct?: number;
+}
+
 interface BatchResponse {
   date: string;
   available?: boolean;
   products?: BatchProduct[];
+  summary?: BatchSummary;
 }
 
 async function fetchBatch(date: string): Promise<BatchResponse | null> {
@@ -675,12 +683,16 @@ async function fetchIaAccuracy(): Promise<IaAccuracy | null> {
 // Each adapter runs in its own try/catch so one failure never poisons the rest.
 export async function buildLiveSnapshot(): Promise<Snapshot> {
   const date = todayUAE();
-  const [daily, cronStatus, forecast, batch, lifecycle, topCustomers, slackRecent, aljada, iaAccuracy] =
+  const ydayDate = new Date(new Date(date + "T00:00:00Z").getTime() - 86400_000)
+    .toISOString()
+    .slice(0, 10);
+  const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, slackRecent, aljada, iaAccuracy] =
     await Promise.all([
       fetchDaily(date),
       fetchCronStatus(),
       fetchForecast(),
       fetchBatch(date),
+      fetchBatch(ydayDate),
       fetchLifecycle(),
       fetchTopCustomers(date),
       fetchSlackRecent(),
@@ -742,16 +754,55 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       };
 
       // Day split from morning/afternoon revenue
+      // Si l'après-midi/soir ne sont pas encore démarrés aujourd'hui, on tombe
+      // back sur la veille complète pour éviter l'effet "figé 100/0" en matinée.
       const morning = daily.kpis.morning_revenue ?? 0;
       const afternoon = daily.kpis.afternoon_revenue ?? 0;
       const evening = daily.kpis.evening_revenue ?? 0;
       const dayTotal = morning + afternoon + evening;
-      if (dayTotal > 0) {
+      if (dayTotal > 0 && afternoon + evening > 0) {
         snap.day_split_pct = Math.round((morning / dayTotal) * 100);
+      } else {
+        // Fetch yesterday's daily for a meaningful split
+        try {
+          const ydayDaily = await fetchDaily(ydayDate);
+          if (ydayDaily) {
+            const ym = ydayDaily.kpis.morning_revenue ?? 0;
+            const ya = ydayDaily.kpis.afternoon_revenue ?? 0;
+            const ye = ydayDaily.kpis.evening_revenue ?? 0;
+            const yt = ym + ya + ye;
+            if (yt > 0) snap.day_split_pct = Math.round((ym / yt) * 100);
+          }
+        } catch {}
       }
       snap.channel_mix = channelMixFromDaily(daily);
       const liveSectors = sectorsFromDaily(daily);
       if (liveSectors.length > 0) snap.sector_yield = liveSectors;
+
+      // Performance Globale — 3 real signals + Agents IA uptime (computed in component)
+      // Source batch = aujourd'hui si rempli, sinon veille (batch = clôture J-1 le matin J)
+      const activeBatch =
+        batch?.products && batch.products.length > 0 ? batch : batchYday;
+      let cuisine = 0;
+      let stocks = 0;
+      if (activeBatch?.products && activeBatch.products.length > 0) {
+        const ps = activeBatch.products;
+        const avgSt =
+          ps.reduce((s, p) => s + (p.sell_through_pct ?? 0), 0) / ps.length;
+        cuisine = Math.round(Math.max(0, Math.min(100, avgSt)));
+        const wasteRate =
+          activeBatch.summary?.waste_rate_pct ??
+          (() => {
+            const tb = ps.reduce((s, p) => s + (p.batch_qty ?? 0), 0);
+            const tw = ps.reduce((s, p) => s + (p.waste_qty ?? 0), 0);
+            return tb > 0 ? (tw / tb) * 100 : 0;
+          })();
+        stocks = Math.round(Math.max(0, Math.min(100, 100 - wasteRate)));
+      }
+      // Clients = CA today / target 2500 AED (capped)
+      const rev = daily.kpis.revenue ?? 0;
+      const clients = Math.round(Math.max(0, Math.min(100, (rev / 2500) * 100)));
+      snap.perf_scores = { cuisine, clients, stocks };
     }
   } catch (e) {
     console.warn("[adapter:daily]", e);

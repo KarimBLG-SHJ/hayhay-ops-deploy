@@ -81,7 +81,7 @@ function DonutChart({ slices }: { slices: { k: string; pct: number; color: strin
 interface Props { snap: Snapshot }
 
 export function RightRail({ snap }: Props) {
-  const { day_split_pct, top_vips, channel_mix, kpis } = snap;
+  const { day_split_pct, top_vips, channel_mix, kpis, perf_scores } = snap;
 
   const amPct = day_split_pct ?? 60;
   const pmPct = 100 - amPct;
@@ -96,14 +96,19 @@ export function RightRail({ snap }: Props) {
   const posPct = mixSlices.find((s) => s.k === "POS")?.pct ?? 0;
 
   const uptime = kpis.agents_live.uptime_pct;
+  const cuisine = perf_scores?.cuisine ?? 0;
+  const clients = perf_scores?.clients ?? 0;
+  const stocks = perf_scores?.stocks ?? 0;
   const perfBars = [
-    { k: "Agents IA",    v: uptime },
-    { k: "Cuisine",      v: 82 },
-    { k: "Clients",      v: 67 },
-    { k: "Stocks",       v: 74 },
+    { k: "Agents IA",    v: uptime },   // uptime crons /cron/status
+    { k: "Cuisine",      v: cuisine },  // avg sell_through_pct batch
+    { k: "Clients",      v: clients },  // CA today / target 2500 AED
+    { k: "Stocks",       v: stocks },   // 100 - waste_rate batch
   ];
+  // Global ring = moyenne des 4 signaux
+  const globalScore = Math.round((uptime + cuisine + clients + stocks) / 4);
   const ringCirc = 2 * Math.PI * 30;
-  const ringPct = uptime / 100;
+  const ringPct = globalScore / 100;
 
   return (
     <aside className="right-col">
@@ -212,7 +217,7 @@ export function RightRail({ snap }: Props) {
               />
             </svg>
             <div className="perf-ring-center">
-              <div className="perf-ring-val">{Math.round(uptime)}</div>
+              <div className="perf-ring-val">{globalScore}</div>
               <div className="perf-ring-lab">/100</div>
             </div>
           </div>
