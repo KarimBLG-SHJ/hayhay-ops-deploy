@@ -433,11 +433,13 @@ function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
 function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {
   const end = r.db_end;
   const DEAD = new Set(["discontinued", "zombie"]);
+  // API uses Unicode minus "−" (U+2212), not ASCII "-" — accept both.
+  const DECLINE = new Set(["--", "-", "−−", "−"]);
   return r.products
     .filter(
       (p) =>
         p.is_active &&
-        (p.trend === "--" || p.trend === "-") &&
+        DECLINE.has(p.trend) &&
         (p.days_silent ?? 999) < 7 &&
         !DEAD.has(p.phase ?? p.status ?? ""),
     )
