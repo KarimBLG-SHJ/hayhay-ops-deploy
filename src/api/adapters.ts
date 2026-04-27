@@ -446,23 +446,44 @@ function compute7dSliding(
 function lifecycleGrowthFrom(r: LifecycleResponse): LifecycleItem[] {
   const end = r.db_end;
   const DEAD = new Set(["discontinued", "zombie"]);
-  const scored: { p: LifecycleProduct; delta: number }[] = [];
+  const growth: { p: LifecycleProduct; delta: number }[] = [];
+  const launches: { p: LifecycleProduct; last7: number }[] = [];
+
   for (const p of r.products) {
     if (!p.is_active) continue;
     if (DEAD.has(p.phase ?? p.status ?? "")) continue;
     const s = compute7dSliding(p.daily, end);
-    if (!s || s.delta <= 0) continue;
-    scored.push({ p, delta: s.delta });
+    if (!s) continue;
+    if (p.phase === "new_launch") {
+      // New products have prev7=0 → synthetic delta (500) is meaningless for ranking.
+      // Rank them by actual avg daily volume instead, and always put them after real growers.
+      if (s.last7 > 0) launches.push({ p, last7: s.last7 });
+    } else {
+      if (s.delta > 0) growth.push({ p, delta: s.delta });
+    }
   }
-  return scored
-    .sort((a, b) => b.delta - a.delta)
-    .slice(0, 8)
-    .map(({ p, delta }) => ({
+
+  growth.sort((a, b) => b.delta - a.delta);
+  launches.sort((a, b) => b.last7 - a.last7);
+
+  const growthItems: LifecycleItem[] = growth.slice(0, 8).map(({ p, delta }) => ({
+    name: p.primary,
+    delta,
+    stage: "growth",
+    spark: sparkFromDaily(p.daily, end, 14),
+  }));
+
+  // Fill remaining slots with new launches (delta = rounded avg u/j, displayed differently in UI)
+  const launchItems: LifecycleItem[] = launches
+    .slice(0, Math.max(0, 8 - growthItems.length))
+    .map(({ p, last7 }) => ({
       name: p.primary,
-      delta,
-      stage: (p.phase === "new_launch" ? "launch" : "growth") as "launch" | "growth",
+      delta: Math.round(last7),
+      stage: "launch",
       spark: sparkFromDaily(p.daily, end, 14),
     }));
+
+  return [...growthItems, ...launchItems];
 }
 
 function lifecycleDeclineFrom(r: LifecycleResponse): LifecycleItem[] {

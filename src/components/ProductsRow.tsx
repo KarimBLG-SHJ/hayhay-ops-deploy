@@ -272,7 +272,7 @@ function ProductList({
               </div>
             </div>
             <div className={`product-delta ${positive ? "pos" : "neg"}`}>
-              {positive ? "+" : ""}{item.delta}%
+              {item.stage === "launch" ? `${item.delta} u/j` : `${positive ? "+" : ""}${item.delta}%`}
             </div>
           </div>
         ))}
