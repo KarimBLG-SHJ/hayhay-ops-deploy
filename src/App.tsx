@@ -14,7 +14,7 @@ export default function App() {
       <Sidebar snap={snap} />
       <main className="main-col">
         <KpisRow snap={snap} />
-        <HeroCurve hero={snap.hero} />
+        <HeroCurve hero={snap.hero} loading={snap.loading} />
         <AgentsGrid snap={snap} />
         <ProductsRow snap={snap} />
       </main>

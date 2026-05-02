@@ -277,8 +277,9 @@ function ProductList({
           </div>
         ))}
         {items.length === 0 && (
-          <div style={{ padding: '12px 0', color: 'var(--muted)', fontSize: 11, fontFamily: 'Nunito', fontWeight: 700 }}>
-            Données en cours…
+          <div className="tile-loading">
+            <span className="tile-spinner" />
+            <span>Chargement…</span>
           </div>
         )}
       </div>
@@ -356,7 +357,7 @@ export function ProductsRow({ snap }: Props) {
         <StarCard item={star} items={growth} />
       ) : (
         <div className="star-card" style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: 'var(--muted)', fontSize: 12, fontFamily: 'Nunito', fontWeight: 700 }}>Données en cours…</div>
+          <div className="tile-loading"><span className="tile-spinner lg" /></div>
         </div>
       )}
     </div>

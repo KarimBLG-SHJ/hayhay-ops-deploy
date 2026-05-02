@@ -1,9 +1,16 @@
 import { useRef, useState } from "react";
 import type { HeroSnapshot } from "../types";
 
-interface Props { hero: HeroSnapshot }
+interface Props { hero: HeroSnapshot; loading?: boolean }
 
-export function HeroCurve({ hero }: Props) {
+export function HeroCurve({ hero, loading }: Props) {
+  if (loading) {
+    return (
+      <div className="hero-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 280 }}>
+        <div className="tile-loading"><span className="tile-spinner lg" /><span>Chargement…</span></div>
+      </div>
+    );
+  }
   const svgRef = useRef<SVGSVGElement>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; label: string; aed: number } | null>(null);
 

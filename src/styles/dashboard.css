@@ -358,6 +358,33 @@
 .kpi-sub.up { color: var(--mint-dk); }
 .kpi-sub.down { color: var(--red); }
 
+/* Loading spinner — used while the first live fetch is in flight,
+   so we never flash phantom mock products. */
+.tile-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  border-top-color: var(--text-2);
+  animation: tile-spin 0.8s linear infinite;
+}
+.tile-spinner.lg { width: 28px; height: 28px; border-width: 3px; }
+.tile-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--muted);
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 12px 0;
+}
+@keyframes tile-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* promo card */
 .promo-card {
   background: linear-gradient(160deg, #FFE4D0 0%, #FFD8B8 100%);

@@ -1,5 +1,41 @@
 import type { Snapshot } from "../types";
 
+// Empty snapshot used as initial state in live mode — zero values + empty arrays
+// so we never flash phantom products (vanilla latte, Camel Paw Pistachio…) before
+// the real API responds. Components show their "Données en cours…" state instead.
+export const EMPTY_SNAPSHOT: Snapshot = {
+  loading: true,
+  clock_uae_offset_min: 240,
+  kpis: {
+    ca_today:    { value: 0, currency: "AED", target: 2500, pct: 0, delta_vs_yesterday_pct: 0 },
+    orders:      { value: 0, delta_vs_yesterday: 0 },
+    avg_ticket:  { value: 0, currency: "AED" },
+    waste_pct:   { value: 0, ceiling: 6.0 },
+    agents_live: { value: 0, total: 8, uptime_pct: 0 },
+  },
+  hero: {
+    now_hour: 0,
+    start_hour: 6,
+    end_hour: 20,
+    target: 2500,
+    current_ca: 0,
+    shape: [],
+  },
+  signal_radar: [],
+  signal_pool: [],
+  agent_briefings: [],
+  market_tape: [],
+  top_vips: [],
+  channel_mix: { POS: 0, Talabat: 0, Shop: 0, Keeta: 0 },
+  sector_yield: [],
+  lifecycle_growth: [],
+  lifecycle_decline: [],
+  context: { density: 0, n_signals: 0, tags: [] },
+  cron_queue: [],
+  supervisor: { uptime_session_s: 0, api_calls: 0, slack_posts: 0 },
+  ticker: [],
+};
+
 export const SNAPSHOT_MOCK: Snapshot = {
   clock_uae_offset_min: 240,
   kpis: {

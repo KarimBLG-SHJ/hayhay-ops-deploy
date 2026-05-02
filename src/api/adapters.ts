@@ -16,7 +16,7 @@ import type {
   TickerItem,
   TopVip,
 } from "../types";
-import { SNAPSHOT_MOCK } from "../mocks/snapshot.mock";
+import { EMPTY_SNAPSHOT, SNAPSHOT_MOCK } from "../mocks/snapshot.mock";
 import type { AlJadaScore, IaAccuracy } from "../types";
 import { ALJADA, COACH, CONTEXTOS, DASHBOARD, fetchJson, todayUAE } from "./client";
 
@@ -774,7 +774,11 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
       fetchIaAccuracy(),
     ]);
 
-  const snap: Snapshot = { ...SNAPSHOT_MOCK };
+  // Start from EMPTY (zeros + empty arrays) — never from MOCK — so a failing
+  // fetch never bleeds phantom products into the live UI. SNAPSHOT_MOCK.hero.shape
+  // is still used a few lines below as a forecast template (curve only, no names).
+  const snap: Snapshot = JSON.parse(JSON.stringify(EMPTY_SNAPSHOT));
+  snap.loading = false;
 
   try {
     if (daily) {

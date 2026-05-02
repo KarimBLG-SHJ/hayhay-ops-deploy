@@ -35,6 +35,7 @@ export function KpisRow({ snap }: Props) {
   const orders = snap.kpis.orders;
   const ticket = snap.kpis.avg_ticket;
   const caWeek = snap.kpis.ca_week;
+  const loading = !!snap.loading;
 
   const caTarget = 2500;
   const caPct = Math.round((ca.value / caTarget) * 100);
@@ -44,40 +45,64 @@ export function KpisRow({ snap }: Props) {
       {/* CA du jour */}
       <div className="kpi-card">
         <div className="kpi-label">CA du jour</div>
-        <div className="kpi-value">{ca.value.toLocaleString()}<span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span></div>
-        <Spark data={makeSpark(11, 18, 1)} color="var(--mint)" />
-        <div className={`kpi-sub ${caPct >= 100 ? "up" : ""}`}>▲ {caPct}% vs objectif</div>
+        {loading ? (
+          <div className="kpi-value"><span className="tile-spinner lg" /></div>
+        ) : (
+          <>
+            <div className="kpi-value">{ca.value.toLocaleString()}<span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span></div>
+            <Spark data={makeSpark(11, 18, 1)} color="var(--mint)" />
+            <div className={`kpi-sub ${caPct >= 100 ? "up" : ""}`}>▲ {caPct}% vs objectif</div>
+          </>
+        )}
       </div>
 
       {/* Commandes */}
       <div className="kpi-card">
         <div className="kpi-label">Commandes</div>
-        <div className="kpi-value">{orders.value}</div>
-        <Spark data={makeSpark(13, 18, 1)} color="var(--pink-dk)" />
-        <div className="kpi-sub up">
-          {orders.delta_vs_yesterday >= 0 ? "▲" : "▼"} {Math.abs(orders.delta_vs_yesterday)} vs J−1
-        </div>
+        {loading ? (
+          <div className="kpi-value"><span className="tile-spinner lg" /></div>
+        ) : (
+          <>
+            <div className="kpi-value">{orders.value}</div>
+            <Spark data={makeSpark(13, 18, 1)} color="var(--pink-dk)" />
+            <div className="kpi-sub up">
+              {orders.delta_vs_yesterday >= 0 ? "▲" : "▼"} {Math.abs(orders.delta_vs_yesterday)} vs J−1
+            </div>
+          </>
+        )}
       </div>
 
       {/* Ticket moyen */}
       <div className="kpi-card">
         <div className="kpi-label">Ticket moyen</div>
-        <div className="kpi-value">{ticket.value.toFixed(1)}<span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span></div>
-        <Spark data={makeSpark(15, 18, 0)} color="var(--purple)" />
-        <div className="kpi-sub">Cible 30 AED</div>
+        {loading ? (
+          <div className="kpi-value"><span className="tile-spinner lg" /></div>
+        ) : (
+          <>
+            <div className="kpi-value">{ticket.value.toFixed(1)}<span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span></div>
+            <Spark data={makeSpark(15, 18, 0)} color="var(--purple)" />
+            <div className="kpi-sub">Cible 30 AED</div>
+          </>
+        )}
       </div>
 
       {/* CA Semaine */}
       <div className="kpi-card">
         <div className="kpi-label">CA Semaine</div>
-        <div className="kpi-value">
-          {caWeek ? Math.round(caWeek.total).toLocaleString() : "—"}
-          <span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span>
-        </div>
-        <Spark data={caWeek ? caWeek.days.map((d) => d.ca) : makeSpark(19, 7, 0)} color="var(--gold)" />
-        <div className="kpi-sub">
-          Moy. {caWeek ? Math.round(caWeek.avg_daily).toLocaleString() : "—"} AED/j
-        </div>
+        {loading ? (
+          <div className="kpi-value"><span className="tile-spinner lg" /></div>
+        ) : (
+          <>
+            <div className="kpi-value">
+              {caWeek ? Math.round(caWeek.total).toLocaleString() : "—"}
+              <span style={{ fontSize: 14, color: 'var(--muted)' }}> AED</span>
+            </div>
+            <Spark data={caWeek ? caWeek.days.map((d) => d.ca) : makeSpark(19, 7, 0)} color="var(--gold)" />
+            <div className="kpi-sub">
+              Moy. {caWeek ? Math.round(caWeek.avg_daily).toLocaleString() : "—"} AED/j
+            </div>
+          </>
+        )}
       </div>
 
       {/* Promo card */}

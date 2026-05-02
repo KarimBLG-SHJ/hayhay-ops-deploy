@@ -136,8 +136,9 @@ export function RightRail({ snap }: Props) {
         <div className="rail-title">Top VIP — Aujourd'hui</div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {top_vips.length === 0 && (
-            <div style={{ color: 'var(--muted)', fontSize: 11, fontFamily: 'Nunito', fontWeight: 700 }}>
-              Données en cours…
+            <div className="tile-loading">
+              <span className="tile-spinner" />
+              <span>Chargement…</span>
             </div>
           )}
           {top_vips.map((v, i) => (

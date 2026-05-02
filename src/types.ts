@@ -138,6 +138,8 @@ export interface IaAccuracy {
 }
 
 export interface Snapshot {
+  /** True until the first live fetch resolves. Components use it to render spinners over zeroed numeric tiles. */
+  loading?: boolean;
   clock_uae_offset_min: number;
   kpis: KpiSnapshot;
   lifecycle_breakdown?: LifecycleBreakdown;
