@@ -1240,3 +1240,200 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ── Reconciliation panel ─────────────────────────────────────────────────── */
+.recon-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 18px 14px;
+  box-shadow: 0 1px 2px rgba(26,26,23,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+.recon-head h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 0 0 4px;
+}
+.recon-sub {
+  font-size: 12px;
+  color: var(--text-3);
+}
+.recon-error {
+  color: #ef5757;
+  font-size: 12px;
+}
+.recon-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.recon-day-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.recon-day-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.recon-day-date .dn {
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+}
+.recon-day-date .dd {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text);
+}
+.recon-day-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 8px;
+  font-size: 11px;
+}
+.recon-day-grid div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.recon-day-grid b {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  color: var(--text);
+  font-size: 13px;
+}
+.recon-day-grid span {
+  color: var(--text-3);
+  font-size: 10px;
+}
+.recon-day-delta {
+  text-align: center;
+  padding: 5px 6px;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+.recon-day-delta small {
+  display: block;
+  font-weight: 600;
+  font-size: 9px;
+  opacity: 0.85;
+  margin-top: 1px;
+}
+.recon-heatmap-wrap {
+  overflow-x: auto;
+}
+.recon-heatmap {
+  border-collapse: separate;
+  border-spacing: 3px;
+  width: 100%;
+  font-size: 11px;
+}
+.recon-heatmap th {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-3);
+  text-align: left;
+  padding: 4px 6px;
+}
+.recon-heatmap th.day-col,
+.recon-heatmap th.rev-col {
+  text-align: center;
+}
+.recon-heatmap td {
+  padding: 6px 4px;
+  text-align: center;
+  border-radius: 6px;
+}
+.recon-heatmap td.prod-col {
+  text-align: left;
+  background: rgba(255,255,255,0.02);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  color: var(--text);
+  padding: 4px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recon-heatmap td.rev-col {
+  background: rgba(255,255,255,0.02);
+  color: var(--text-2);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.cell-col {
+  position: relative;
+  cursor: default;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  min-width: 56px;
+}
+.cell-tip {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a17;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  pointer-events: none;
+}
+.cell-tip b {
+  font-weight: 800;
+  margin-left: 4px;
+}
+.recon-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+.recon-legend i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+@media (max-width: 1100px) {
+  .recon-days { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 760px) {
+  .recon-days { grid-template-columns: repeat(2, 1fr); }
+}

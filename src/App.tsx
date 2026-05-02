@@ -4,6 +4,7 @@ import { KpisRow } from "./components/KpisRow";
 import { HeroCurve } from "./components/HeroCurve";
 import { AgentsGrid } from "./components/AgentsGrid";
 import { ProductsRow } from "./components/ProductsRow";
+import { ReconciliationPanel } from "./components/ReconciliationPanel";
 import { RightRail } from "./components/RightRail";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
         <HeroCurve hero={snap.hero} loading={snap.loading} />
         <AgentsGrid snap={snap} />
         <ProductsRow snap={snap} />
+        <ReconciliationPanel />
       </main>
       <RightRail snap={snap} />
     </div>
