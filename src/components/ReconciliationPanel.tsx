@@ -37,6 +37,40 @@ export function ReconciliationPanel() {
   const recon = useReconciliation(windowDays);
   const [hover, setHover] = useState<{ cid: string; date: string } | null>(null);
 
+  // Compute 7-day slow movers : per-canonical aggregation on the same data
+  // we already fetched. Filters mirror the coach endpoint defaults.
+  const slowMovers7d = useMemo(() => {
+    const agg: Record<string, {
+      received: number; sold: number; wasted: number; wastageAed: number;
+      receivedAed: number; revenue: number; days: number;
+    }> = {};
+    Object.values(recon.byDay).forEach((day) => {
+      day.rows.forEach((r) => {
+        const cid = r.canonical_id;
+        const recv = r.drive_received || 0;
+        if (recv <= 0) return;
+        const e = agg[cid] || { received: 0, sold: 0, wasted: 0, wastageAed: 0, receivedAed: 0, revenue: 0, days: 0 };
+        e.received     += recv;
+        e.sold         += r.foodics_qty || 0;
+        e.wasted       += Math.max(0, r.wastage_calc || 0);
+        e.wastageAed   += r.wastage_aed || 0;
+        e.receivedAed  += r.received_aed || 0;
+        e.revenue      += r.foodics_revenue || 0;
+        e.days         += 1;
+        agg[cid] = e;
+      });
+    });
+    return Object.entries(agg)
+      .filter(([, e]) => e.received >= 10 && (e.sold / e.received * 100) < 50)
+      .map(([cid, e]) => ({
+        cid,
+        sellThrough: Math.round(e.sold / e.received * 1000) / 10,
+        ...e,
+      }))
+      .sort((a, b) => b.wastageAed - a.wastageAed)
+      .slice(0, 5);
+  }, [recon.byDay]);
+
   // Build (top products by wastage AED 7j across the window) × (days)
   // Top is sorted by wastage AED so we surface what costs the most to throw away.
   const { topProducts, byDay, totals } = useMemo(() => {
@@ -130,6 +164,40 @@ export function ReconciliationPanel() {
           );
         })}
       </div>
+
+      {/* Top 5 vrais flops 7j (cumul reçu/vendu/jeté avec sell-through < 50%) */}
+      {slowMovers7d.length > 0 && (
+        <div className="recon-slow-movers">
+          <div className="recon-slow-head">
+            <span>🔥 Top 5 Vrais Flops 7j</span>
+            <span className="recon-slow-total">
+              {fmt(slowMovers7d.reduce((s, m) => s + m.wastageAed, 0), 0)} د.إ jetés total
+            </span>
+          </div>
+          <table className="recon-slow-table">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Sell-through</th>
+                <th>Reçus 7j</th>
+                <th>Jetés 7j</th>
+                <th>Coût AED 7j</th>
+              </tr>
+            </thead>
+            <tbody>
+              {slowMovers7d.map((m, i) => (
+                <tr key={m.cid}>
+                  <td><span className="rank">{i + 1}</span> {m.cid}</td>
+                  <td className={`st ${m.sellThrough < 20 ? 'bad' : 'warn'}`}>{fmt(m.sellThrough, 1)}%</td>
+                  <td>{fmt(m.received)}</td>
+                  <td>{fmt(m.wasted)}</td>
+                  <td className="aed">{fmt(m.wastageAed, 0)} د.إ</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Heatmap product × jour */}
       <div className="recon-heatmap-wrap">
