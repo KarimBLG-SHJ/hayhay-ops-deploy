@@ -1307,6 +1307,15 @@
   gap: 4px 8px;
   font-size: 11px;
 }
+.recon-day-aed-cell {
+  grid-column: span 2;
+  border-top: 1px solid var(--line);
+  padding-top: 4px;
+  margin-top: 2px;
+}
+.recon-day-aed-cell b {
+  color: #ef9b57 !important;
+}
 .recon-day-grid div {
   display: flex;
   flex-direction: column;

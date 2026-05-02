@@ -37,19 +37,25 @@ export function ReconciliationPanel() {
   const recon = useReconciliation(windowDays);
   const [hover, setHover] = useState<{ cid: string; date: string } | null>(null);
 
-  // Build (top products by total revenue across the window) × (days)
+  // Build (top products by wastage AED 7j across the window) × (days)
+  // Top is sorted by wastage AED so we surface what costs the most to throw away.
   const { topProducts, byDay, totals } = useMemo(() => {
     const totalRev: Record<string, number> = {};
     const totalSold: Record<string, number> = {};
+    const totalWastageAed: Record<string, number> = {};
     Object.values(recon.byDay).forEach((day) => {
       day.rows.forEach((r) => {
         const cid = r.canonical_id;
         totalRev[cid] = (totalRev[cid] || 0) + (r.foodics_revenue || 0);
         totalSold[cid] = (totalSold[cid] || 0) + (r.foodics_qty || 0);
+        totalWastageAed[cid] = (totalWastageAed[cid] || 0) + (r.wastage_aed || 0);
       });
     });
+    const hasAedSignal = Object.values(totalWastageAed).some((v) => v > 0);
     const top = Object.keys(totalRev)
-      .sort((a, b) => (totalRev[b] || 0) - (totalRev[a] || 0))
+      .sort((a, b) => hasAedSignal
+        ? (totalWastageAed[b] || 0) - (totalWastageAed[a] || 0)
+        : (totalRev[b] || 0) - (totalRev[a] || 0))
       .slice(0, TOP_N);
 
     const byDay: Record<string, Record<string, ReconRow>> = {};
@@ -59,7 +65,7 @@ export function ReconciliationPanel() {
       byDay[date] = m;
     });
 
-    return { topProducts: top, byDay, totals: { rev: totalRev, sold: totalSold } };
+    return { topProducts: top, byDay, totals: { rev: totalRev, sold: totalSold, wastageAed: totalWastageAed } };
   }, [recon.byDay]);
 
   const dates = recon.days.map((d) => d.business_day); // newest first → reverse for left-to-right chrono
@@ -111,6 +117,11 @@ export function ReconciliationPanel() {
                 <div><b>{fmt(agg.sold_qty)}</b><span>vendus</span></div>
                 <div><b>{fmt(agg.received)}</b><span>reçus</span></div>
                 <div><b>{fmt(agg.wastage_calc_total)}</b><span>wast. calc</span></div>
+                {agg.wastage_aed_total !== undefined && (
+                  <div className="recon-day-aed-cell">
+                    <b>{fmt(agg.wastage_aed_total)} د.إ</b><span>jeté COGS</span>
+                  </div>
+                )}
               </div>
               <div className="recon-day-delta" style={{ background: c.bg, color: c.fg }}>
                 Δ {delta > 0 ? "+" : ""}{fmt(delta)} <small>saisi vs calculé</small>
@@ -125,8 +136,9 @@ export function ReconciliationPanel() {
         <table className="recon-heatmap">
           <thead>
             <tr>
-              <th className="prod-col">Produit (top {TOP_N} par CA)</th>
+              <th className="prod-col">Produit (top {TOP_N} par wastage AED)</th>
               <th className="rev-col">CA 7j</th>
+              <th className="rev-col">Jeté 7j</th>
               {chronoDates.map((d) => (
                 <th key={d} className="day-col">{shortDate(d)}</th>
               ))}
@@ -137,6 +149,9 @@ export function ReconciliationPanel() {
               <tr key={cid}>
                 <td className="prod-col">{cid}</td>
                 <td className="rev-col">{fmt(totals.rev[cid] || 0)} د.إ</td>
+                <td className="rev-col" style={{ color: (totals.wastageAed[cid] || 0) > 50 ? '#ef5757' : 'var(--text-2)' }}>
+                  {fmt(totals.wastageAed[cid] || 0)} د.إ
+                </td>
                 {chronoDates.map((d) => {
                   const r = byDay[d]?.[cid];
                   const c = deltaColor(r?.delta_saisi_calc ?? null);
@@ -158,9 +173,15 @@ export function ReconciliationPanel() {
                         <div className="cell-tip">
                           <div>vendu <b>{fmt(r.foodics_qty)}</b></div>
                           <div>reçu <b>{fmt(r.drive_received)}</b></div>
-                          <div>wast.calc <b>{fmt(r.wastage_calc)}</b></div>
+                          <div>wast.calc <b>{fmt(r.wastage_calc)}u</b></div>
+                          {r.wastage_aed !== null && r.wastage_aed !== undefined && r.wastage_aed > 0 && (
+                            <div>jeté COGS <b>{fmt(r.wastage_aed, 2)} د.إ</b></div>
+                          )}
                           <div>wast.saisi <b>{fmt(r.drive_wastage)}</b></div>
                           <div>SR <b>{fmt(r.sr_qty)}</b></div>
+                          {r.stockout_suspect && (
+                            <div style={{ color: '#ef5757' }}>⚠️ stockout suspect</div>
+                          )}
                         </div>
                       )}
                     </td>

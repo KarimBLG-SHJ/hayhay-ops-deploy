@@ -9,6 +9,9 @@ export interface ReconDayAgg {
   received: number;
   wastage_calc_total: number;
   wastage_saisi_total: number;
+  wastage_aed_total?: number;
+  received_aed_total?: number;
+  sold_aed_total?: number;
 }
 
 export interface ReconRow {
@@ -24,6 +27,10 @@ export interface ReconRow {
   wastage_calc: number | null;
   delta_saisi_calc: number | null;
   delta_sr_recv: number | null;
+  stockout_suspect?: boolean | null;
+  wastage_aed?: number | null;
+  received_aed?: number | null;
+  sold_aed?: number | null;
   raw_sr: string | null;
   raw_drive: string | null;
   raw_foodics: string | null;
