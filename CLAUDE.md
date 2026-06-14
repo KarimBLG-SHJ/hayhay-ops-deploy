@@ -71,7 +71,18 @@ Env vars available to override the proxy targets:
 - `CONTEXTOS_URL` (default `https://web-production-19efe.up.railway.app`)
 - `PORT` (set by Railway)
 
-To redeploy after code changes: `git push` from this repo (Railway auto-deploys via GitHub) or `railway up --detach` from this folder.
+**Deploy (working method — 2026-06):** GitHub auto-deploy is currently NOT firing
+(no Railway deployment is created on push to `main`). Deploy via CLI instead:
+
+```bash
+railway link -p 18d8ed44-8c51-45b5-bf30-d885beaaa1e2 -s hayhay-ops -e production
+railway up --detach
+```
+
+- Project `hayhay-ops` (id `18d8ed44-8c51-45b5-bf30-d885beaaa1e2`), service `hayhay-ops` (id `7abc16ad-5854-4296-8523-f9bfb580be7b`), workspace **kemilall's Projects**. The project also holds a second service `hayhay-portal` — always target `hayhay-ops`.
+- Still commit + push to GitHub for source history; just don't rely on it to deploy.
+- Verify after deploy: prod `index.html` should reference the new `dist/assets/index-*.js` hash (compare with the local `npm run build` output), and `/healthz` returns `{ok:true}`.
+- TODO: re-enable GitHub auto-deploy in Railway dashboard (service → Settings → Source → reconnect repo / enable Auto Deploy on `main`).
 
 ## Shell / routing (HayHay OS — Phase 1, done)
 
