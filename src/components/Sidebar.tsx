@@ -1,16 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Snapshot } from "../types";
-
-const NAV_ITEMS = [
-  { icon: "⬡", label: "Vue d'ensemble", badge: null, active: true },
-  { icon: "🤖", label: "Agents IA", badge: "8", active: false },
-  { icon: "🛒", label: "Commandes", badge: "24", active: false },
-  { icon: "📈", label: "Tickets & CA", badge: null, active: false },
-  { icon: "🍳", label: "Cuisine & Stocks", badge: null, active: false },
-  { icon: "👥", label: "Clients & VIP", badge: null, active: false },
-  { icon: "📋", label: "Rapports", badge: null, active: false },
-  { icon: "⚙️", label: "Paramètres", badge: null, active: false },
-];
+import { NAV_GROUPS } from "../shell/nav";
 
 const DAYS_FR = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 const MONTHS_FR = ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"];
@@ -42,9 +32,11 @@ function fmtDuration(s: number): string {
 
 interface Props {
   snap: Snapshot;
+  route: string;
+  onNavigate: (id: string) => void;
 }
 
-export function Sidebar({ snap }: Props) {
+export function Sidebar({ snap, route, onNavigate }: Props) {
   const [now, setNow] = useState(uaeNow());
   useEffect(() => {
     const id = window.setInterval(() => setNow(uaeNow()), 15000);
@@ -79,11 +71,25 @@ export function Sidebar({ snap }: Props) {
 
       {/* Nav */}
       <nav className="sidebar-nav">
-        {NAV_ITEMS.map((item) => (
-          <div key={item.label} className={`nav-item${item.active ? " active" : ""}`}>
-            <span className="nav-icon">{item.icon}</span>
-            {item.label}
-            {item.badge && <span className="nav-badge">{item.badge}</span>}
+        {NAV_GROUPS.map((group) => (
+          <div key={group.title ?? "_top"} className="nav-group">
+            {group.title && <div className="nav-group-title">{group.title}</div>}
+            {group.items.map((item) => {
+              const active = item.kind === "module" && item.id === route;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onNavigate(item.id)}
+                  className={`nav-item${active ? " active" : ""}${item.ready === false ? " soon" : ""}`}
+                >
+                  <span className="nav-icon">{item.icon}</span>
+                  {item.label}
+                  {item.kind === "external" && <span className="nav-ext">↗</span>}
+                  {item.badge && <span className="nav-badge">{item.badge}</span>}
+                </button>
+              );
+            })}
           </div>
         ))}
       </nav>

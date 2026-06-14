@@ -73,9 +73,19 @@ Env vars available to override the proxy targets:
 
 To redeploy after code changes: `git push` from this repo (Railway auto-deploys via GitHub) or `railway up --detach` from this folder.
 
-## Routes (planned, not yet wired)
+## Shell / routing (HayHay OS — Phase 1, done)
 
-Today the dashboard is single-page (Command Deck). Sub-routes are listed in the design handoff README and will be added with react-router-dom v6 when backend endpoints for each sub-view are ready.
+The app is now a multi-module shell, not a single page. Routing is a dependency-free
+hash router (`src/shell/useHashRoute.ts`); `#/<id>` selects the view. Nav registry lives
+in `src/shell/nav.ts` (`NAV_GROUPS`).
+
+- **cockpit** (`#/cockpit`, default) — the original Command Deck (KPIs + hero + agents + products + reconciliation + RightRail). Fully wired.
+- **module views** (`sales`, `cogs`, `talabat`, `stock`, `context`) — scaffolded via `src/shell/ModulePlaceholder.tsx`. `ready: false` until their native screen is built (Phase 2). When active, `.app` gets `.module-view` (drops the right rail, main col spans).
+- **external items** (`reports`, `hub`, `b2b`) — deep-link to standalone HayHay apps in a new tab; backends untouched.
+- **Coach IA dock** (`src/shell/CoachDock.tsx`) — persistent FAB bottom-right; opens a slide-over panel that embeds the coach chat-ui same-origin via `/api/coach/chat-ui`. Header `↗` opens it full-page.
+
+Phase 2 = replace each `ModulePlaceholder` with a native view consuming the existing APIs.
+Phase 3 = `/cockpit/summary` aggregation route (built from the Coach IA session, not here) + SSO + mobile.
 
 ## Why another sub-project in `hayhay management/`
 
