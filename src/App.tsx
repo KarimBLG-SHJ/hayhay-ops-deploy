@@ -9,6 +9,7 @@ import { RightRail } from "./components/RightRail";
 import { useHashRoute } from "./shell/useHashRoute";
 import { findItem } from "./shell/nav";
 import { ModulePlaceholder } from "./shell/ModulePlaceholder";
+import { SalesModule } from "./components/SalesModule";
 import { CoachDock } from "./shell/CoachDock";
 
 function Cockpit({ snap }: { snap: ReturnType<typeof useSnapshot> }) {
@@ -38,6 +39,8 @@ export default function App() {
       <Sidebar snap={snap} route={route} onNavigate={navigate} />
       {route === "cockpit" || !item ? (
         <Cockpit snap={snap} />
+      ) : route === "sales" ? (
+        <SalesModule snap={snap} />
       ) : (
         <ModulePlaceholder item={item} />
       )}
