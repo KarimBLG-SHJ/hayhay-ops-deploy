@@ -10,6 +10,7 @@ import { useHashRoute } from "./shell/useHashRoute";
 import { findItem } from "./shell/nav";
 import { ModulePlaceholder } from "./shell/ModulePlaceholder";
 import { SalesModule } from "./components/SalesModule";
+import { ContextModule } from "./components/ContextModule";
 import { CoachDock } from "./shell/CoachDock";
 
 function Cockpit({ snap }: { snap: ReturnType<typeof useSnapshot> }) {
@@ -41,6 +42,8 @@ export default function App() {
         <Cockpit snap={snap} />
       ) : route === "sales" ? (
         <SalesModule snap={snap} />
+      ) : route === "context" ? (
+        <ContextModule snap={snap} />
       ) : (
         <ModulePlaceholder item={item} />
       )}

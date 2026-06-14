@@ -44,7 +44,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     title: "Externe",
     items: [
-      { id: "context", label: "Context", icon: "☁️", kind: "module", ready: false },
+      { id: "context", label: "Context", icon: "☁️", kind: "module", ready: true },
       {
         id: "reports",
         label: "Rapports",

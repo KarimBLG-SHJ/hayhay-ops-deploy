@@ -1667,3 +1667,20 @@
   .mod-kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .mod-row { grid-template-columns: 1fr; }
 }
+
+/* ====== Module: Context (Phase 2) ====== */
+.ctx-score { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
+.ctx-score-val { font-family: 'JetBrains Mono', monospace; font-size: 52px; font-weight: 800; color: var(--text); line-height: 1; }
+.ctx-score-lab { font-size: 13px; font-weight: 800; color: var(--text-2); margin-top: 6px; text-align: center; }
+.ctx-weather { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 10px; }
+.ctx-brief { font-size: 14px; font-weight: 600; color: var(--text-2); line-height: 1.6; }
+.ctx-events { font-size: 12px; font-weight: 800; color: var(--text-2); margin-top: 12px; }
+.ctx-gauges { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.ctx-gauge-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.ctx-gauge-label { font-size: 12px; font-weight: 800; color: var(--text-2); }
+.ctx-gauge-pct { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 800; color: var(--text); }
+.ctx-gauge-track { height: 8px; background: var(--card-2); border-radius: 999px; overflow: hidden; }
+.ctx-gauge-fill { height: 100%; border-radius: 999px; transition: width 500ms var(--ease); }
+.ctx-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.ctx-tag { font-size: 11px; font-weight: 800; color: var(--text-2); background: var(--card-2); border: 1px solid var(--line); padding: 5px 12px; border-radius: 999px; }
+@media (max-width: 980px) { .ctx-gauges { grid-template-columns: 1fr; } }
