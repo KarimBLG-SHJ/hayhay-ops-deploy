@@ -33,6 +33,21 @@ const mk = (target, prefix) =>
     logger: console,
   });
 
+// Public Google Sheet feeding the COGS + Talabat margin modules.
+const COGS_SHEET_ID = "1ELFrkcet-nJC5HrCx9aR-V9AY8VlIGVzroIGsoyXV9g";
+const gvizPath = (tab) =>
+  `/spreadsheets/d/${COGS_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
+const mkSheet = (prefix, tab) =>
+  createProxyMiddleware({
+    target: "https://docs.google.com",
+    changeOrigin: true,
+    pathRewrite: () => gvizPath(tab),
+    logger: console,
+  });
+
+app.use("/api/cogs", mkSheet("/api/cogs", "HayHay COGS per SKU"));
+app.use("/api/talabat-margins", mkSheet("/api/talabat-margins", "Talabat - Product Margins"));
+
 app.use("/api/coach", mk(COACH, "/api/coach"));
 app.use("/api/dashboard", mk(DASHBOARD, "/api/dashboard"));
 app.use("/api/contextos", mk(CONTEXTOS, "/api/contextos"));

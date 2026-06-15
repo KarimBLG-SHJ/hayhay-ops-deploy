@@ -1729,3 +1729,22 @@
   text-decoration: none; padding: 12px 22px; border-radius: 999px;
 }
 .ext-launch-btn:hover { opacity: 0.88; }
+
+/* ====== Sheet tables (COGS / Talabat) ====== */
+.sheet-table { width: 100%; border-collapse: collapse; font-family: 'Nunito', sans-serif; }
+.sheet-table thead th {
+  font-size: 10px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--muted); text-align: left; padding: 8px 10px; border-bottom: 1.5px solid var(--line-2);
+  position: sticky; top: 0; background: var(--card);
+}
+.sheet-table th.num, .sheet-table td.num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+.sheet-table tbody td { font-size: 12px; font-weight: 700; color: var(--text-2); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.sheet-table tbody tr:hover { background: var(--card-2); }
+.sheet-table td.strong { color: var(--text); font-weight: 800; }
+.sheet-table td.muted { color: var(--muted); font-size: 11px; }
+.sheet-table td.note { font-size: 11px; font-weight: 800; }
+.cogs-pill { font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.cogs-red { background: #FFE0E0; color: #C0392B; }
+.cogs-amber { background: #FFE9CC; color: #B9770E; }
+.cogs-yellow { background: #FFF4CC; color: #9A7B0A; }
+.cogs-green { background: #DCF5E8; color: var(--mint-dk); }

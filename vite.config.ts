@@ -6,7 +6,22 @@ const DASHBOARD = process.env.VITE_PROXY_DASHBOARD || "https://web-production-fb
 const CONTEXTOS = process.env.VITE_PROXY_CONTEXTOS || "https://web-production-19efe.up.railway.app";
 const ALJADA = process.env.VITE_PROXY_ALJADA || "https://al-jada-watch-production.up.railway.app";
 
+// Public Google Sheet feeding the COGS + Talabat margin modules.
+const COGS_SHEET_ID = "1ELFrkcet-nJC5HrCx9aR-V9AY8VlIGVzroIGsoyXV9g";
+const gviz = (tab: string) =>
+  `/spreadsheets/d/${COGS_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
+
 const proxy = {
+  "/api/cogs": {
+    target: "https://docs.google.com",
+    changeOrigin: true,
+    rewrite: () => gviz("HayHay COGS per SKU"),
+  },
+  "/api/talabat-margins": {
+    target: "https://docs.google.com",
+    changeOrigin: true,
+    rewrite: () => gviz("Talabat - Product Margins"),
+  },
   "/api/coach": {
     target: COACH,
     changeOrigin: true,

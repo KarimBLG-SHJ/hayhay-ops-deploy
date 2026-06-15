@@ -12,6 +12,8 @@ import { ModulePlaceholder } from "./shell/ModulePlaceholder";
 import { SalesModule } from "./components/SalesModule";
 import { ContextModule } from "./components/ContextModule";
 import { StockModule } from "./components/StockModule";
+import { CogsModule } from "./components/CogsModule";
+import { TalabatModule } from "./components/TalabatModule";
 import { ExternalFrame } from "./shell/ExternalFrame";
 import { CoachDock } from "./shell/CoachDock";
 
@@ -48,6 +50,10 @@ export default function App() {
         <ContextModule snap={snap} />
       ) : route === "stock" ? (
         <StockModule />
+      ) : route === "cogs" ? (
+        <CogsModule />
+      ) : route === "talabat" ? (
+        <TalabatModule />
       ) : item.kind === "external" ? (
         <ExternalFrame item={item} />
       ) : (
