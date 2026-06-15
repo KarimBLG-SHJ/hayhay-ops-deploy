@@ -90,13 +90,18 @@ The app is now a multi-module shell, not a single page. Routing is a dependency-
 hash router (`src/shell/useHashRoute.ts`); `#/<id>` selects the view. Nav registry lives
 in `src/shell/nav.ts` (`NAV_GROUPS`).
 
-- **cockpit** (`#/cockpit`, default) — the original Command Deck (KPIs + hero + agents + products + reconciliation + RightRail). Fully wired.
-- **module views** (`sales`, `cogs`, `talabat`, `stock`, `context`) — scaffolded via `src/shell/ModulePlaceholder.tsx`. `ready: false` until their native screen is built (Phase 2). When active, `.app` gets `.module-view` (drops the right rail, main col spans).
-- **external items** (`reports`, `hub`, `b2b`) — deep-link to standalone HayHay apps in a new tab; backends untouched.
-- **Coach IA dock** (`src/shell/CoachDock.tsx`) — persistent FAB bottom-right; opens a slide-over panel that embeds the coach chat-ui same-origin via `/api/coach/chat-ui`. Header `↗` opens it full-page.
+- **cockpit** (`#/cockpit`, default) — the original Command Deck. Fully wired.
+- **native module views** (all live, Phase 2 done):
+  - `sales` (`SalesModule`) + `context` (`ContextModule`) — from the snapshot, no new fetch.
+  - `stock` (`StockModule`) — coach `/api/wastage_reconciliation` (reuses `ReconciliationPanel`).
+  - `cogs` (`CogsModule`) + `talabat` (`TalabatModule`) — read the public validated Google Sheet (CSV via gviz) through the `/api/cogs` and `/api/talabat-margins` proxies. Parser in `src/api/sheet.ts` (`useSheet` + quote-aware CSV + mixed comma/dot `num()`). Sheet id `1ELFrkcet-nJC5HrCx9aR-V9AY8VlIGVzroIGsoyXV9g`, tabs "HayHay COGS per SKU" / "Talabat - Product Margins". Sheet must stay "anyone with link can view". Junk legend/metadata rows filtered by non-numeric price.
+  - `ModulePlaceholder` (`src/shell/ModulePlaceholder.tsx`) remains the fallback for any future `ready:false` module.
+- **external items** (`reports`, `hub`, `b2b`) — embedded IN the shell via `src/shell/ExternalFrame.tsx` (iframe keyed by id). `embed:false` (hub — auth-gated Next.js) shows an in-shell launch card instead of a blank frame. `↗` / "Plein écran" pops out.
+- **Coach IA dock** (`src/shell/CoachDock.tsx`) — persistent FAB; embeds coach chat-ui via `/api/coach/chat-ui`.
 
-Phase 2 = replace each `ModulePlaceholder` with a native view consuming the existing APIs.
-Phase 3 = `/cockpit/summary` aggregation route (built from the Coach IA session, not here) + SSO + mobile.
+Sheet proxies live in BOTH `vite.config.ts` (dev) and `server.js` (prod) → `https://docs.google.com` gviz CSV.
+
+Phase 3 (optional) = `/cockpit/summary` aggregation route (Coach IA session, not here) + SSO + mobile.
 
 ## Why another sub-project in `hayhay management/`
 
