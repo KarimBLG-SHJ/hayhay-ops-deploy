@@ -6,8 +6,9 @@ function parseHash(): string {
   const raw = window.location.hash.replace(/^#\/?/, "").trim();
   const id = raw || DEFAULT_ROUTE;
   const item = findItem(id);
-  // External items never become the active route; ignore unknown ids.
-  if (!item || item.kind === "external") return DEFAULT_ROUTE;
+  // Unknown ids fall back to default; external items ARE valid routes
+  // (rendered as an embedded frame to keep the user inside the shell).
+  if (!item) return DEFAULT_ROUTE;
   return id;
 }
 
@@ -21,11 +22,6 @@ export function useHashRoute(): [string, (id: string) => void] {
   }, []);
 
   const navigate = (id: string) => {
-    const item = findItem(id);
-    if (item?.kind === "external" && item.href) {
-      window.open(item.href, "_blank", "noopener,noreferrer");
-      return;
-    }
     window.location.hash = `#/${id}`;
   };
 

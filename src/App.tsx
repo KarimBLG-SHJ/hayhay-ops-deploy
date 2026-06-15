@@ -12,6 +12,7 @@ import { ModulePlaceholder } from "./shell/ModulePlaceholder";
 import { SalesModule } from "./components/SalesModule";
 import { ContextModule } from "./components/ContextModule";
 import { StockModule } from "./components/StockModule";
+import { ExternalFrame } from "./shell/ExternalFrame";
 import { CoachDock } from "./shell/CoachDock";
 
 function Cockpit({ snap }: { snap: ReturnType<typeof useSnapshot> }) {
@@ -47,6 +48,8 @@ export default function App() {
         <ContextModule snap={snap} />
       ) : route === "stock" ? (
         <StockModule />
+      ) : item.kind === "external" ? (
+        <ExternalFrame item={item} />
       ) : (
         <ModulePlaceholder item={item} />
       )}

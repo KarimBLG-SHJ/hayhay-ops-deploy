@@ -75,7 +75,7 @@ export function Sidebar({ snap, route, onNavigate }: Props) {
           <div key={group.title ?? "_top"} className="nav-group">
             {group.title && <div className="nav-group-title">{group.title}</div>}
             {group.items.map((item) => {
-              const active = item.kind === "module" && item.id === route;
+              const active = item.id === route;
               return (
                 <button
                   key={item.id}

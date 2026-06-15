@@ -18,6 +18,7 @@ export interface NavItem {
   badge?: string | null;
   href?: string; // external only
   ready?: boolean; // module: true once its native view is wired
+  embed?: boolean; // external: false = can't be iframed (auth/Next.js) → show launch card
 }
 
 export interface NavGroup {
@@ -58,6 +59,7 @@ export const NAV_GROUPS: NavGroup[] = [
         icon: "📘",
         kind: "external",
         href: "https://hayhay-hub-production.up.railway.app",
+        embed: false,
       },
       {
         id: "b2b",
