@@ -1684,3 +1684,13 @@
 .ctx-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .ctx-tag { font-size: 11px; font-weight: 800; color: var(--text-2); background: var(--card-2); border: 1px solid var(--line); padding: 5px 12px; border-radius: 999px; }
 @media (max-width: 980px) { .ctx-gauges { grid-template-columns: 1fr; } }
+
+/* ====== Module: Stock & waste (Phase 2) ====== */
+.stock-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
+.stock-kpi { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+.stock-kpi-accent { background: var(--card-2); border-color: var(--line-2); }
+.stock-kpi-lab { font-size: 11px; font-weight: 800; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); }
+.stock-kpi-val { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 800; color: var(--text); margin-top: 6px; line-height: 1; }
+.stock-kpi-sub { font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 6px; }
+@media (max-width: 1100px) { .stock-kpis { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px) { .stock-kpis { grid-template-columns: repeat(2, 1fr); } }

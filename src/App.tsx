@@ -11,6 +11,7 @@ import { findItem } from "./shell/nav";
 import { ModulePlaceholder } from "./shell/ModulePlaceholder";
 import { SalesModule } from "./components/SalesModule";
 import { ContextModule } from "./components/ContextModule";
+import { StockModule } from "./components/StockModule";
 import { CoachDock } from "./shell/CoachDock";
 
 function Cockpit({ snap }: { snap: ReturnType<typeof useSnapshot> }) {
@@ -44,6 +45,8 @@ export default function App() {
         <SalesModule snap={snap} />
       ) : route === "context" ? (
         <ContextModule snap={snap} />
+      ) : route === "stock" ? (
+        <StockModule />
       ) : (
         <ModulePlaceholder item={item} />
       )}

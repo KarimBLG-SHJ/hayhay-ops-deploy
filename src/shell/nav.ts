@@ -38,7 +38,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { id: "sales", label: "Ventes", icon: "📈", kind: "module", ready: true },
       { id: "cogs", label: "COGS & marges", icon: "💰", kind: "module", ready: false },
       { id: "talabat", label: "Talabat", icon: "🛵", kind: "module", ready: false, badge: null },
-      { id: "stock", label: "Stock & waste", icon: "📦", kind: "module", ready: false },
+      { id: "stock", label: "Stock & waste", icon: "📦", kind: "module", ready: true },
     ],
   },
   {
