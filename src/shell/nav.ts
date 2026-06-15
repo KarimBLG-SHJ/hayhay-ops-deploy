@@ -59,7 +59,6 @@ export const NAV_GROUPS: NavGroup[] = [
         icon: "📘",
         kind: "external",
         href: "https://hayhay-hub-production.up.railway.app",
-        embed: false,
       },
       {
         id: "b2b",
