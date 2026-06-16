@@ -756,7 +756,7 @@ export async function buildLiveSnapshot(): Promise<Snapshot> {
   const date = todayUAE();
   const ydayDate = new Date(new Date(date + "T00:00:00Z").getTime() - 86400_000)
     .toISOString()
-    .slice(0, 8);
+    .slice(0, 10);
   const [daily, cronStatus, forecast, batch, batchYday, lifecycle, topCustomers, topCustomersYday, vipsAtRisk, weekSummary, slackRecent, aljada, iaAccuracy] =
     await Promise.all([
       fetchDaily(date),
