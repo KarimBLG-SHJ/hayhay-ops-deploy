@@ -4,6 +4,7 @@ import { KpisRow } from "./components/KpisRow";
 import { HeroCurve } from "./components/HeroCurve";
 import { AgentsGrid } from "./components/AgentsGrid";
 import { ProductsRow } from "./components/ProductsRow";
+import { CockpitRecipesTile } from "./components/CockpitRecipesTile";
 import { ReconciliationPanel } from "./components/ReconciliationPanel";
 import { RightRail } from "./components/RightRail";
 import { useHashRoute } from "./shell/useHashRoute";
@@ -27,6 +28,7 @@ function Cockpit({ snap }: { snap: ReturnType<typeof useSnapshot> }) {
         <HeroCurve hero={snap.hero} loading={snap.loading} />
         <AgentsGrid snap={snap} />
         <ProductsRow snap={snap} />
+        <CockpitRecipesTile />
         <ReconciliationPanel />
       </main>
       <RightRail snap={snap} />
