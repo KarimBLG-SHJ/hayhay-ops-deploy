@@ -15,6 +15,7 @@ import { StockModule } from "./components/StockModule";
 import { CogsModule } from "./components/CogsModule";
 import { TalabatModule } from "./components/TalabatModule";
 import { LifecycleModule } from "./components/LifecycleModule";
+import { RecipesModule } from "./components/RecipesModule";
 import { ExternalFrame } from "./shell/ExternalFrame";
 import { CoachDock } from "./shell/CoachDock";
 
@@ -57,6 +58,8 @@ export default function App() {
         <TalabatModule />
       ) : route === "lifecycle" ? (
         <LifecycleModule />
+      ) : route === "recipes" ? (
+        <RecipesModule />
       ) : item.kind === "external" ? (
         <ExternalFrame item={item} />
       ) : (

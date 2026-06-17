@@ -41,6 +41,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { id: "talabat", label: "Talabat", icon: "🛵", kind: "module", ready: true, badge: null },
       { id: "stock", label: "Stock & waste", icon: "📦", kind: "module", ready: true },
       { id: "lifecycle", label: "Cycle de vie", icon: "🔄", kind: "module", ready: true },
+      { id: "recipes", label: "Recettes", icon: "🍳", kind: "module", ready: true },
     ],
   },
   {

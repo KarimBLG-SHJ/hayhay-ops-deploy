@@ -1,0 +1,604 @@
+Produit,Cout_Produit_AED,Prix_Vente_AED,Food_Cost_%,Ingredient,Unite,Cout_Unite_AED,Quantite,Sous_Total_Cout_AED,Order_Types,Maj_Par
+250 Grames,30.74,0.0,0,Sugar Regular,gms,0.003,250.0,0.74,All,Muhammad Muneer
+250 Grames,30.74,0.0,0,Raspberry Fresh,gms,0.12,250.0,30,All,Muhammad Muneer
+Almond Croissant,3.59,0.0,0,Almond Croissants,piece,3.587,1.0,3.587,All,Muhammad Muneer
+Almond Croissant,3.59,22.0,17.13,Almond Croissants,piece,3.587,1.0,3.587,All,Muhammad Muneer
+Almond Milk,1.56,3.0,54.6,Alpro Barista Almond Pro,ml,0.01,150.0,1.559,All,Jawad
+Almond Milk V1.5,1.56,3.0,54.6,Alpro Barista Almond Pro,ml,0.01,150.0,1.559,All,Jawad
+Americano,2.39,19.0,13.21,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Americano,2.39,19.0,13.21,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Americano,2.39,19.0,13.21,"Water Al Ain bottled 1,5 L",ml,0.001,100.0,0.092,All,Muhammad Muneer
+Americano,2.08,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Americano,2.08,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,80.0,0.073,All,Muhammad Muneer
+Apple Turnover,6.25,18.0,36.46,Vanilla Ice Cream,ml,0.005,100.0,0.483,All,Muhammad Muneer
+Apple Turnover,6.25,18.0,36.46,Brownie,Slice,5.768,1.0,5.768,All,Muhammad Muneer
+Arabic Bread,1.34,0.0,0,Arabic Bread,piece,1.344,1.0,1.344,All,Muhammad Muneer
+Avocado Cream Cheese,47.72,0.0,0,Mix salads,gms,0.032,30.0,0.949,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,Avocado Hass,gms,0.022,100.0,2.2,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,Parsley Leaves,gms,0.009,1.0,0.009,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,Oil Pomace Olive,ml,0.027,5.0,0.135,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,Cheese Cream Elle & Vire,gms,0.031,35.0,1.085,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,Tomato Local,gms,0.004,40.0,0.17,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,Lettuce Mesclun Mix,gms,0.064,15.0,0.964,All,Yasser
+Avocado Cream Cheese,47.72,0.0,0,croissant dough,gms,0.603,70.0,42.207,All,Yasser
+Avocado creamy cheese croissant,6.21,0.0,0,Lettuce Mesclun Mix,gms,0.064,30.0,1.928,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,croissant dough,gms,0.603,1.0,0.603,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,Lettuce Romaine,gms,0.006,15.0,0.082,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,Oil Pomace Olive,ml,0.027,5.0,0.135,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,Parsley Leaves,gms,0.009,1.0,0.009,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,Tomato Local,gms,0.004,40.0,0.17,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,Cheese Cream Elle & Vire,gms,0.031,35.0,1.085,All,Jawad
+Avocado creamy cheese croissant,6.21,0.0,0,Avocado Hass,gms,0.022,100.0,2.2,All,Jawad
+Avocado creamy cheese croissant,9.72,39.0,26.17,Parsley Leaves,gms,0.009,1.0,0.009,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Lettuce Mesclun Mix,gms,0.064,15.0,0.964,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Tomato Local,gms,0.004,40.0,0.17,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Mix salads,gms,0.032,100.0,3.163,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Avocado Hass,gms,0.022,100.0,2.2,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Cheese Cream Elle & Vire,gms,0.031,35.0,1.085,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Oil Pomace Olive,ml,0.027,5.0,0.135,All,Muhammad Muneer
+Avocado creamy cheese croissant,9.72,39.0,26.17,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+AVOCADO PESTO TOAST,7.87,36.0,22.95,Avocado Pesto Toast,Portions,7.865,1.0,7.865,All,Muhammad Muneer
+BACON BENEDICT,7.01,34.0,21.65,Bacon Benedict,Portions,7.008,1.0,7.008,All,Muhammad Muneer
+Baguette,1.19,0.0,0,Baguette,piece,1.194,1.0,1.194,All,Muhammad Muneer
+Baguette,1.19,10.0,12.5,Baguette,piece,1.194,1.0,1.194,All,Muhammad Muneer
+Baklava Cookie,2.34,0.0,0,Baklava Cookie,piece,2.338,1.0,2.338,All,Muhammad Muneer
+Baklava Cookie,2.34,25.0,9.83,Baklava Cookie,piece,2.338,1.0,2.338,All,Muhammad Muneer
+Beef Lasagna,19.45,69.0,29.6,Laza Nia Beef,Portions,19.454,1.0,19.454,All,Muhammad Muneer
+BLG classic breakfast,2.67,29.0,9.67,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+BLG classic breakfast,2.67,29.0,9.67,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+BLG generous breakfast,9.09,49.0,19.48,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+BLG generous breakfast,9.09,49.0,19.48,Egg Unit,piece,0.589,3.0,1.767,All,Muhammad Muneer
+BLG generous breakfast,9.09,49.0,19.48,Orange Naval,gms,0.005,1000.0,4.65,All,Muhammad Muneer
+BLG generous breakfast,9.09,49.0,19.48,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+BLG Sauce,0.01,0.0,0,BLG sauce,gms,0.008,1.0,0.008,All,Jawad
+BLG Sourdough avocado toast,4.77,35.0,14.31,Rye Bread,piece,4.727,0.3,1.418,All,Muhammad Muneer
+BLG Sourdough avocado toast,4.77,35.0,14.31,Pomegranate,gms,0.012,50.0,0.6,All,Muhammad Muneer
+BLG Sourdough avocado toast,4.77,35.0,14.31,Avocado Hass,gms,0.022,125.0,2.75,All,Muhammad Muneer
+BLG Sourdough avocado toast,4.77,0.0,0,Avocado Hass,gms,0.022,125.0,2.75,All,Muhammad Muneer
+BLG Sourdough avocado toast,4.77,0.0,0,Rye Bread,piece,4.727,0.3,1.418,All,Muhammad Muneer
+BLG Sourdough avocado toast,4.77,0.0,0,Pomegranate,gms,0.012,50.0,0.6,All,Muhammad Muneer
+BLG Turkish eggs on sourdough toast,2.6,39.0,7.0,Rye Bread,piece,4.727,0.3,1.418,All,Muhammad Muneer
+BLG Turkish eggs on sourdough toast,2.6,39.0,7.0,Egg Unit,piece,0.589,2.0,1.178,All,Muhammad Muneer
+Blueberry Latte Cafe,7.34,32.0,24.12,Milk Full Cream,ml,0.004,80.0,0.354,All,Muhammad Muneer
+Blueberry Latte Cafe,7.34,32.0,24.12,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Blueberry Latte Cafe,7.34,32.0,24.12,Puree Blueberry,gms,0.067,30.0,1.998,All,Muhammad Muneer
+Blueberry Latte Cafe,7.34,32.0,24.12,Spanish mixed milk,ml,0.01,200.0,1.939,All,Muhammad Muneer
+Blueberry Latte Cafe,7.34,32.0,24.12,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Blueberry Latte Cafe,7.34,32.0,24.12,Blueberry Fresh,gms,0.076,10.0,0.76,All,Muhammad Muneer
+Blueberry Soda,4.04,15.0,28.28,Puree Blueberry,gms,0.067,7.0,0.466,All,Jawad
+Blueberry Soda,4.04,15.0,28.28,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,180.0,0.518,All,Jawad
+Blueberry Soda,4.04,15.0,28.28,Blueberry syrup homemade,gms,0.053,22.0,1.158,All,Jawad
+Blueberry Soda,4.04,15.0,28.28,Blueberry Fresh,gms,0.076,25.0,1.9,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Salt Nezo,gms,0.003,0.42,0.001,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.67,0.01,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.02514,0.119,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Butter Unsalted Block,gms,0.03,1.17,0.035,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Egg Wheight,gms,0.009,5.03,0.044,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Milk Nadec,ml,0.004,10.89,0.04,All,Jawad
+Bombolini chocolate,0.25,0.0,0,Sugar Regular,gms,0.003,1.68,0.005,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Egg Wheight,gms,0.009,5.03,0.044,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Butter Unsalted Block,gms,0.03,1.17,0.035,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.02514,0.119,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Sugar Regular,gms,0.003,1.68,0.005,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.67,0.01,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Milk Nadec,ml,0.004,10.89,0.04,All,Jawad
+Bombolini Pistachio,0.25,0.0,0,Salt Nezo,gms,0.003,0.42,0.001,All,Jawad
+Bomboloni,0.26,0.0,0,Milk Nadec,ml,0.004,10.89,0.04,All,Jawad
+Bomboloni,0.26,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.0254,0.12,All,Jawad
+Bomboloni,0.26,0.0,0,Salt Nezo,gms,0.003,0.42,0.001,All,Jawad
+Bomboloni,0.26,0.0,0,Sugar Regular,gms,0.003,1.68,0.005,All,Jawad
+Bomboloni,0.26,0.0,0,Egg Wheight,gms,0.009,5.03,0.044,All,Jawad
+Bomboloni,0.26,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.67,0.01,All,Jawad
+Bomboloni,0.26,0.0,0,Butter Unsalted Block,gms,0.03,1.17,0.035,All,Jawad
+Bowl Tajine Chicken,11.13,49.0,23.85,Bowl Chicken Tagine,Box,11.128,1.0,11.128,All,Muhammad Muneer
+Bowl Tajine Lamb,18.45,65.0,29.8,Bowl Tagine lamb with prunes,Box,18.449,1.0,18.449,All,Muhammad Muneer
+Brazil Santa Ines Luiz Paulo Pereira 1 kg,100.31,165.0,63.83,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,1000.0,100.305,All,Muhammad Muneer
+Brazil Santa Ines Luiz Paulo Pereira 250gms,32.0,55.0,61.09,Brazil Santa Ines Luiz Paulo Pereira (250g),gms,0.128,250.0,32,All,Muhammad Muneer
+Brick Roll Cheese and Spinach,2.42,0.0,0,Brick roll Cheese and Spinach,piece,2.424,1.0,2.424,All,Muhammad Muneer
+Brick Roll Chicken,4.52,0.0,0,Brick roll chicken,piece,4.518,1.0,4.518,All,Muhammad Muneer
+Brick Roll Prawns,4.01,0.0,0,Brick roll Prawns,piece,4.006,1.0,4.006,All,Muhammad Muneer
+Brioche Bread,8.7,28.0,32.63,Brioche Bread (300),piece,3.481,2.5,8.703,All,Muhammad Muneer
+Brioche Bread,7.22,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.00058,0.003,All,Jawad
+Brioche Bread,7.22,0.0,0,Sugar Regular,gms,0.003,20.0,0.059,All,Jawad
+Brioche Bread,7.22,0.0,0,Milk Nadec,ml,0.004,100.0,0.371,All,Jawad
+Brioche Bread,7.22,0.0,0,Egg Unit,piece,0.589,3.0,1.767,All,Jawad
+Brioche Bread,7.22,0.0,0,Yeast Frozen Hirondelle,gms,0.015,12.0,0.18,All,Jawad
+Brioche Bread,7.22,0.0,0,Salt Nezo,gms,0.003,8.0,0.026,All,Jawad
+Brioche Bread,7.22,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,100.0,0.092,All,Jawad
+Brioche Bread,7.22,0.0,0,Oil Pomace Olive,ml,0.027,20.0,0.538,All,Jawad
+Brioche Bread,7.22,0.0,0,Butter Unsalted Block,gms,0.03,140.0,4.181,All,Jawad
+Burger Sauce,1.01,3.0,35.35,Burger Sauce,gms,0.013,80.0,1.006,All,Muhammad Muneer
+Burnt Basque Cheesecake,8.81,0.0,0,New Burnt Cheese Cake (10slices),Slice,6.002,1.0,6.002,All,Muhammad Muneer
+Burnt Basque Cheesecake,8.81,0.0,0,Chocolate Sauce Homemade,gms,0.094,30.0,2.811,All,Muhammad Muneer
+Burnt Basque Cheesecake Slice,8.81,32.0,28.91,Chocolate Sauce Homemade,gms,0.094,30.0,2.811,All,Muhammad Muneer
+Burnt Basque Cheesecake Slice,8.81,32.0,28.91,New Burnt Cheese Cake (10slices),Slice,6.002,1.0,6.002,All,Muhammad Muneer
+Burrata pesto croissant,54.35,0.0,0,Lettuce Romaine,gms,0.006,30.0,0.165,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,Salt Nezo,gms,0.003,1.0,0.003,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,croissant dough,gms,0.603,70.0,42.207,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,Lettuce Mesclun Mix,gms,0.064,20.0,1.285,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,Cheese Buratta,gms,0.085,118.0,10.03,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,Tomato Cherry Red,gms,0.024,20.0,0.48,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,Tomato Local,gms,0.004,40.0,0.17,All,Jawad
+Burrata pesto croissant,54.35,0.0,0,Parsley Leaves,gms,0.009,1.0,0.009,All,Jawad
+Butter Croissant,1.99,0.0,0,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+Butter Croissants,1.99,14.0,14.93,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+CAMEL PAW,2.88,20.0,15.12,Camel Paw Vanilla,piece,2.879,1.0,2.879,All,Muhammad Muneer
+Cappuccino,2.78,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Cappuccino,2.78,0.0,0,"Cocoa Powder 100% Pure ,22-24% c b Content,",gms,0.107,1.0,0.107,All,Muhammad Muneer
+Cappuccino,2.78,0.0,0,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+Cappuccino,3.06,24.0,13.39,"Cocoa Powder 100% Pure ,22-24% c b Content,",gms,0.107,1.0,0.107,All,Muhammad Muneer
+Cappuccino,3.06,24.0,13.39,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Cappuccino,3.06,24.0,13.39,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Cappuccino,3.06,24.0,13.39,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+CARAMELIZED FRENCH TOAST,8.71,29.0,31.54,French Toast,piece,8.711,1.0,8.711,All,Muhammad Muneer
+Caramel Knot,2.26,0.0,0,Caramel Knot,piece,2.257,1.0,2.257,All,Muhammad Muneer
+Cardamom Roll,4.44,0.0,0,Cardamom Roll,piece,4.443,1.0,4.443,All,Muhammad Muneer
+Carrot Cake Slice,4.43,0.0,0,Carrot Cake - Slice,Slice,4.433,1.0,4.433,All,Muhammad Muneer
+Carrot Cake Slice,4.43,32.0,14.54,Carrot Cake - Slice,Slice,4.433,1.0,4.433,All,Muhammad Muneer
+Cheddar Cheese Croissant,3.71,25.0,15.58,Croissant Cheddar Cheese (Flaky&Cream),piece,3.712,1.0,3.712,All,Muhammad Muneer
+Cheddar Cheese Croissant,3.71,0.0,0,Croissant Cheddar Cheese (Flaky&Cream),piece,3.712,1.0,3.712,All,Muhammad Muneer
+Cheese Croissant,2.6,0.0,0,CROISSANT BUTTER SHEET 84%- PRESIDENT - 5X2KG,gms,0.061,23.53,1.441,All,Jawad
+Cheese Croissant,2.6,0.0,0,Butter Unsalted Block,gms,0.03,4.12,0.123,All,Jawad
+Cheese Croissant,2.6,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.05882,0.278,All,Jawad
+Cheese Croissant,2.6,0.0,0,Cream Whipping Elle & Vire,ml,0.025,1.76,0.044,All,Jawad
+Cheese Croissant,2.6,0.0,0,Water extraction,ml,0,21.18,0,All,Jawad
+Cheese Croissant,2.6,0.0,0,Salt Nezo,gms,0.003,1.06,0.003,All,Jawad
+Cheese Croissant,2.6,0.0,0,Cheese Emmental Block,gms,0.023,20.0,0.47,All,Jawad
+Cheese Croissant,2.6,0.0,0,Sugar Regular,gms,0.003,5.88,0.017,All,Jawad
+Cheese Croissant,2.6,0.0,0,Egg York,gms,0.009,21.59,0.191,All,Jawad
+Cheese Croissant,2.6,0.0,0,Yeast Frozen Hirondelle,gms,0.015,2.34,0.035,All,Jawad
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Tomato Ketchup,gms,0.009,20.0,0.171,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Mix salads,gms,0.032,60.0,1.898,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Angus beef mince 80/20 topside + chuck,gms,0.077,180.0,13.803,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Brioche bread kitchen,piece,0.711,2.0,1.422,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Potato Fries  ILLUSION,gms,0.005,100.0,0.462,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Onion Red,gms,0.004,30.0,0.111,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Lettuce Romaine,gms,0.006,20.0,0.11,All,Muhammad Muneer
+Chef Hot Sandwich with French Fries,18.23,55.0,34.8,Tomato Local,gms,0.004,60.0,0.255,All,Muhammad Muneer
+Chicken Alfredo Lasagna,14.68,55.0,28.03,Laza Nia Alfredo,Portions,14.682,1.0,14.682,All,Muhammad Muneer
+Chicken Caesar Salad,9.89,32.0,32.45,Chicken Caesar Salad,Portions,9.89,1.0,9.89,All,Muhammad Muneer
+Chicken Sandough,7.89,0.0,0,Sando Chicken,Portions,7.887,1.0,7.887,All,Muhammad Muneer
+CHICKEN SUPREME BY TAESTED,11.07,65.0,17.88,Chicken Supreme,Portions,11.066,1.0,11.066,All,Muhammad Muneer
+Chocolate Chip Cramique,1.84,0.0,0,Chocolate Chip Cramique,piece,1.842,1.0,1.842,All,Muhammad Muneer
+Chocolate knott,4.39,0.0,0,Chocolate Knott,piece,4.39,1.0,4.39,All,Muhammad Muneer
+Chocolate Orange Cake,7.23,0.0,0,Chocolate Orange Cake - Slice,Slice,7.231,1.0,7.231,All,Muhammad Muneer
+Chocolate Orange Cake - Slice,7.23,34.0,22.33,Chocolate Orange Cake - Slice,Slice,7.231,1.0,7.231,All,Muhammad Muneer
+Choco - Tonka Pain Suisse,3.71,20.0,19.48,Croissant Cheddar Cheese (Flaky&Cream),piece,3.712,1.0,3.712,All,Muhammad Muneer
+Chouquettes - Box of 10,2.43,20.0,12.81,Chouquettes,piece,0.243,10.0,2.435,All,Muhammad Muneer
+Ciabatta bread,0.69,0.0,0,Ciabatta Bread,piece,0.686,1.0,0.686,All,Muhammad Muneer
+Cinnamon Roll,2.45,0.0,0,Cinnamon Roll,piece,2.45,1.0,2.45,All,Muhammad Muneer
+Classic Fries,1.29,0.0,0,French Fries,gms,0.013,100.0,1.29,All,Muhammad Muneer
+Classic Latte,3.18,25.0,13.36,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Classic Latte,3.18,25.0,13.36,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Classic Latte,3.18,25.0,13.36,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Classic Latte,2.89,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Classic Latte,2.89,0.0,0,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Classic Mojito,2.78,22.0,13.27,Sugar Syrup Homemade,ml,0.003,30.0,0.087,All,Muhammad Muneer
+Classic Mojito,2.78,22.0,13.27,Lime Green,gms,0.008,150.0,1.2,All,Muhammad Muneer
+Classic Mojito,2.78,22.0,13.27,Schweppes Soda Water,ml,0.004,100.0,0.44,All,Muhammad Muneer
+Classic Mojito,2.78,22.0,13.27,Mint Leaves Local,gms,0.07,15.0,1.053,All,Muhammad Muneer
+Classic Smash Burger,8.19,0.0,0,Classic Smash Burger,piece,8.193,1.0,8.193,All,Muhammad Muneer
+Classic Smash Burger,8.19,54.0,15.92,Classic Smash Burger,piece,8.193,1.0,8.193,All,Muhammad Muneer
+Coconut Milk,1.56,3.0,54.6,Alpro Coconut Barista Pro,ml,0.01,150.0,1.56,All,Jawad
+Colombia,6.4,0.0,0,Colombia Finca la Pradera Honey Strawberry 1kg,gms,0.32,20.0,6.4,All,Muhammad Muneer
+Colombia Finca la Pradera Honey Strawberry 250gms,85.46,135.0,66.47,Colombia Finca la Pradera Honey Strawberry 250g,gms,0.342,250.0,85.455,All,Muhammad Muneer
+Confit Beef Cheek,19.04,65.0,30.76,Confit Beef Cheek,Portions,19.035,1.0,19.035,All,Muhammad Muneer
+Cookies Baklava,2.34,0.0,0,Baklava Cookie,piece,2.338,1.0,2.338,All,Muhammad Muneer
+Cortado,2.45,10.0,25.73,Milk Full Cream,ml,0.004,100.0,0.442,All,Muhammad Muneer
+Cortado,2.45,10.0,25.73,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Cortado,2.96,21.0,14.8,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Cortado,2.96,21.0,14.8,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Cortado,2.96,21.0,14.8,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Salt Nezo,gms,0.003,10.0,0.032,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Flour T55 Moul-Bie,kg,4.72,0.3,1.416,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Yeast Frozen Hirondelle,gms,0.015,10.0,0.15,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Water extraction,ml,0,350.0,0,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Flour Rye Dark Moul Bie,kg,11.776,0.2,2.355,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Sourdough,gms,0.005,100.0,0.472,All,Muhammad Muneer
+Country bread,4.83,15.0,33.81,Oil Pomace Olive,ml,0.027,15.0,0.404,All,Muhammad Muneer
+Cramique,1.84,10.0,19.32,Chocolate Chip Cramique,piece,1.842,1.0,1.842,All,Muhammad Muneer
+CROAST SAVORY,5.92,36.0,17.27,Croast,piece,5.916,1.0,5.916,All,Muhammad Muneer
+Croissant,1.99,0.0,0,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+Dark Ganache Chocolate cookie,3.3,0.0,0,Dark Ganache Cookies,piece,3.303,1.0,3.303,All,Muhammad Muneer
+Dark Ganache Cookie,3.3,25.0,13.86,Dark Ganache Cookies,piece,3.303,1.0,3.303,All,Muhammad Muneer
+Dark Ganache Cookies,3.3,0.0,0,Dark Ganache Cookies,piece,3.303,1.0,3.303,All,Muhammad Muneer
+Dark Mocha,4.54,0.0,0,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+Dark Mocha,4.54,0.0,0,Chocolate Sauce Homemade,gms,0.094,20.0,1.874,All,Muhammad Muneer
+Dark Mocha,4.54,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Decaf - Colombia,2.9,0.0,0,Coffee Colombia Condor Decaf,gms,0.145,20.0,2.9,All,Jawad
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Brioche bread kitchen,piece,0.711,2.0,1.422,All,Muhammad Muneer
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Dill pickles,gms,0.058,20.0,1.155,All,Muhammad Muneer
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Potato Fries  ILLUSION,gms,0.005,100.0,0.462,All,Muhammad Muneer
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Tomato Local,gms,0.004,80.0,0.34,All,Muhammad Muneer
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Angus beef mince 80/20 topside + chuck,gms,0.077,100.0,7.669,All,Muhammad Muneer
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Cheese Cheddar Red Block,kg,42.83,0.04,1.713,All,Muhammad Muneer
+Double Cheese Hot Sandwich,12.83,56.0,24.06,Onion Red,gms,0.004,20.0,0.074,All,Muhammad Muneer
+Double Choco Cookie,3.04,25.0,12.77,Double Choco Cookies,piece,3.036,1.0,3.036,All,Muhammad Muneer
+Double Choco Cookie,3.04,0.0,0,Double Choco Cookies,piece,3.036,1.0,3.036,All,Muhammad Muneer
+Double espresso,2.24,10.0,23.52,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Double espresso,2.24,10.0,23.52,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,80.0,0.23,All,Muhammad Muneer
+Double Smash Burger,15.36,56.0,28.8,Double Smash Burger,Portions,15.363,1.0,15.363,All,Muhammad Muneer
+Double Smash Burger,15.36,0.0,0,Double Smash Burger,Portions,15.363,1.0,15.363,All,Muhammad Muneer
+Egg benedict croissant,3.17,0.0,0,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+Egg benedict croissant,3.17,0.0,0,Egg Unit,piece,0.589,2.0,1.178,All,Muhammad Muneer
+Egg Benedict Croissant,8.53,37.0,24.21,Mix salads,gms,0.032,100.0,3.163,All,Muhammad Muneer
+Egg Benedict Croissant,8.53,37.0,24.21,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+Egg Benedict Croissant,8.53,37.0,24.21,Egg Unit,piece,0.589,2.0,1.178,All,Muhammad Muneer
+Egg Benedict Croissant,8.53,37.0,24.21,Avocado Hass,gms,0.022,100.0,2.2,All,Muhammad Muneer
+Eggs Your Way,3.79,0.0,0,Tomato Local,gms,0.004,100.0,0.425,All,Muhammad Muneer
+Eggs Your Way,3.79,0.0,0,Egg Unit,piece,0.589,3.0,1.767,All,Muhammad Muneer
+Eggs Your Way,3.79,0.0,0,Mushroom Button,gms,0.02,80.0,1.6,All,Muhammad Muneer
+Egg Your Way (3 Eggs),5.71,27.0,22.21,Mushroom Button,gms,0.02,100.0,2,All,Muhammad Muneer
+Egg Your Way (3 Eggs),5.71,27.0,22.21,Egg Unit,piece,0.589,3.0,1.767,All,Muhammad Muneer
+Egg Your Way (3 Eggs),5.71,27.0,22.21,Tomato Local,gms,0.004,100.0,0.425,All,Muhammad Muneer
+Egg Your Way (3 Eggs),5.71,27.0,22.21,Rye Bread,piece,4.727,0.2,0.945,All,Muhammad Muneer
+Egg Your Way (3 Eggs),5.71,27.0,22.21,Cream Cooking,ml,0.012,50.0,0.575,All,Muhammad Muneer
+espresso,2.24,0.0,0,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,80.0,0.23,All,Muhammad Muneer
+espresso,2.24,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Espresso,2.01,19.0,11.11,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Ethiopia,2.43,0.0,0,Ethiopia Banko Chelchele Chelbesa Natural 1kg,gms,0.122,20.0,2.432,All,Muhammad Muneer
+Ethiopia Coffee Banko 1kg,121.58,195.0,65.47,Ethiopia Banko Chelchele Chelbesa Natural 1kg,gms,0.122,1000.0,121.577,All,Muhammad Muneer
+Ethiopia Coffee Banko 250gms,42.0,50.0,88.2,Ethiopia Banko Chelchele Chelbesa Natural 250,gms,0.168,250.0,42,All,Muhammad Muneer
+Ethiopia Hamasho,4.2,0.0,0,Ethiopia Hamasho Natural Archers Lot 200gm,gms,0.21,20.0,4.2,All,Muhammad Muneer
+Ethiopia Hamasho Village (200 gms),42.0,75.0,58.8,Ethiopia Hamasho Natural Archers Lot 200gm,gms,0.21,200.0,42,All,Muhammad Muneer
+Filter - V60,7.26,32.0,23.82,Colombia Luz Helena Castillo Peach,gms,0.335,20.0,6.7,All,Muhammad Muneer
+Filter - V60,7.26,32.0,23.82,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Filter - V60,7.26,32.0,23.82,"Water Al Ain bottled 1,5 L",ml,0.001,300.0,0.275,All,Muhammad Muneer
+Financiers - Box of 10,3.79,20.0,19.9,Financiers,piece,0.379,10.0,3.794,All,Muhammad Muneer
+Fish Of The Day,19.4,58.0,35.12,Fish of the Day,Portions,19.403,1.0,19.403,All,Muhammad Muneer
+Flan - Vanilla,4.31,0.0,0,Flan Vanilla ( Single),piece,4.308,1.0,4.308,All,Muhammad Muneer
+Flat White,2.96,24.0,12.95,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+Flat White,2.96,24.0,12.95,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Flat White,2.96,24.0,12.95,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Flat White,2.67,0.0,0,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+Flat White,2.67,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Focaccia,1.19,10.0,12.5,Focaccia Slice ( 6 Slice full ),Slice,1.189,1.0,1.189,All,Muhammad Muneer
+Focaccia Slice,1.19,0.0,0,Focaccia Slice ( 6 Slice full ),Slice,1.189,1.0,1.189,All,Muhammad Muneer
+French Brioche Toast,8.71,0.0,0,French Toast,piece,8.711,1.0,8.711,All,Muhammad Muneer
+French Brioche Toast Chocolate,8.71,0.0,0,French Toast,piece,8.711,1.0,8.711,All,Muhammad Muneer
+french fries,1.29,0.0,0,French Fries,gms,0.013,100.0,1.29,All,Muhammad Muneer
+Fresh mango juice,3.99,0.0,0,Mango,gms,0.016,100.0,1.6,All,Muhammad Muneer
+Fresh mango juice,3.99,0.0,0,Sugar Syrup Homemade,ml,0.003,30.0,0.087,All,Muhammad Muneer
+Fresh mango juice,3.99,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,200.0,0.183,All,Muhammad Muneer
+Fresh mango juice,3.99,0.0,0,Puree Mango No Added Sugar,gms,0.042,50.0,2.116,All,Muhammad Muneer
+Fresh Orange juice,4.65,18.0,27.13,Orange Naval,gms,0.005,1000.0,4.65,All,Jawad
+Fried eggs and ham croissant,10.01,37.0,28.41,Spinach Leaves,gms,0.038,50.0,1.905,All,Muhammad Muneer
+Fried eggs and ham croissant,10.01,37.0,28.41,Butter Croissants,piece,1.993,1.0,1.993,All,Muhammad Muneer
+Fried eggs and ham croissant,10.01,37.0,28.41,Mix salads,gms,0.032,100.0,3.163,All,Muhammad Muneer
+Fried eggs and ham croissant,10.01,37.0,28.41,Egg Unit,piece,0.589,1.0,0.589,All,Muhammad Muneer
+Fried eggs and ham croissant,10.01,37.0,28.41,Salt Nezo,gms,0.003,1.0,0.003,All,Muhammad Muneer
+Fried eggs and ham croissant,10.01,37.0,28.41,Turkey Ham Sliced,gms,0.037,60.0,2.22,All,Muhammad Muneer
+Fried eggs and ham croissant,10.01,37.0,28.41,Oil Pomace Olive,ml,0.027,5.0,0.135,All,Muhammad Muneer
+Fries,1.29,7.0,19.35,French Fries,gms,0.013,100.0,1.29,All,Muhammad Muneer
+Fries with Beef Strips,8.63,28.0,32.36,Fries with Beef Strips,Portions,8.626,1.0,8.626,All,Muhammad Muneer
+Fries with Cheese,3.8,24.0,16.63,Fries with Cheese,Portions,3.799,1.0,3.799,All,Muhammad Muneer
+Garlic Bread,1.19,10.0,12.5,Baguette,piece,1.194,1.0,1.194,All,Muhammad Muneer
+Gianduja Hazelnut - Hot Chocolate,7.32,27.0,28.51,Hot Chocolate - Gianduja Hazelnut,ml,0.029,250.0,7.325,All,Muhammad Muneer
+Gianduja Hazelnut - Hot Chocolate,6.95,17.0,42.93,Cream Whipping Elle & Vire,ml,0.025,35.0,0.877,All,Jawad
+Gianduja Hazelnut - Hot Chocolate,6.95,17.0,42.93,Milk Full Cream,ml,0.004,170.0,0.751,All,Jawad
+Gianduja Hazelnut - Hot Chocolate,6.95,17.0,42.93,Chocolate Dark Gianduja Nut 70%,gms,0.076,70.0,5.323,All,Jawad
+Greek Salad,12.26,27.0,47.68,Greek Salad,Portions,12.263,1.0,12.263,All,Muhammad Muneer
+Greek Salad,12.26,0.0,0,Greek Salad,Portions,12.263,1.0,12.263,All,Muhammad Muneer
+Grilled Chicken,4.96,29.0,17.96,Chicken Breast 1000 gms,gms,0.038,130.0,4.956,All,Muhammad Muneer
+Grilled vegetable croissant,46.38,0.0,0,Cheese Cream Elle & Vire,gms,0.031,35.0,1.085,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Lettuce Romaine,gms,0.006,15.0,0.082,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,croissant dough,gms,0.603,70.0,42.207,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Eggplant Big,gms,0.005,30.0,0.135,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Lettuce Mesclun Mix,gms,0.064,15.0,0.964,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Capsicum Red,gms,0.012,40.0,0.46,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Capsicum Green,gms,0.009,40.0,0.36,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Capsicum Yellow,gms,0.012,40.0,0.46,All,Jawad
+Grilled vegetable croissant,46.38,0.0,0,Zucchini green,gms,0.021,30.0,0.629,All,Jawad
+Grown-Up Kid,12.46,35.0,37.38,Grown-Up Kid,Portions,12.463,1.0,12.463,All,Muhammad Muneer
+Guatemala,2.8,0.0,0,Guatemala Durazno Huehuetenango,gms,0.14,20.0,2.8,All,Jawad
+Harira Soup,5.9,32.0,19.36,Daba Special Bread,piece,0.814,1.0,0.814,All,Muhammad Muneer
+Harira Soup,5.9,32.0,19.36,Harirah Soup,Portions,5.081,1.0,5.081,All,Muhammad Muneer
+Hazelnut Cookie,3.55,25.0,14.91,Hazelnut Cookies,piece,3.549,1.0,3.549,All,Muhammad Muneer
+Hazelnut cookies,3.55,0.0,0,Hazelnut Cookies,piece,3.549,1.0,3.549,All,Muhammad Muneer
+HERB OMELETTE SAVORY,4.28,28.0,16.05,Herb Omelette,piece,4.282,1.0,4.282,All,Muhammad Muneer
+Hojicha - Milk Based,4.48,26.0,18.09,Hojicha Organic Powder,gms,0.719,5.0,3.596,All,Muhammad Muneer
+Hojicha - Milk Based,4.48,26.0,18.09,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Homemade Carrot - Full Cake,35.47,269.0,13.85,Carrot Cake - Slice,Slice,4.433,8.0,35.465,All,Muhammad Muneer
+Honey butter toast,1.35,0.0,0,Honey Butter Toast,piece,1.347,1.0,1.347,All,Muhammad Muneer
+Honey Mustard Sauce,0.83,3.0,29.05,Honey Mustard Sauce,gms,0.01,80.0,0.825,All,Muhammad Muneer
+Hot Dark Mocha,3.73,10.0,39.17,Chocolate Sauce Topping,ml,0.042,25.0,1.058,All,Muhammad Muneer
+Hot Dark Mocha,3.73,10.0,39.17,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Hot Dark Mocha,3.73,10.0,39.17,Milk Full Cream,ml,0.004,150.0,0.663,All,Muhammad Muneer
+Iced Americano,2.48,19.0,13.71,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Americano,2.48,19.0,13.71,"Water Al Ain bottled 1,5 L",ml,0.001,200.0,0.183,All,Muhammad Muneer
+Iced Americano,2.48,19.0,13.71,ice,ml,0,150.0,0,All,Muhammad Muneer
+Iced Americano,2.48,19.0,13.71,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Cappuccino,3.75,25.0,15.75,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Cappuccino,3.75,25.0,15.75,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Cappuccino,3.75,25.0,15.75,Milk Full Cream,ml,0.004,280.0,1.238,All,Muhammad Muneer
+Iced Cappuccino,3.75,25.0,15.75,"Cocoa Powder 100% Pure ,22-24% c b Content,",gms,0.107,2.0,0.215,All,Muhammad Muneer
+Iced Cappuccino,3.75,25.0,15.75,ice,ml,0,150.0,0,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,ice,ml,0,100.0,0,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,Vanilla Pure Vanilla Exctract,ml,0.65,4.0,2.6,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,Cream Whipping Elle & Vire,ml,0.025,50.0,1.252,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Iced Caramel Macchiato,8.72,28.0,32.7,Chocolate Sauce Topping,ml,0.042,40.0,1.693,All,Muhammad Muneer
+Iced Latte,3.18,25.0,13.36,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Iced Latte,3.18,25.0,13.36,ice,ml,0,100.0,0,All,Muhammad Muneer
+Iced Latte,3.18,25.0,13.36,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Latte,3.18,25.0,13.36,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Matcha Latte,3.69,25.0,15.5,"Water Al Ain bottled 1,5 L",ml,0.001,50.0,0.046,All,Muhammad Muneer
+Iced Matcha Latte,3.69,25.0,15.5,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Iced Matcha Latte,3.69,25.0,15.5,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Matcha Latte,3.69,25.0,15.5,Matcha Premium,gms,0.413,6.0,2.475,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,Cream Whipping Elle & Vire,ml,0.025,60.0,1.503,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,Ice Cream Chocolate,ml,0.004,100.0,0.425,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,Spanish mixed milk,ml,0.01,150.0,1.454,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,ice,ml,0,100.0,0,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,Chocolate Sauce Topping,ml,0.042,60.0,2.54,All,Muhammad Muneer
+Iced Mocha,8.22,25.0,34.52,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Saffron Latte,5.34,29.0,19.33,Milk Full Cream,ml,0.004,80.0,0.354,All,Muhammad Muneer
+Iced Saffron Latte,5.34,29.0,19.33,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Saffron Latte,5.34,29.0,19.33,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Saffron Latte,5.34,29.0,19.33,Saffron Mixed Milk,ml,0.013,200.0,2.694,All,Muhammad Muneer
+Iced Saffron Latte,5.34,29.0,19.33,ice,ml,0,100.0,0,All,Muhammad Muneer
+Iced Spanish Latte,4.59,27.0,17.85,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Iced Spanish Latte,4.59,27.0,17.85,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Iced Spanish Latte,4.59,27.0,17.85,Spanish mixed milk,ml,0.01,200.0,1.939,All,Muhammad Muneer
+Iced Spanish Latte,4.59,27.0,17.85,Milk Full Cream,ml,0.004,80.0,0.354,All,Muhammad Muneer
+Iced V60,6.7,8.0,87.94,Colombia Luz Helena Castillo Peach,gms,0.335,20.0,6.7,All,Muhammad Muneer
+Iced V60,7.24,32.0,23.76,Colombia Luz Helena Castillo Peach,gms,0.335,20.0,6.7,All,Muhammad Muneer
+Iced V60,7.24,32.0,23.76,"Water Al Ain bottled 1,5 L",ml,0.001,300.0,0.275,All,Muhammad Muneer
+Iced V60,7.24,32.0,23.76,Packaging - PET Cup recycle 12 oz,piece,0.26,1.0,0.26,All,Muhammad Muneer
+Kouign-Amann Apple,2.93,0.0,0,Kouign-Amann Apple,piece,2.926,1.0,2.926,All,Muhammad Muneer
+Lemon Cookie,3.07,25.0,12.89,Lemon Cookie,piece,3.066,1.0,3.066,All,Muhammad Muneer
+Lemon cookies,3.07,0.0,0,Lemon Cookie,piece,3.066,1.0,3.066,All,Muhammad Muneer
+Le Pain Chocolat,2.38,0.0,0,Salt Nezo,gms,0.003,0.93,0.003,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Water extraction,ml,0,18.55,0,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.05152,0.243,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Chocolate Sticks Bake Stable,gms,0.07,10.0,0.7,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Butter Unsalted Block,gms,0.03,3.61,0.108,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,CROISSANT BUTTER SHEET 84%- PRESIDENT - 5X2KG,gms,0.061,20.61,1.262,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Yeast Frozen Hirondelle,gms,0.015,2.06,0.031,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Egg York,gms,0.009,2.58,0.023,All,Jawad
+Le Pain Chocolat,2.38,0.0,0,Sugar Regular,gms,0.003,5.15,0.015,All,Jawad
+Low Fat Milk,0.79,0.0,0,Milk Skimmed Al Marai,ml,0.004,200.0,0.792,All,Muhammad Muneer
+Lungo,2.29,19.0,12.66,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Lungo,2.29,19.0,12.66,Water extraction,ml,0,70.0,0,All,Muhammad Muneer
+Lungo,2.29,19.0,12.66,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Macchiato,2.36,10.0,24.78,Milk Full Cream,ml,0.004,80.0,0.354,All,Muhammad Muneer
+Macchiato,2.36,10.0,24.78,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Madeleine - Chocolate,0.84,8.0,11.03,Madeleine Chocolate,piece,0.842,1.0,0.842,All,Muhammad Muneer
+"Madeleine, chouquette, financier",0.5,0.0,0,Madeleine Lemon,piece,0.496,1.0,0.496,All,Muhammad Muneer
+Madeleine Cinnamon,0.47,8.0,6.3,Madeleine Cinnamon,piece,0.475,1.0,0.475,All,Muhammad Muneer
+Madeleine Lemon,0.5,8.0,6.56,Madeleine Lemon,piece,0.496,1.0,0.496,All,Muhammad Muneer
+Madeleine Plain,0.47,8.0,6.17,Madeleine Plain,piece,0.467,1.0,0.467,All,Muhammad Muneer
+Mango Juice,5.88,20.0,30.87,"Water Al Ain bottled 1,5 L",ml,0.001,200.0,0.183,All,Muhammad Muneer
+Mango Juice,5.88,20.0,30.87,Puree Mango No Added Sugar,gms,0.042,40.0,1.693,All,Muhammad Muneer
+Mango Juice,5.88,20.0,30.87,Mango,gms,0.016,250.0,4,All,Muhammad Muneer
+Mango Juice 200ml,3.2,12.0,28.0,Mango,gms,0.016,200.0,3.2,All,Muhammad Muneer
+Mango Passion,3.88,24.0,16.97,ice,ml,0,100.0,0,All,Muhammad Muneer
+Mango Passion,3.88,24.0,16.97,Puree Mango No Added Sugar,gms,0.042,50.0,2.116,All,Muhammad Muneer
+Mango Passion,3.88,24.0,16.97,Puree Passion No Added Sugar,gms,0.04,30.0,1.212,All,Muhammad Muneer
+Mango Passion,3.88,24.0,16.97,Sprite Zero,ml,0.005,100.0,0.463,All,Muhammad Muneer
+Mango Passion,3.88,24.0,16.97,Orange Naval,gms,0.005,20.0,0.093,All,Muhammad Muneer
+Mango Soda,1.71,15.0,11.97,Mango,gms,0.016,25.0,0.4,All,Jawad
+Mango Soda,1.71,15.0,11.97,Mango syrup Homemade,gms,0.022,22.0,0.494,All,Jawad
+Mango Soda,1.71,15.0,11.97,Puree Mango No Added Sugar,gms,0.042,7.0,0.296,All,Jawad
+Mango Soda,1.71,15.0,11.97,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,180.0,0.518,All,Jawad
+Matcha Latte,2.97,0.0,0,Matcha Premium,gms,0.413,5.0,2.063,All,Muhammad Muneer
+Matcha Latte,2.97,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,30.0,0.028,All,Muhammad Muneer
+Matcha Latte,2.97,0.0,0,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Matcha Latte,3.26,25.0,13.69,"Water Al Ain bottled 1,5 L",ml,0.001,30.0,0.028,All,Muhammad Muneer
+Matcha Latte,3.26,25.0,13.69,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Matcha Latte,3.26,25.0,13.69,Matcha Premium,gms,0.413,5.0,2.063,All,Muhammad Muneer
+Matcha Latte,3.26,25.0,13.69,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Matcha - Milk Based,2.95,26.0,11.91,Matcha Premium,gms,0.413,5.0,2.063,All,Muhammad Muneer
+Matcha - Milk Based,2.95,26.0,11.91,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Mini Baguette,0.6,0.0,0,Mini Baguette,piece,0.597,1.0,0.597,All,Muhammad Muneer
+Mini Butter Croissant,0.83,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.02273,0.107,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.91,0.014,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Egg York,gms,0.009,1.14,0.01,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,8.18,0.007,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Sugar Regular,gms,0.003,2.27,0.007,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Salt Nezo,gms,0.003,0.41,0.001,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Cream Whipping Elle & Vire,ml,0.025,0.68,0.017,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Egg York,gms,0.009,6.82,0.06,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,Butter Unsalted Block,gms,0.03,1.59,0.047,All,Jawad
+Mini Butter Croissant,0.83,0.0,0,CROISSANT BUTTER SHEET 84%- PRESIDENT - 5X2KG,gms,0.061,9.09,0.557,All,Jawad
+Mini Pistachio Croissant,1.78,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.91,0.014,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Egg York,gms,0.009,6.82,0.06,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Butter Unsalted Block,gms,0.03,1.59,0.047,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,CROISSANT BUTTER SHEET 84%- PRESIDENT - 5X2KG,gms,0.061,9.09,0.557,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Cream Whipping Elle & Vire,ml,0.025,0.68,0.017,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Pistachio Paste),gms,0.084,3.0,0.253,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Pistachio Custard,gms,0.022,20.0,0.434,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Pistachio Slices,kg,135,0.002,0.27,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Egg York,gms,0.009,1.14,0.01,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,8.18,0.007,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Sugar Regular,gms,0.003,2.27,0.007,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Salt Nezo,gms,0.003,0.41,0.001,All,Muhammad Muneer
+Mini Pistachio Croissant,1.78,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.02273,0.107,All,Muhammad Muneer
+Mushroom croissant,48.67,0.0,0,croissant dough,gms,0.603,70.0,42.207,All,Jawad
+Mushroom croissant,48.67,0.0,0,Rosemary Leaves,gms,0.296,2.0,0.591,All,Jawad
+Mushroom croissant,48.67,0.0,0,Cheese Parmesan Block,gms,0.043,30.0,1.288,All,Jawad
+Mushroom croissant,48.67,0.0,0,Alfredo sauce,ml,0.016,40.0,0.622,All,Jawad
+Mushroom croissant,48.67,0.0,0,Oil Pomace Olive,ml,0.027,20.0,0.538,All,Jawad
+Mushroom croissant,48.67,0.0,0,Mix salads,gms,0.032,30.0,0.949,All,Jawad
+Mushroom croissant,48.67,0.0,0,Salt Nezo,gms,0.003,1.0,0.003,All,Jawad
+Mushroom croissant,48.67,0.0,0,Parsley Leaves,gms,0.009,1.0,0.009,All,Jawad
+Mushroom croissant,48.67,0.0,0,Mushroom Button,gms,0.02,120.0,2.4,All,Jawad
+Mushroom croissant,48.67,0.0,0,Garlic,gms,0.007,10.0,0.067,All,Jawad
+MUSHROOM SCRAMBLE,7.32,32.0,24.02,Mushroom Scrambled,Portions,7.32,1.0,7.32,All,Muhammad Muneer
+Oat Milk,1.51,3.0,52.85,Oatly Oat Barista Edition,ml,0.01,150.0,1.513,All,Jawad
+Oat Milk 150,1.51,3.0,52.85,Oatly Oat Barista Edition,ml,0.01,150.0,1.513,All,Jawad
+Oat Milk V1.5,1.51,3.0,52.85,Oatly Oat Barista Edition,ml,0.01,150.0,1.513,All,Jawad
+orange juice,4.65,10.0,48.83,Orange Naval,gms,0.005,1000.0,4.65,All,Muhammad Muneer
+Orange Juice,4.65,18.0,27.13,Orange Naval,gms,0.005,1000.0,4.65,All,Muhammad Muneer
+Organic Coconut Water,3.16,6.0,55.3,Organic Coconut Water Drop,ml,0.016,200.0,3.159,All,Jawad
+orzo salad,4.61,0.0,0,Pasta Rizo,gms,0.017,50.0,0.85,All,Jawad
+orzo salad,4.61,0.0,0,Lettuce Mesclun Mix,gms,0.064,30.0,1.928,All,Jawad
+orzo salad,4.61,0.0,0,Olive Green Pitted,gms,0.011,12.0,0.129,All,Jawad
+orzo salad,4.61,0.0,0,Onion Red,gms,0.004,20.0,0.074,All,Jawad
+orzo salad,4.61,0.0,0,Cucumber,gms,0.005,60.0,0.27,All,Jawad
+orzo salad,4.61,0.0,0,Spinach Baby,gms,0.068,20.0,1.36,All,Jawad
+Pain Au Chocolat,3.44,16.0,22.58,Pain Au Chocolat,piece,3.438,1.0,3.438,All,Muhammad Muneer
+Pain au chocolate,1.41,0.0,0,Pain au lait chocolate,piece,1.405,1.0,1.405,All,Muhammad Muneer
+PANCAKE SWEET,8.16,34.0,25.2,Pan Cake,Portions,8.163,1.0,8.163,All,Muhammad Muneer
+Passion Mojito,5.8,21.0,29.0,Passion Mojito,ml,0.026,220.0,5.797,All,Muhammad Muneer
+Passion Mojito,5.8,0.0,0,Passion Mojito,ml,0.026,220.0,5.797,All,Muhammad Muneer
+Passion Soda,1.89,15.0,13.23,Passion fruit,gms,0.019,25.0,0.462,All,Jawad
+Passion Soda,1.89,15.0,13.23,Passion syrup Homemade,gms,0.029,22.0,0.628,All,Jawad
+Passion Soda,1.89,15.0,13.23,Puree Passion No Added Sugar,gms,0.04,7.0,0.283,All,Jawad
+Passion Soda,1.89,15.0,13.23,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,180.0,0.518,All,Jawad
+pasta alfredo,6.51,0.0,0,Chicken Breast 1000 gms,gms,0.038,100.0,3.812,All,Jawad
+pasta alfredo,6.51,0.0,0,Pasta Penne Rigate,gms,0.011,150.0,1.65,All,Jawad
+pasta alfredo,6.51,0.0,0,Cheese Parmesan Block,gms,0.043,20.0,0.859,All,Jawad
+pasta alfredo,6.51,0.0,0,Garlic,gms,0.007,25.0,0.169,All,Jawad
+pasta alfredo,6.51,0.0,0,Parsley Leaves,gms,0.009,2.0,0.017,All,Jawad
+Pasta Bolognese,16.2,55.0,29.47,Tomato Paste,gms,0.056,20.0,1.125,All,Muhammad Muneer
+Pasta Bolognese,16.2,55.0,29.47,Angus beef mince 80/20 topside + chuck,gms,0.077,70.0,5.368,All,Muhammad Muneer
+Pasta Bolognese,16.2,55.0,29.47,Cheese Parmesan Block,gms,0.043,20.0,0.859,All,Muhammad Muneer
+Pasta Bolognese,16.2,55.0,29.47,Pasta Spaghetti Barilla,gms,0.011,150.0,1.68,All,Muhammad Muneer
+Pasta Bolognese,16.2,55.0,29.47,Basil Leaves,gms,0.042,2.0,0.084,All,Muhammad Muneer
+Pasta Bolognese,16.2,55.0,29.47,Garlic,gms,0.007,25.0,0.169,All,Muhammad Muneer
+Pasta Bolognese,16.2,55.0,29.47,Bolognese sauce,ml,0.043,160.0,6.92,All,Muhammad Muneer
+Peach & Pear White Tea,7.66,27.0,29.79,Peach & Pear (Avantcha Tea),gms,0.739,10.0,7.386,All,Muhammad Muneer
+Peach & Pear White Tea,7.66,27.0,29.79,"Water Al Ain bottled 1,5 L",ml,0.001,300.0,0.275,All,Muhammad Muneer
+Pear & Choco Turnover,3.62,18.0,21.12,Bliss Brownie,piece,3.616,1.0,3.616,All,Muhammad Muneer
+Pecan,3.01,0.0,0,Pecan Cookies,piece,3.013,1.0,3.013,All,Muhammad Muneer
+Pecan Cookie,3.01,25.0,12.64,Pecan Cookies,piece,3.013,1.0,3.013,All,Muhammad Muneer
+Pecan Cookie,3.01,0.0,0,Pecan Cookies,piece,3.013,1.0,3.013,All,Muhammad Muneer
+Pesto pasta,18.41,55.0,35.15,Garlic,gms,0.007,2.0,0.013,All,Muhammad Muneer
+Pesto pasta,18.41,55.0,35.15,Pesto sauce (1 gm),ml,0.184,80.0,14.731,All,Muhammad Muneer
+Pesto pasta,18.41,55.0,35.15,Baguette,piece,1.194,0.2,0.239,All,Muhammad Muneer
+Pesto pasta,18.41,55.0,35.15,Cream Cooking,ml,0.012,70.0,0.805,All,Muhammad Muneer
+Pesto pasta,18.41,55.0,35.15,Cheese Parmesan Block,gms,0.043,20.0,0.859,All,Muhammad Muneer
+Pesto pasta,18.41,55.0,35.15,Pasta Penne Rigate,gms,0.011,160.0,1.76,All,Muhammad Muneer
+Piccolo,2.91,19.0,16.08,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Piccolo,2.91,19.0,16.08,Milk Full Cream,ml,0.004,140.0,0.619,All,Muhammad Muneer
+Piccolo,2.91,19.0,16.08,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Piccolo,2.36,0.0,0,Milk Full Cream,ml,0.004,80.0,0.354,All,Muhammad Muneer
+Piccolo,2.36,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Pickles,1.68,3.0,58.8,Cucumber pickled,gms,0.017,100.0,1.681,All,Muhammad Muneer
+Pistachio Croissant,4.85,0.0,0,Pistachio Croissants ( Flaky&Cream),piece,4.85,1.0,4.85,All,Muhammad Muneer
+Pistachio Croissant,4.85,25.0,20.37,Pistachio Croissants ( Flaky&Cream),piece,4.85,1.0,4.85,All,Muhammad Muneer
+Pistachio Swirl,4.85,20.0,25.46,Pistachio Croissants ( Flaky&Cream),piece,4.85,1.0,4.85,All,Muhammad Muneer
+Pistachio Swirl,4.85,0.0,0,Pistachio Croissants ( Flaky&Cream),piece,4.85,1.0,4.85,All,Muhammad Muneer
+Pocket Tagine Chicken Olives,6.2,0.0,0,Pocket Tagine Chicken,piece,6.201,1.0,6.201,All,Muhammad Muneer
+Pocket Tajine Chicken,6.2,45.0,14.47,Pocket Tagine Chicken,piece,6.201,1.0,6.201,All,Muhammad Muneer
+Pocket Tajine Lamb,13.59,55.0,25.94,Pocket Tagine lamb with prunes,piece,13.586,1.0,13.586,All,Muhammad Muneer
+Potato Fingers,2.51,12.0,21.96,Potato fingers,piece,0.418,6.0,2.51,All,Jawad
+quinoa salad,8.27,0.0,0,Tomato Chopped,gms,0.006,20.0,0.127,All,Jawad
+quinoa salad,8.27,0.0,0,Radish Red local,gms,0.02,8.0,0.16,All,Jawad
+quinoa salad,8.27,0.0,0,Quinoa white,gms,0.028,60.0,1.65,All,Jawad
+quinoa salad,8.27,0.0,0,Lettuce Mesclun Mix,gms,0.064,30.0,1.928,All,Jawad
+quinoa salad,8.27,0.0,0,Onion Red,gms,0.004,6.0,0.022,All,Jawad
+quinoa salad,8.27,0.0,0,Chickpeas white,kg,10.5,0.03,0.315,All,Jawad
+quinoa salad,8.27,0.0,0,Cucumber,gms,0.005,60.0,0.27,All,Jawad
+quinoa salad,8.27,0.0,0,Cheese Feta Karalis,gms,0.076,50.0,3.8,All,Jawad
+Raising Roll,2.59,0.0,0,Raising Roll,piece,2.588,1.0,2.588,All,Muhammad Muneer
+Raspberry Coissant,5.05,0.0,0,Raspberry Croissant ( Flaky&Cream),piece,5.048,1.0,5.048,All,Muhammad Muneer
+Raspberry Croissant,5.05,25.0,21.21,Raspberry Croissant ( Flaky&Cream),piece,5.048,1.0,5.048,All,Muhammad Muneer
+Raspberry knot,3.54,0.0,0,Raspberry Knot,piece,3.537,1.0,3.537,All,Muhammad Muneer
+Raspberry Soda,5.26,15.0,36.82,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,180.0,0.518,All,Jawad
+Raspberry Soda,5.26,15.0,36.82,Puree Raspberry,gms,0.056,7.0,0.391,All,Jawad
+Raspberry Soda,5.26,15.0,36.82,Raspberry Fresh,gms,0.12,25.0,3,All,Jawad
+Raspberry Soda,5.26,15.0,36.82,Raspberry syrup homemade,gms,0.061,22.0,1.353,All,Jawad
+Red Fruits,0.29,0.0,0,Red fruit Cream RAW,gms,0.048,0.67,0.032,All,Jawad
+Red Fruits,0.29,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.02514,0.119,All,Jawad
+Red Fruits,0.29,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.67,0.01,All,Jawad
+Red Fruits,0.29,0.0,0,Salt Nezo,gms,0.003,0.42,0.001,All,Jawad
+Red Fruits,0.29,0.0,0,Egg Wheight,gms,0.009,5.03,0.044,All,Jawad
+Red Fruits,0.29,0.0,0,Milk Nadec,ml,0.004,10.89,0.04,All,Jawad
+Red Fruits,0.29,0.0,0,Butter Unsalted Block,gms,0.03,1.17,0.035,All,Jawad
+Red Fruits,0.29,0.0,0,Sugar Regular,gms,0.003,1.68,0.005,All,Jawad
+Rye Bread,4.73,15.0,33.11,Rye Bread,piece,4.727,1.0,4.727,All,Muhammad Muneer
+Saffron Latte,4.31,27.0,16.76,Saffron Mixed Milk,ml,0.013,150.0,2.02,All,Muhammad Muneer
+Saffron Latte,4.31,27.0,16.76,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Saffron Latte,4.31,27.0,16.76,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+SALMON BENEDICT,8.86,38.0,24.48,Salmon Benedict,Portions,8.864,1.0,8.864,All,Muhammad Muneer
+Sando Chicken,7.89,49.0,16.91,Sando Chicken,Portions,7.887,1.0,7.887,All,Muhammad Muneer
+Sando Chicken,7.89,0.0,0,Sando Chicken,Portions,7.887,1.0,7.887,All,Muhammad Muneer
+Sando Scramble Mushroom,7.92,0.0,0,Sando-Scramble Egg,Portions,7.92,1.0,7.92,All,Muhammad Muneer
+Sando Scramble Mushroom,7.92,39.0,21.32,Sando-Scramble Egg,Portions,7.92,1.0,7.92,All,Muhammad Muneer
+Sando Shrimp,12.52,55.0,23.9,Sando Shrimp,Portions,12.515,1.0,12.515,All,Muhammad Muneer
+Sando Shrimp,12.52,0.0,0,Sando Shrimp,Portions,12.515,1.0,12.515,All,Muhammad Muneer
+Scrambled Eggs Sourdough Toast,5.18,37.0,14.73,Rye Bread,piece,4.727,0.3,1.418,All,Muhammad Muneer
+Scrambled Eggs Sourdough Toast,5.18,37.0,14.73,Egg Unit,piece,0.589,3.0,1.767,All,Muhammad Muneer
+Scrambled Eggs Sourdough Toast,5.18,37.0,14.73,Mushroom Button,gms,0.02,100.0,2,All,Muhammad Muneer
+Shrimp Sandough,12.52,0.0,0,Sando Shrimp,Portions,12.515,1.0,12.515,All,Muhammad Muneer
+Signature Alfredo croissant,49.58,0.0,0,Parsley Leaves,gms,0.009,1.0,0.009,All,Jawad
+Signature Alfredo croissant,49.58,0.0,0,Cheese Parmesan Block,gms,0.043,20.0,0.859,All,Jawad
+Signature Alfredo croissant,49.58,0.0,0,Chicken Breast 1000 gms,gms,0.038,120.0,4.575,All,Jawad
+Signature Alfredo croissant,49.58,0.0,0,croissant dough,gms,0.603,70.0,42.207,All,Jawad
+Signature Alfredo croissant,49.58,0.0,0,Salt Nezo,gms,0.003,1.0,0.003,All,Jawad
+Signature Alfredo croissant,49.58,0.0,0,Lettuce Mesclun Mix,gms,0.064,30.0,1.928,All,Jawad
+Skimmed Milk,0.57,0.0,0,Almarai Low Fat Milk Screwcap With Vitamin 1Ltr,Litre,3.83,0.15,0.575,All,Jawad
+South African Honeybush,3.45,23.0,15.75,Honeybush Chocolate (Avantcha Tea),gms,0.317,10.0,3.171,All,Muhammad Muneer
+South African Honeybush,3.45,23.0,15.75,"Water Al Ain bottled 1,5 L",ml,0.001,300.0,0.275,All,Muhammad Muneer
+spanish latte,3.95,3.0,138.25,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+spanish latte,3.95,3.0,138.25,Spanish mixed milk,ml,0.01,200.0,1.939,All,Muhammad Muneer
+Spanish Latte,4.23,27.0,16.45,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Spanish Latte,4.23,27.0,16.45,Spanish mixed milk,ml,0.01,200.0,1.939,All,Muhammad Muneer
+Spanish Latte,4.23,27.0,16.45,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,100.0,0.288,All,Muhammad Muneer
+Sparkling Water 330 ml,2.18,10.0,22.89,Water sparkling (330 ml) - Al Ain Glass Bottle,ml,0.007,330.0,2.181,All,Muhammad Muneer
+Sparkling Water 750 ml,2.16,14.0,16.2,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,750.0,2.159,All,Muhammad Muneer
+Sparkling Water Pack-6,13.08,15.0,91.56,Water sparkling (330 ml) - Al Ain Glass Bottle,ml,0.007,1980.0,13.084,All,Muhammad Muneer
+Special Blend,2.01,0.0,0,Brazil Santa Ines Luiz Paulo Pereira (1kg),gms,0.1,20.0,2.006,All,Muhammad Muneer
+Special Daba Bread,0.81,0.0,0,Daba Special Bread,piece,0.814,1.0,0.814,All,Muhammad Muneer
+Spicy Chicken Burger,3.94,49.0,8.44,Spicy Chicken Burger,piece,3.938,1.0,3.938,All,Muhammad Muneer
+Spicy Chicken Burger,3.94,0.0,0,Spicy Chicken Burger,piece,3.938,1.0,3.938,All,Muhammad Muneer
+Still Water (330),2.04,8.0,26.91,Water still (330 ml ) - Al Ain Glass bottle,ml,0.006,330.0,2.045,All,Muhammad Muneer
+Still Water 750 ml,4.16,12.0,36.4,Water still (750 ml) - Al Ain glass bottle,ml,0.006,750.0,4.163,All,Muhammad Muneer
+Strawberry Mojito,5.67,21.0,28.35,Strawberry Mojito,ml,0.026,220.0,5.67,All,Muhammad Muneer
+Strawberry Mojito,5.67,0.0,0,Strawberry Mojito,ml,0.026,220.0,5.67,All,Muhammad Muneer
+Strawberry Soda,2.76,0.0,0,Water sparkling (750 ml) - Al Ain Glass Bottle,ml,0.003,180.0,0.518,All,Jawad
+Strawberry Soda,2.76,0.0,0,Strawberry Fresh,gms,0.048,25.0,1.2,All,Jawad
+Strawberry Soda,2.76,0.0,0,Strawberry syrup homemade,gms,0.037,22.0,0.818,All,Jawad
+Strawberry Soda,2.76,0.0,0,Puree Strawberry,gms,0.032,7.0,0.224,All,Jawad
+Sweet potato fries,1.89,10.0,19.85,Sweet potatoes,kg,12.623,0.15,1.893,All,Jawad
+Tabboulleh Salad,2.51,0.0,0,Sweet potatoes,kg,12.623,0.03,0.379,All,Jawad
+Tabboulleh Salad,2.51,0.0,0,Tomato Cherry Red,gms,0.024,20.0,0.48,All,Jawad
+Tabboulleh Salad,2.51,0.0,0,Tabouleh Couscous Medium Kent,gms,0.013,100.0,1.269,All,Jawad
+Tabboulleh Salad,2.51,0.0,0,Cucumber,gms,0.005,60.0,0.27,All,Jawad
+Tabboulleh Salad,2.51,0.0,0,Lettuce Romaine,gms,0.006,20.0,0.11,All,Jawad
+Triple Layer Chocolate Cake,6.06,0.0,0,Triple Layer Chocolate Cake - Slice,Slice,6.064,1.0,6.064,All,Muhammad Muneer
+Triple Layer Chocolate - Full Cake,48.51,259.0,19.67,Triple Layer Chocolate Cake - Slice,Slice,6.064,8.0,48.51,All,Muhammad Muneer
+Umami Burger,11.86,0.0,0,Umami Burger,piece,11.864,1.0,11.864,All,Muhammad Muneer
+Umami Burger,11.86,59.0,21.11,Umami Burger,piece,11.864,1.0,11.864,All,Muhammad Muneer
+Umami Sauce,1.16,3.0,40.6,Nori Sauce,gms,0.015,80.0,1.163,All,Muhammad Muneer
+V60,6.7,8.0,87.94,Colombia Luz Helena Castillo Peach,gms,0.335,20.0,6.7,All,Muhammad Muneer
+Vienna Bread,0.73,10.0,7.66,Pain au lait,piece,0.73,1.0,0.73,All,Muhammad Muneer
+Vienna Choco Bread,1.4,12.0,12.34,Pain au lait chocolate,piece,1.405,1.0,1.405,All,Muhammad Muneer
+Viennese Bread Chocolate,1.4,0.0,0,Pain au lait chocolate,piece,1.405,1.0,1.405,All,Muhammad Muneer
+waffle - chocolate,1.33,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.75,0.011,All,Jawad
+waffle - chocolate,1.33,0.0,0,Egg Unit,piece,0.589,0.1,0.059,All,Jawad
+waffle - chocolate,1.33,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.025,0.118,All,Jawad
+waffle - chocolate,1.33,0.0,0,Salt Nezo,gms,0.003,0.5,0.002,All,Jawad
+waffle - chocolate,1.33,0.0,0,Sugar Regular,gms,0.003,2.25,0.007,All,Jawad
+waffle - chocolate,1.33,0.0,0,Milk Nadec,ml,0.004,12.5,0.046,All,Jawad
+waffle - chocolate,1.33,0.0,0,Chocolate Sticks Bake Stable,gms,0.07,10.0,0.7,All,Jawad
+waffle - chocolate,1.33,0.0,0,Sugar Pearl Belgium,gms,0.001,10.0,0.012,All,Jawad
+waffle - chocolate,1.33,0.0,0,Butter Unsalted Block,gms,0.03,12.5,0.373,All,Jawad
+waffle - original,0.63,0.0,0,Butter Unsalted Block,gms,0.03,12.5,0.373,All,Jawad
+waffle - original,0.63,0.0,0,Yeast Frozen Hirondelle,gms,0.015,0.75,0.011,All,Jawad
+waffle - original,0.63,0.0,0,Egg Unit,piece,0.589,0.1,0.059,All,Jawad
+waffle - original,0.63,0.0,0,Milk Nadec,ml,0.004,12.5,0.046,All,Jawad
+waffle - original,0.63,0.0,0,Sugar Regular,gms,0.003,2.25,0.007,All,Jawad
+waffle - original,0.63,0.0,0,Salt Nezo,gms,0.003,0.5,0.002,All,Jawad
+waffle - original,0.63,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.025,0.118,All,Jawad
+waffle - original,0.63,0.0,0,Sugar Pearl Belgium,gms,0.001,10.0,0.012,All,Jawad
+Whole Milk,0.88,0.0,0,Milk Full Cream,ml,0.004,200.0,0.884,All,Muhammad Muneer
+Whole-Wheat Bread,8.26,0.0,0,Flour T130 Viron,kg,10.32,0.11,1.135,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,Alpro Barista Almond Pro,ml,0.01,330.0,3.43,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,Sugar Regular,gms,0.003,70.0,0.207,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,Oil Pomace Olive,ml,0.027,20.0,0.538,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,Yeast Frozen Hirondelle,gms,0.015,12.0,0.18,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,Flour T55 Moul-Bie,kg,4.72,0.56,2.643,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,Salt Nezo,gms,0.003,8.0,0.026,All,Jawad
+Whole-Wheat Bread,8.26,0.0,0,"Water Al Ain bottled 1,5 L",ml,0.001,110.0,0.101,All,Jawad
+Wild Berries,6.4,26.0,25.85,Sprite Zero,ml,0.005,100.0,0.463,All,Muhammad Muneer
+Wild Berries,6.4,26.0,25.85,Blueberry Fresh,gms,0.076,5.0,0.38,All,Muhammad Muneer
+Wild Berries,6.4,26.0,25.85,Raspberry Fresh,gms,0.12,5.0,0.6,All,Muhammad Muneer
+Wild Berries,6.4,26.0,25.85,Puree Blueberry,gms,0.067,30.0,1.998,All,Muhammad Muneer
+Wild Berries,6.4,26.0,25.85,Puree Raspberry,gms,0.056,30.0,1.677,All,Muhammad Muneer
+Wild Berries,6.4,26.0,25.85,Puree Strawberry,gms,0.032,40.0,1.282,All,Muhammad Muneer
