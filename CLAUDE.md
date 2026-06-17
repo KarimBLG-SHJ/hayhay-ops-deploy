@@ -20,7 +20,24 @@ VITE_COACH_URL=https://worker-production-c3a3.up.railway.app
 VITE_DASHBOARD_URL=https://web-production-fbd5f.up.railway.app
 VITE_CONTEXTOS_URL=https://web-production-19efe.up.railway.app
 VITE_HUB_URL=https://hayhay-hub-production.up.railway.app
+VITE_HUB_KEY=<secret>   # baked at build (Dockerfile ARG); must equal hayhay-hub's HUB_KEY
+OPS_PASSWORD=<password>  # login password (default "hayhay" if unset) — currently "hayhay2026"
+OPS_SECRET=<random hex>  # HMAC key signing the 15-day session cookie
 ```
+
+## Auth gate (server.js)
+
+`server.js` puts a password gate in front of everything (SPA + all proxies).
+No new dependency — HMAC via `node:crypto`, cookie parsed by hand.
+- `GET /login` serves an inline login page; `POST /login` checks `OPS_PASSWORD`
+  (timing-safe) → sets `ops_session` (HttpOnly, Secure, SameSite=Lax, **Max-Age 15 days**),
+  signed `exp.hmac` with `OPS_SECRET`. `GET /logout` clears it.
+- Public paths: `/login`, `/logout`, `/healthz`, `/robots.txt`. Everything else needs a valid
+  cookie → unauth HTML GET redirects to `/login`, else 401 JSON.
+- **The Hub** (separate Next.js app) re-protects itself: `ExternalFrame` appends `?k=VITE_HUB_KEY`
+  to the hub iframe/popout; the hub's `src/middleware.ts` accepts the key, sets its own 15-day
+  cookie, blocks keyless (public) visitors. ⚠️ In a cross-origin iframe the hub cookie is
+  third-party — Chrome keeps it, Safari blocks it (use "Plein écran" → first-party cookie, full hub).
 
 ## Backend endpoints consumed (all live)
 

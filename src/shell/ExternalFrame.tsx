@@ -6,7 +6,15 @@ import type { NavItem } from "./nav";
  * target refuses framing (X-Frame-Options).
  */
 export function ExternalFrame({ item }: { item: NavItem }) {
-  const href = item.href || "";
+  let href = item.href || "";
+
+  // The Hub re-protects itself: it accepts a one-time key in the URL and then
+  // sets its own 15-day cookie. The shell carries that key so the user never
+  // sees a second login. The bundle is only served behind the shell gate.
+  const hubKey = import.meta.env.VITE_HUB_KEY;
+  if (item.id === "hub" && hubKey) {
+    href += (href.includes("?") ? "&" : "?") + "k=" + encodeURIComponent(hubKey);
+  }
 
   // Apps that can't be iframed (auth-gated / Next.js refusing cross-site
   // cookies) get an in-shell launch card instead of a blank frame.
