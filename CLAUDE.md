@@ -111,6 +111,11 @@ in `src/shell/nav.ts` (`NAV_GROUPS`).
 - **native module views** (all live, Phase 2 done):
   - `sales` (`SalesModule`) + `context` (`ContextModule`) — from the snapshot, no new fetch.
   - `stock` (`StockModule`) — coach `/api/wastage_reconciliation` (reuses `ReconciliationPanel`).
+  - `lifecycle` (`LifecycleModule`) — product lifecycle from dashboard `/api/lifecycle` (90-day matrix).
+    Breakdown by **`phase`** (active/recovering/declining/zombie/discontinued/seasonal — richer than
+    `status`), 7-day momentum lists, full catalogue table. **Client lifecycle (RFM/churn/6-stage funnel)
+    is a placeholder** — needs a coach `GET /api/clients/lifecycle` endpoint (logic exists in
+    `#hayhay-client-bot`, not yet exposed). That endpoint is the Coach IA session's job.
   - `cogs` (`CogsModule`) + `talabat` (`TalabatModule`) — read the public validated Google Sheet (CSV via gviz) through the `/api/cogs` and `/api/talabat-margins` proxies. Parser in `src/api/sheet.ts` (`useSheet` + quote-aware CSV + mixed comma/dot `num()`). Sheet id `1ELFrkcet-nJC5HrCx9aR-V9AY8VlIGVzroIGsoyXV9g`, tabs "HayHay COGS per SKU" / "Talabat - Product Margins". Sheet must stay "anyone with link can view". Junk legend/metadata rows filtered by non-numeric price.
   - `ModulePlaceholder` (`src/shell/ModulePlaceholder.tsx`) remains the fallback for any future `ready:false` module.
 - **external items** (`reports`, `hub`, `b2b`) — embedded IN the shell via `src/shell/ExternalFrame.tsx` (iframe keyed by id). `embed:false` (hub — auth-gated Next.js) shows an in-shell launch card instead of a blank frame. `↗` / "Plein écran" pops out.
