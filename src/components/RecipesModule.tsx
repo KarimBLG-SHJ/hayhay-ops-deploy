@@ -34,7 +34,11 @@ interface Recipe {
   majPar: string;
   ingredients: Ingredient[];
   variants: number;
+  detailed: boolean;        // false = recipe is just a self-referencing portion (no real breakdown)
+  resolvedFrom?: string;    // ingredients pulled from this sub-recipe (Sapaad component)
 }
+
+const norm = (s: string | undefined) => (s || "").trim().toLowerCase();
 
 const fcColor = (fc: number, price: number) =>
   price <= 0 ? "var(--ink-soft, #8a8f98)" : fc > 40 ? "var(--pink-dk)" : fc > 30 ? "var(--yellow-dk)" : "var(--mint-dk)";
@@ -78,7 +82,31 @@ export function RecipesModule() {
           unitCost: num(l[C.unitCost]),
           subTotal: num(l[C.subTotal]),
         })),
+        detailed: false,
       });
+    }
+
+    // Sapaad often stores a finished product as a single line pointing to a
+    // same-named "portion" (self-reference → no real breakdown) or to another
+    // catalogue product (a sub-recipe). Resolve the latter, flag the former.
+    const byName = new Map(recipes.map((r) => [norm(r.produit), r]));
+    const rawDetailed = (r: Recipe) =>
+      r.ingredients.length > 0 && r.ingredients.some((i) => norm(i.name) !== norm(r.produit));
+    for (const r of recipes) {
+      if (rawDetailed(r)) { r.detailed = true; continue; }
+      // Single line that points to a *different* product → pull that recipe's lines.
+      if (r.ingredients.length === 1 && norm(r.ingredients[0].name) !== norm(r.produit)) {
+        const target = byName.get(norm(r.ingredients[0].name));
+        if (target && rawDetailed(target)) {
+          r.ingredients = target.ingredients;
+          r.resolvedFrom = target.produit;
+          r.detailed = true;
+          continue;
+        }
+      }
+      // Otherwise: opaque self-reference, no usable ingredient list.
+      r.ingredients = [];
+      r.detailed = false;
     }
     recipes.sort((a, b) => a.produit.localeCompare(b.produit));
 
@@ -163,20 +191,27 @@ export function RecipesModule() {
               </thead>
               <tbody>
                 {view.map((r) => {
-                  const isOpen = open === r.produit;
+                  const isOpen = open === r.produit && r.detailed;
                   return [
-                    <tr key={r.produit} onClick={() => setOpen(isOpen ? null : r.produit)} style={{ cursor: "pointer" }}>
-                      <td className="muted" style={{ textAlign: "center" }}>{isOpen ? "▾" : "▸"}</td>
+                    <tr
+                      key={r.produit}
+                      onClick={() => r.detailed && setOpen(isOpen ? null : r.produit)}
+                      style={{ cursor: r.detailed ? "pointer" : "default" }}
+                    >
+                      <td className="muted" style={{ textAlign: "center" }}>{r.detailed ? (isOpen ? "▾" : "▸") : ""}</td>
                       <td className="strong">
                         {r.produit}
                         {r.variants > 1 ? <span className="muted" style={{ fontWeight: 400 }}> · {r.variants} variantes</span> : null}
+                        {r.resolvedFrom && norm(r.resolvedFrom) !== norm(r.produit) ? <span className="muted" style={{ fontWeight: 400 }}> · via {r.resolvedFrom}</span> : null}
                       </td>
                       <td className="num">{Number.isFinite(r.cost) ? r.cost.toFixed(2) : "—"}</td>
                       <td className="num">{r.price > 0 ? r.price.toFixed(0) : <span className="muted">—</span>}</td>
                       <td className="num" style={{ color: fcColor(r.fc, r.price), fontWeight: 800 }}>
                         {r.price > 0 && Number.isFinite(r.fc) ? r.fc.toFixed(1) + "%" : "—"}
                       </td>
-                      <td className="num">{r.ingredients.length}</td>
+                      <td className="num">
+                        {r.detailed ? r.ingredients.length : <span className="muted" style={{ fontSize: 11 }}>non détaillée</span>}
+                      </td>
                       <td className="muted">{r.majPar}</td>
                     </tr>,
                     isOpen ? (
