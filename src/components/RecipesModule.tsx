@@ -1,5 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSheet, num } from "../api/sheet";
+
+// Sapaad sub-recipe (prep) compositions, harvested for the 50 products whose
+// menu recipe is a single self-referencing portion line. Keyed by normalized
+// product name → real ingredient breakdown (grams + AED).
+type PrepMap = Record<string, { prep: string; total: string; ing: [string, string, string, string, string][] }>;
 
 // Central Sapaad recipe catalogue (both brands), exported to /recettes.csv.
 // One CSV line per ingredient; product-level cost/price/food-cost repeat on
@@ -50,6 +55,16 @@ export function RecipesModule() {
   const [filter, setFilter] = useState<Filter>("all");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState<string | null>(null);
+  const [preps, setPreps] = useState<PrepMap | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    fetch("/recettes_preps.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => alive && setPreps(d))
+      .catch(() => alive && setPreps(null));
+    return () => { alive = false; };
+  }, []);
 
   const { recipes, k } = useMemo(() => {
     // Group lines by product.
@@ -104,6 +119,16 @@ export function RecipesModule() {
           continue;
         }
       }
+      // Self-reference: fill in the real composition harvested from the
+      // Sapaad sub-recipe (grams + AED), if we have it.
+      const p = preps && preps[norm(r.produit)];
+      if (p && p.ing && p.ing.length) {
+        r.ingredients = p.ing.map((a) => ({
+          name: a[0], unite: a[1], unitCost: num(a[2]), qty: num(a[3]), subTotal: num(a[4]),
+        }));
+        r.detailed = true;
+        continue;
+      }
       // Otherwise: opaque self-reference, no usable ingredient list.
       r.ingredients = [];
       r.detailed = false;
@@ -120,7 +145,7 @@ export function RecipesModule() {
       recipes,
       k: { total: recipes.length, sellable: sellable.length, semi: recipes.length - sellable.length, avgFc, highFc },
     };
-  }, [sheet.rows]);
+  }, [sheet.rows, preps]);
 
   const view = useMemo(() => {
     let r = recipes;
