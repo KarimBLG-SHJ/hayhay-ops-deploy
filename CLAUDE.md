@@ -119,7 +119,7 @@ in `src/shell/nav.ts` (`NAV_GROUPS`).
   - `cogs` (`CogsModule`) + `talabat` (`TalabatModule`) — read the public validated Google Sheet (CSV via gviz) through the `/api/cogs` and `/api/talabat-margins` proxies. Parser in `src/api/sheet.ts` (`useSheet` + quote-aware CSV + mixed comma/dot `num()`). Sheet id `1ELFrkcet-nJC5HrCx9aR-V9AY8VlIGVzroIGsoyXV9g`, tabs "HayHay COGS per SKU" / "Talabat - Product Margins". Sheet must stay "anyone with link can view". Junk legend/metadata rows filtered by non-numeric price.
   - `ModulePlaceholder` (`src/shell/ModulePlaceholder.tsx`) remains the fallback for any future `ready:false` module.
 - **external items** (`reports`, `hub`, `b2b`) — embedded IN the shell via `src/shell/ExternalFrame.tsx` (iframe keyed by id). `embed:false` (hub — auth-gated Next.js) shows an in-shell launch card instead of a blank frame. `↗` / "Plein écran" pops out.
-- **Coach IA dock** (`src/shell/CoachDock.tsx`) — persistent FAB; embeds coach chat-ui via `/api/coach/chat-ui`.
+- **Coach IA column** (`src/shell/CoachColumn.tsx`) — persistent right-hand grid column (open by default, state in `localStorage`), embeds coach chat-ui via `/api/coach/chat-ui`. It's a real grid track (`.app.coach-open` adds a 380px column) so it pushes content instead of overlaying; the iframe is mounted once and only hidden when collapsed, so the conversation survives route changes + collapse/expand. Collapses to the `.coach-fab`. Below 1200px it reverts to a floating overlay and frees the track. (Replaced the old FAB-only `CoachDock`.)
 
 Sheet proxies live in BOTH `vite.config.ts` (dev) and `server.js` (prod) → `https://docs.google.com` gviz CSV.
 

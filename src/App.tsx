@@ -18,7 +18,7 @@ import { TalabatModule } from "./components/TalabatModule";
 import { LifecycleModule } from "./components/LifecycleModule";
 import { RecipesModule } from "./components/RecipesModule";
 import { ExternalFrame } from "./shell/ExternalFrame";
-import { CoachDock } from "./shell/CoachDock";
+import { CoachColumn, useCoachOpen } from "./shell/CoachColumn";
 
 function Cockpit({ snap }: { snap: ReturnType<typeof useSnapshot> }) {
   return (
@@ -40,11 +40,12 @@ export default function App() {
   const snap = useSnapshot(60_000);
   const [route, navigate] = useHashRoute();
   const item = findItem(route);
+  const [coachOpen, setCoachOpen] = useCoachOpen();
 
   const isModule = route !== "cockpit" && !!item;
 
   return (
-    <div className={`app${isModule ? " module-view" : ""}`}>
+    <div className={`app${isModule ? " module-view" : ""}${coachOpen ? " coach-open" : ""}`}>
       <Sidebar snap={snap} route={route} onNavigate={navigate} />
       {route === "cockpit" || !item ? (
         <Cockpit snap={snap} />
@@ -67,7 +68,7 @@ export default function App() {
       ) : (
         <ModulePlaceholder item={item} />
       )}
-      <CoachDock />
+      <CoachColumn open={coachOpen} onToggle={setCoachOpen} />
     </div>
   );
 }
