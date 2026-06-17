@@ -14,6 +14,7 @@ import { ContextModule } from "./components/ContextModule";
 import { StockModule } from "./components/StockModule";
 import { CogsModule } from "./components/CogsModule";
 import { TalabatModule } from "./components/TalabatModule";
+import { LifecycleModule } from "./components/LifecycleModule";
 import { ExternalFrame } from "./shell/ExternalFrame";
 import { CoachDock } from "./shell/CoachDock";
 
@@ -54,6 +55,8 @@ export default function App() {
         <CogsModule />
       ) : route === "talabat" ? (
         <TalabatModule />
+      ) : route === "lifecycle" ? (
+        <LifecycleModule />
       ) : item.kind === "external" ? (
         <ExternalFrame item={item} />
       ) : (

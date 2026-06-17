@@ -1748,3 +1748,34 @@
 .cogs-amber { background: #FFE9CC; color: #B9770E; }
 .cogs-yellow { background: #FFF4CC; color: #9A7B0A; }
 .cogs-green { background: #DCF5E8; color: var(--mint-dk); }
+
+/* ── Cycle de vie (LifecycleModule) ─────────────────────────── */
+.lc-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.lc-pill { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; cursor: pointer;
+  padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--card);
+  color: var(--text-2); transition: all .12s; }
+.lc-pill:hover { border-color: var(--text-2); }
+.lc-pill-on { background: var(--text); color: #fff; border-color: var(--text); }
+.lc-momentum { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.lc-mom-head { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 13px; margin-bottom: 8px; letter-spacing: .3px; }
+.lc-mom-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 700; color: var(--text); }
+.lc-mom-row:last-child { border-bottom: 0; }
+.lc-mom-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; }
+.lc-empty { font-size: 12px; padding: 6px 0; }
+.lc-clients-soon { margin-top: 14px; border-style: dashed; }
+.lc-clients-soon code { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: var(--card-2);
+  padding: 1px 5px; border-radius: 5px; }
+/* status badges + pill tints */
+.lc-badge { display: inline-block; font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800;
+  padding: 2px 9px; border-radius: 999px; }
+.lc-green  { background: #E4F6EC; color: var(--mint-dk); }
+.lc-blue   { background: #E6EFFA; color: #3E7AC0; }
+.lc-yellow { background: #FBF1D6; color: var(--yellow-dk); }
+.lc-amber  { background: #FBE9CF; color: #C2792B; }
+.lc-grey   { background: #EEEDE6; color: #8a8f98; }
+.lc-purple { background: #F0E9FB; color: #7E57C2; }
+.lc-pill.lc-green.lc-pill-on, .lc-pill.lc-blue.lc-pill-on, .lc-pill.lc-yellow.lc-pill-on,
+.lc-pill.lc-amber.lc-pill-on, .lc-pill.lc-grey.lc-pill-on, .lc-pill.lc-purple.lc-pill-on {
+  background: var(--text); color: #fff; }
+@media (max-width: 760px) { .lc-momentum { grid-template-columns: 1fr; } }
