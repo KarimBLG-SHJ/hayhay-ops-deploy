@@ -96,6 +96,9 @@ app.get("/logout", (_req, res) => {
 
 app.use((req, res, next) => {
   if (PUBLIC_PATHS.has(req.path)) return next();
+  // Mascot images are public assets (no business data) — Slack must fetch them
+  // for image blocks in LNA/agent briefs, which can't carry the auth cookie.
+  if (req.path.startsWith("/mascots/")) return next();
   if (sessionValid(readCookie(req, "ops_session"))) return next();
   if (req.method === "GET" && req.accepts("html")) return res.redirect("/login");
   return res.status(401).json({ error: "auth required" });
